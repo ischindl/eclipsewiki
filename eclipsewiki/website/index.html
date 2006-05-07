@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title> Eclipse Wiki Editor Plugin </title>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+		<meta lang="en-uk" name="author" content="Channing Walton"/>
+		<meta lang="en-uk" name="keywords" content="Eclipse, Plugin, Wiki, Editor, Channing Walton"/>
+		<meta name="date" content="24 Dec 2004"/>
+		<link href="style.css" type="text/css" rel="STYLESHEET"/>
+	</head>
+  <body>
+	
+	<div class="header">
+	<span id="sourceforge" >
+		<a href="http://sourceforge.net">
+			<img src="http://sourceforge.net/sflogo.php?group_id=122916&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" />
+		</a>
+	</span>
+		<h1>Eclipse Wiki Editor Plugin</h1>
+	</div>
+  <div class="nav">
+	<a href="http://sourceforge.net/projects/eclipsewiki/">Download</a>
+	<br/>
+	<a href="http://sourceforge.net/project/screenshots.php?group_id=122916">Screenshots</a>
+	<br/>
+	<a href="sightings.html">Sightings</a>
+	<p/>
+	<form action="http://www.eclipseplugincentral.com/modules.php?op=modload&amp;name=Web_Links&amp;file=index" method="post">
+ 		<input type="hidden" name="lid" value="53"/>
+		<input type="hidden" name="req" value="ratelink"/>
+ 		<input type="submit" value="Rate Me!"/>
+ 	</form>
+  </div>
+  <div class="links">
+	<a href="http://www.eclipse.org"><img src="eclipse_logo.jpg" alt="Eclipse"/></a>
+	<p/><a href="http://www.eclipse-plugins.info/eclipse/plugin_details.jsp?id=187"><img src="eclipse-plugin-logo.gif" width="82" height="40" alt="Eclipse Plugins"/></a>
+	<p/><a href="http://www.eclipseplugincentral.com/modules.php?op=modload&amp;name=Web_Links&amp;file=index&amp;req=viewlink&amp;cid=69"><img src="Epic_log_50.gif" alt="EPiC"/></a>
+  	<p/><a href="http://validator.w3.org/check/referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!"/></a>
+  	<p/><a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"/></a>
+  </div>
+    <div class="main">
+    <p>
+      This <a href="http://www.eclipse.org/">Eclipse</a> plugin is a simple <a href=
+      "http://c2.com/cgi/wiki?PersonalWiki">personal</a> or project <a href="http://c2.com/cgi/wiki">Wiki</a>. A Wiki
+      is many things, but in the context of Eclipse, it is a powerful project documentation tool 
+      linking documentation to eclipse resources, web sites, bug tracking tools and other Wikis.
+    </p>
+    <h1>
+      Features
+    </h1> 
+	<ul>
+      <li>
+        Link to local Wiki documents
+      </li>
+      <li>
+        Link to resources in the Eclipse workspace
+      </li>
+      <li>
+      	Link to Wiki documentation in plugins
+      </li>
+      <li>
+			Link to Java source code in the current project path simply by typing the fully qualified name of a class (classes in the default package are not supported).
+      </li>
+	  <li>
+        Link to urls &#8212; links starting with http, ftp, mailto and file
+      </li>
+	  <li>
+        Exclude words from being links
+      </li>
+      <li>
+        Define common prefixes to any website, Wiki, Eclipse resource, and more using a local <i><a href="#wikispace">WikiSpace</a></i>
+      </li>
+	  <li>
+		Export your wiki including all the linked Eclipse resources to form a self-contained site. (Java source is converted to HTML using the excellent <a href="http://www.java2html.de/">Java2Html</a>)
+	  </li>
+      <li>
+      	The multipage editor has a browser view to make reading easier and a syntax view to help editing.
+		There are three <i>renderers</i> to choose from depending on your chosen wiki markup: 
+      	<a href="http://twiki.org">TWiki</a>, <a href="http://www.snipsnap.org">SnipSnap</a> and <a href="http://c2.com/cgi/wiki">Ward's Wiki</a>.
+		<p>A cool feature is that any image linked to in the Wiki Document is inlined in the browser view. So you can create a local folder of images and
+		link to them in your Wiki pages.
+		</p>
+      </li>
+      <li>
+        Syntax colouring for links
+      </li>
+      <li>
+        Completion for eclipse resources, local wiki documents, WikiSpace links and Java types in the same project
+      </li>
+      <li>
+        Hover text and previews on links
+      </li>
+	  <li>
+        An Outline that guesses what the headings in your document are
+      </li>
+    </ul>
+    To use the plugin you need <a href="http://www.eclipse.org/">Eclipse</a> 2.1.2 or higher, running under
+          <a href="http://java.sun.com/">JDK1.3.1</a> or higher although not all the above features are available for Eclipse 2.x.y. <br/>
+    The plugin has been tested under <a href="http://www.apple.com/macosx/">Mac OS X</a>, Linux and Windows 98/NT/2000/XP. 
+    <h1>
+      Using Wiki
+    </h1>
+    <h3>Installation</h3>
+    <p>
+    <ol>
+    <li>download the zip file as appropriate for your Eclipse version</li>
+    <li>extract it into your eclipse/plugins/ directory</li>
+	<li>restart Eclipse</li>
+	</ol>
+    </p>
+    <p>If you use Linux, please read <a href="http://dev.eclipse.org/viewcvs/index.cgi/%7Echeckout%7E/platform-swt-home/faq.html#browserlinux">this</a>.
+    </p>
+    <h3>Wiki Files</h3>
+      <p>
+      Any file ending in a <code>.wiki</code> extension is opened by the Wiki editor. Try starting by creating a file
+      called <code>HomePage.wiki</code> (I suggest you create a wiki folder to contain all your Wiki docs).<br/>
+      Links to other Wiki documents are formed by the usual Wiki name schema (two or more capitalised words with no
+      space between them such as EclipseWiki, ExtremeProgramming, AgileAlliance).
+      </p>
+    <h3>Navigation</h3>
+      <p>
+      You can move to the next link in a document with the <i>Go to next member</i> accelerator, by default bound
+      to <code>Ctrl+Shift+Arrow_Down</code>. Moving to the previous link is the <i>Go to previous member</i> accelerator,
+      bound to <code>Ctrl+Shift+Arrow_Up</code> by default.
+      </p>
+      <p>
+      You can open a wiki link by right clicking the wiki name and selecting  <code>Open Wiki Link</code> in the
+      popup menu or you can use <code>F3</code>.
+      </p>
+    <h3>Links</h3>
+      <p>
+      If you create a new Wiki name (such that the corresponding .wiki file doesn't exist), a new file will be created
+      when you open the link. It will be created in the same directory as the file it was linked from.
+      </p>
+    <p>
+      The following extra links are also available:
+    </p>
+    <ul>
+      <li>
+        URLs: Any url starting with 'http', 'ftp', 'mailto' or 'file:' will be opened in the default browser/mail tool
+      </li>
+      <li>
+        Eclipse Workspace: Links can be made to any eclipse project resource by prefixing the path to the resource with
+        <code>Eclipse:</code> and optionally appending a line number.<br/>
+        For example, <code>Eclipse:/MyProject/com/foo/Bar.java:10</code> will link to the com/foo/Bar.java file in the
+        project <code>MyProject</code> and the editor will open to line 10.
+      </li>
+      <li>Fully qualified Java types in the current project are automatically linked.
+      </li>
+    </ul>
+	<a name="wikispace"/>
+    <h3>WikiSpace</h3>
+      <p>
+    	Interwiki, URL and local links are defined in preferences as a set of named links I've called the WikiSpace. 
+        The links can be anything including the special <code>Eclipse:</code> URL for links into the workspace.
+      </p>
+        <p>
+        For example, the default WikiSpace name <code>Wiki</code>, is a link to <code>http://c2.com/cgi/wiki?</code>, 
+        so <code>Wiki:RecentChanges</code> links to <a href="http://c2.com/cgi/wiki?RecentChanges">http://c2.com/cgi/wiki?RecentChanges</a>.
+		</p>
+        <p>Have a look at the WikiSpace tab in the Wiki preferences and all will become clear.</p>
+        <p>Finally, the global WikiSpace links can be overridden or added to by a local properties file &#8212; <code>wikispace.properties</code> &#8212; in the same directory as your wiki documents.
+        This allows a WikiSpace to be built for a Wiki in a project and shared wih other developers.
+		</p>
+    <h3>Hover and Preview</h3>
+    <p>
+    The hover text for wiki links is a small preview of the document's content. 
+	A larger preview window can be opened with <code>F2</code>.
+	</p>
+	<h1>
+	  Thanks!
+	</h1>
+	<p>A number of people have helped me with the plugin whom I would like to mention: Lance Walton, Chris King, Paul Gracie</p>
+	<p>In particular, the following helped enormously by writing some code: Torsten Juergeleit, Ronald Steinhau</p>
+    <h1>
+      Bugs
+    </h1>
+	<p>Please report bugs on <a href="http://sourceforge.net/projects/eclipsewiki/">Sourceforge</a>.</p>
+	<h1>Author</h1>
+	See <a href="http://www.stateofflow.com">www.stateofflow.com</a>
+	</div>
+  </body>
+</html>

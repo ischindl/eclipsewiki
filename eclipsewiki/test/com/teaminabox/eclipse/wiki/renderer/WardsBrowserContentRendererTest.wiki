@@ -1,0 +1,31 @@
+Horizontal lines
+----
+
+* list
+** list
+*** list
+** list
+
+ some plain text
+ and more
+
+
+'''Header'''
+'''''Not a header'''''
+
+'''Quotations''' 
+	 :	To be or not to be ...
+	 
+a line with WardsBrowserContentRendererTest''''''s plural, __emphasis__ and ''italic'' , another '''''emphasis''''' bit and WardsBrowserContentRendererTest''''''s plural
+
+WardsBrowserContentRendererTest''''''s plural
+
+|*A*|*Big*|*Table*|
+|very|cool|indeed|
+|WardsBrowserContentRendererTest|SnipSnapContentRendererTest|TwikiContentRendererTest|
+|Acronym:WTF |http://www.google.com |EclipseWiki:license.html |
+|and|images |http://www.google.com/images/logo.gif |
+'''Images'''
+http://www.google.com/images/logo.gif
+
+Text with Java types com.teaminabox.foo.BigClass and an inner class com.teaminabox.foo.BigClass.InnerClass

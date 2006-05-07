@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="MacRoman"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>Twiki Content Renderer Test</title>
+<style type="text/css"><!--
+body {
+	text-align:justify;
+	font: 10pt verdana, sans-serif; 
+	color: #000000; 
+	background: #ffffff;
+}
+
+.monospace {font-family:monospace;}
+
+.quote {
+	padding: 0.5em;
+	margin: 0 0 0.5em 0.5em;	
+	border: 1px solid #ccc;	
+	background: #eee;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-variant: small-caps;
+	color: #111;
+}
+
+li {
+	text-align: left
+}
+
+table {
+	border-size:0;
+}
+
+th {
+	vertical-align: top;
+	color: #FFFF99;
+	background: #0c2577;
+}
+
+td {
+	vertical-align: top;
+	padding: 1px;
+	margin; 2px;
+	font: 10pt verdana, sans-serif;
+}
+--></style>
+  </head>
+  <body>
+<h1>Twiki Content Renderer Test</h1><h1>Header 1</h1><h2>Header 2</h2><h3>Header 3</h3><h4>Header 4</h4><h5>Header 5</h5><h6>Header 6</h6><h6>Header 7</h6><p>
+</p>
+<p>
+<strong>bold</strong> <em>italic</em>  <strong><em>bold italic</em></strong> <code>fixed font</code> <code><b>bold fixed font</b></code></p>
+<p>
+</p>
+<p>
+<strong>bold*bold</strong> <em>italic_italic</em>  <strong><em>bold italic__bold italic</em></strong> <code>fixed font=fixed font</code> <code><b>bold fixed font==bold fixed font</b></code></p>
+<p>
+</p>
+<pre>Verbatim!
+	public static final ...
+	public class ..</pre><p>
+</p>
+<hr>
+<p>
+</p>
+<ul><li>bullet list</li>
+<ol type="A"><li>Uppercase list item</li>
+<ol type="1"><li>numeric list</li>
+<ol type="i"><li>roman lower case list item</li>
+<ol type="a"><li>lower case list item</li>
+<ol type="I"><li>roman upper case list item</li>
+</ol></ol></ol></ol></ol></ol><p>
+</p>
+<table><tr><th>A</th><th>Big</th><th>Table</th></tr>
+<tr><td>very</td><td>cool</td><td>indeed</td></tr>
+<tr><td>WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></td><td>SnipSnapContentRendererTest<a href="http://--wiki/SnipSnapContentRendererTest">?</a></td><td><a href="http://--wiki/TwikiContentRendererTest">TwikiContentRendererTest</a></td></tr>
+<tr><td><a href="http://www.acronymfinder.com/af-query.asp?Acronym=WTF">Acronym:WTF</a> </td><td><a href="http://www.google.com">http://www.google.com</a> </td><td><a href="http://eclipsewiki.free.fr/index.php?page=license.html">EclipseWiki:license.html</a> </td></tr>
+<tr><td>an</td><td>image</td><td><img alt="" src="http://www.eclipse.org/images/EclipseBannerPic.jpg"/> </td></tr>
+</table>
+<p>
+</p>
+<p>
+Text with Java types <a href="http://--wiki/Eclipse:/wikitest/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass</a> and an inner class <a href="http://--wiki/Eclipse:/wikitest/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass.InnerClass</a></p>
+<p>
+</p>
+<p>
+<a href="http://--wiki/TwikiContentRendererTest">TwikiContentRendererTest</a> links and <a href="http://--wiki/TwikiContentRendererTest">TwikiContentRendererTest</a></p>
+  </body>
+</html>
