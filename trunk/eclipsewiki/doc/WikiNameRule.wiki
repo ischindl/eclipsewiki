@@ -1,0 +1,5 @@
+Back to HomePage, WikiColouring
+
+com.teaminabox.eclipse.wiki.editors.WikiNameRule
+
+See WikiColouring for details about the WikiNameRule

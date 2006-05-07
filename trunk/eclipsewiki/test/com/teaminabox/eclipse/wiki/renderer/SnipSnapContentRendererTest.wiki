@@ -1,0 +1,33 @@
+1 Header
+1.1 smaller Header
+
+
+- list
+* list
+** indent
+* list
+
+----
+
+a line with __bold__ and ~~italic~~ and --strike--
+
+ some plain text (actually set to Text Font in Eclipse preferences)
+
+ a line break\\here and another\\here
+
+{table}
+A|Big|Table
+very|cool|indeed
+WardsBrowserContentRendererTest|SnipSnapContentRendererTest|TwikiContentRendererTest
+Acronym:WTF |http://www.google.com |EclipseWiki:license.html
+{table}
+
+{table}
+Mnemonic | Rendering | Comment
+1 Title || a style 1 heading (major heading)
+1.1 Title || a style 1.1 heading (minor heading)
+{table}
+
+Text with Java types com.teaminabox.foo.BigClass and an inner class com.teaminabox.foo.BigClass.InnerClass
+
+A [forced link] and one to an existing page: [wards browser content renderer test]

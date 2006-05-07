@@ -1,0 +1,7 @@
+Back to GeneralOverview, HomePage
+
+com.teaminabox.eclipse.wiki.text.TextRegion
+
+Represents an atomic region of text such as a WikiName, URL, Eclipse link, etc.
+
+See WikiColouring for uses of TextRegion

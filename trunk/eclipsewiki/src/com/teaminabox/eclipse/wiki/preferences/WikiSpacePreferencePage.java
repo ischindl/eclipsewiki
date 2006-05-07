@@ -1,0 +1,213 @@
+package com.teaminabox.eclipse.wiki.preferences;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+
+import com.teaminabox.eclipse.wiki.WikiConstants;
+import com.teaminabox.eclipse.wiki.WikiPlugin;
+
+public final class WikiSpacePreferencePage extends FieldEditor {
+
+	private TableColumn	prefixColumn;
+	private TableColumn	urlColumn;
+	private Button		addButton;
+	private Button		editButton;
+	private Button		removeButton;
+	private Table		table;
+	private Map			wikis;
+
+	public WikiSpacePreferencePage(Composite parent) {
+		createControl(parent);
+	}
+
+	protected void adjustForNumColumns(int numColumns) {
+
+	}
+
+	protected void doLoad() {
+		wikis = new HashMap(WikiPreferences.reloadWikiSpaceMap(getPreferenceStore()));
+		populateTable();
+	}
+
+	protected void doLoadDefault() {
+		wikis = new HashMap(WikiPreferences.getWikiSpace());
+		populateTable();
+	}
+
+	protected void doStore() {
+		WikiPreferences.setWikiSpace(wikis);
+	}
+
+	public int getNumberOfControls() {
+		return 1;
+	}
+
+	protected void doFillIntoGrid(final Composite parent, int numColumns) {
+		Composite container = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = numColumns;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		container.setLayout(layout);
+
+		Composite basicComposite = new Composite(container, SWT.NONE);
+		layout = new GridLayout(2, false);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		basicComposite.setLayout(layout);
+
+		Label label = new Label(basicComposite, SWT.WRAP);
+		label.setText(WikiPlugin.getResourceString("WikiSpacePreferencePage.description")); //$NON-NLS-1$
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 2;
+		label.setLayoutData(gd);
+
+		table = new Table(basicComposite, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+
+		TableLayout tableLayout = new TableLayout();
+		table.setLayout(tableLayout);
+		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		prefixColumn = new TableColumn(table, SWT.NONE);
+		prefixColumn.setText(WikiPlugin.getResourceString("WikiSpacePreferencePage.prefix")); //$NON-NLS-1$
+
+		urlColumn = new TableColumn(table, SWT.NONE);
+		urlColumn.setText(WikiPlugin.getResourceString("WikiSpacePreferencePage.url")); //$NON-NLS-1$
+
+
+		Composite buttons = new Composite(basicComposite, SWT.NONE);
+		buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+		layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		buttons.setLayout(layout);
+
+		addButton = createPushButton(buttons, WikiPlugin.getResourceString("WikiSpacePreferencePage.new")); //$NON-NLS-1$
+		addButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				WikiSpacePreferencePage.this.add(parent.getShell(), "", "");
+			}
+		});
+
+		editButton = createPushButton(buttons, WikiPlugin.getResourceString("WikiSpacePreferencePage.edit")); //$NON-NLS-1$
+		editButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				WikiSpacePreferencePage.this.edit(parent.getShell());
+			}
+		});
+
+		removeButton = createPushButton(buttons, WikiPlugin.getResourceString("WikiSpacePreferencePage.remove")); //$NON-NLS-1$
+		removeButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				WikiSpacePreferencePage.this.remove();
+			}
+		});
+
+	}
+
+	private Button createPushButton(Composite parent, String key) {
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText(JFaceResources.getString(key));
+		button.setFont(parent.getFont());
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		int widthHint = convertHorizontalDLUsToPixels(button, IDialogConstants.BUTTON_WIDTH);
+		data.widthHint = Math.max(widthHint, button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
+		button.setLayoutData(data);
+		return button;
+	}
+
+	private void populateTable() {
+		table.removeAll();
+		Iterator wikiNames = wikis.keySet().iterator();
+		while (wikiNames.hasNext()) {
+			String wiki = wikiNames.next().toString();
+			String urlPrefix = wikis.get(wiki).toString();
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(new String[] { wiki, urlPrefix });
+		}
+		prefixColumn.pack();
+		urlColumn.pack();
+	}
+
+	private void remove() {
+		TableItem[] items = table.getSelection();
+		if (items.length != 0) {
+			String name = items[0].getText(0);
+			wikis.remove(name);
+			populateTable();
+			updatePreferences();
+		}
+	}
+
+	private void edit(Shell shell) {
+		TableItem[] items = table.getSelection();
+		if (items.length != 0) {
+			String name = items[0].getText(0);
+			String url = items[0].getText(1);
+			String newName = add(shell, name, url);
+			if (newName.length() > 0 && !name.equals(newName)) {
+				wikis.remove(name);
+				updatePreferences();
+				populateTable();
+			}
+		}
+	}
+
+	/**
+	 * Add a new WikiSpace entry.
+	 * 
+	 * @param shell
+	 *            the shell to open the dialog with
+	 * @param wiki
+	 * @param url
+	 * @return the name of the WikiSpace entry or empty string if nothing was added
+	 */
+	private String add(Shell shell, String wiki, String url) {
+		AddWikiSpaceDialog dialog = new AddWikiSpaceDialog(shell, WikiPlugin.getResourceString("WikiSpacePreferencePage.addEntry"), new String[] { wiki, url }); //$NON-NLS-1$
+		if (dialog.open() == Window.OK) {
+			String[] newEntry = dialog.getNameValuePair();
+			boolean eclipseWikiLink = newEntry[1].startsWith(WikiConstants.ECLIPSE_PREFIX) || newEntry[1].startsWith(WikiConstants.PLUGIN_PREFIX);
+			if (eclipseWikiLink && !newEntry[1].endsWith(WikiConstants.PATH_SEPARATOR)) {
+				newEntry[1] += WikiConstants.PATH_SEPARATOR;
+			}
+			wikis.put(newEntry[0], newEntry[1]);
+			updatePreferences();
+			populateTable();
+			return newEntry[0];
+		}
+		return "";
+	}
+
+	private void updatePreferences() {
+		StringBuffer names = new StringBuffer();
+		StringBuffer urls = new StringBuffer();
+		Iterator wikiNames = wikis.keySet().iterator();
+		while (wikiNames.hasNext()) {
+			String wikiName = wikiNames.next().toString();
+			names.append(wikiName).append(WikiConstants.WIKISPACE_SEPARATOR);
+			urls.append(wikis.get(wikiName).toString()).append(WikiConstants.WIKISPACE_SEPARATOR);
+		}
+	}
+
+}
