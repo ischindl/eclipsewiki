@@ -124,6 +124,7 @@ public final class WikiSpacePreferencePage extends FieldEditor {
 			}
 		});
 
+		load();
 	}
 
 	private Button createPushButton(Composite parent, String key) {

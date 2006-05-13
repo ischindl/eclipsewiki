@@ -46,13 +46,26 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 
 		TabFolder folder = new TabFolder(composite, SWT.NONE);
 
-		new EditorPreferences(this, createTab(folder, "WikiPreferences.editorPreferencesTitle"));
-		new WikiSpacePreferencePage(createTab(folder, "WikiPreferences.WikiSpacePreferencesTitle"));
+		createEditorPreferences(createTab(folder, "WikiPreferences.editorPreferencesTitle"));
+		addField(new WikiSpacePreferencePage(createTab(folder, "WikiPreferences.WikiSpacePreferencesTitle")));
 		createRendererFieldEditors(createTab(folder, "WikiPreferences.rendererPreferencesTitle"));
 
 		Dialog.applyDialogFont(composite);
 	}
 
+	private void createEditorPreferences(Composite parent) {
+		Composite basicComposite = new Composite(parent, SWT.NONE);
+		GridLayout basicLayout = new GridLayout();
+		basicLayout.numColumns = 1;
+		basicComposite.setLayout(basicLayout);
+
+		addField(new ColourFieldWithDefaultEditor(basicComposite));
+		addField(new MultipleColourFieldEditor(basicComposite));
+		addField(new StringFieldEditor(WikiConstants.RESOURCE_WIKI_SYNTAX_PREFERENCE_PAGE_HOVER_LENGTH, WikiPlugin.getResourceString(WikiConstants.HOVER_PREVIEW_LENGTH), basicComposite));
+		addField(new BooleanFieldEditor(WikiConstants.REUSE_EDITOR, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.reuseEditor"), basicComposite));
+		addField(new BooleanFieldEditor(WikiConstants.WORD_WRAP, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.wordWrap"), basicComposite));
+	}
+	
 	private void createRendererFieldEditors(Composite parent) {
 		addField(new StringFieldEditor(WikiConstants.BROWSER_CSS_URL, WikiPlugin.getResourceString(WikiConstants.BROWSER_CSS_URL), parent));
 		addField(new ComboListEditor(WikiConstants.BROWSER_RENDERER, WikiPlugin.getResourceString(WikiConstants.BROWSER_RENDERER), getBrowserRendererLabels(), WikiConstants.BROWSER_RENDERERS, parent));
