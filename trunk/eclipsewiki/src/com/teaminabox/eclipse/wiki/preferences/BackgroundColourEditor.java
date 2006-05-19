@@ -1,12 +1,13 @@
 package com.teaminabox.eclipse.wiki.preferences;
 
-import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -15,25 +16,28 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
-public class ColourFieldWithDefaultEditor extends FieldEditor {
+public class BackgroundColourEditor {
 
-	private Button		bgDefault;
-	private ColorEditor	bgColorEditor;
-	private Button		bgCustom;
-	private Composite	colorComposite;
+	private Button					bgDefault;
+	private ColorEditor				bgColorEditor;
+	private Button					bgCustom;
+	private Composite				colorComposite;
+	private final IPreferenceStore	preferenceStore;
 
-	public ColourFieldWithDefaultEditor(Composite parent) {
+	public BackgroundColourEditor(Composite parent, IPreferenceStore preferenceStore) {
+		this.preferenceStore = preferenceStore;
 		createControl(parent);
 	}
 
-	protected void adjustForNumColumns(int numColumns) {
-		((GridData) colorComposite.getLayoutData()).horizontalSpan = numColumns - 1;
+	private IPreferenceStore getPreferenceStore() {
+		return preferenceStore;
 	}
 
-	protected void doFillIntoGrid(Composite parent, int numColumns) {
+	private void createControl(Composite parent) {
 		colorComposite = new Composite(parent, SWT.NULL);
+		colorComposite.setLayout(new GridLayout());
 		GridData gd = new GridData();
-		gd.horizontalSpan = numColumns - 1;
+		gd.horizontalSpan = 1;
 		colorComposite.setLayoutData(gd);
 
 		Group backgroundComposite = new Group(colorComposite, SWT.SHADOW_ETCHED_IN);
@@ -57,9 +61,6 @@ public class ColourFieldWithDefaultEditor extends FieldEditor {
 
 		bgColorEditor = new ColorEditor(backgroundComposite);
 
-	}
-
-	protected void doLoad() {
 		setSelection(getPreferenceStore().getBoolean(AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT));
 	}
 
@@ -71,17 +72,14 @@ public class ColourFieldWithDefaultEditor extends FieldEditor {
 		bgColorEditor.getButton().setEnabled(!systemDefault);
 	}
 
-	protected void doLoadDefault() {
+	public void loadDefault() {
 		setSelection(getPreferenceStore().getDefaultBoolean(AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT));
+		bgColorEditor.setColorValue(PreferenceConverter.getDefaultColor(getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND));
 	}
 
-	protected void doStore() {
+	public void store() {
 		PreferenceConverter.setValue(getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND, bgColorEditor.getColorValue());
 		getPreferenceStore().setValue(AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT, bgDefault.getSelection());
-	}
-
-	public int getNumberOfControls() {
-		return 1;
 	}
 
 }

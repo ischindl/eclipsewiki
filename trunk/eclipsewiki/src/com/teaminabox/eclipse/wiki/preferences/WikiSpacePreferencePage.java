@@ -5,15 +5,17 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -25,46 +27,56 @@ import org.eclipse.swt.widgets.TableItem;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
-public final class WikiSpacePreferencePage extends FieldEditor {
+public final class WikiSpacePreferencePage {
 
-	private TableColumn	prefixColumn;
-	private TableColumn	urlColumn;
-	private Button		addButton;
-	private Button		editButton;
-	private Button		removeButton;
-	private Table		table;
-	private Map			wikis;
+	private TableColumn		prefixColumn;
+	private TableColumn		urlColumn;
+	private Button			addButton;
+	private Button			editButton;
+	private Button			removeButton;
+	private Table			table;
+	private Map				wikis;
+	private StringBuffer	names;
+	private StringBuffer	urls;
+	private final IPreferenceStore	preferenceStore;
 
-	public WikiSpacePreferencePage(Composite parent) {
+	public WikiSpacePreferencePage(Composite parent, IPreferenceStore store) {
+		this.preferenceStore = store;
 		createControl(parent);
 	}
 
-	protected void adjustForNumColumns(int numColumns) {
-
-	}
-
-	protected void doLoad() {
-		wikis = new HashMap(WikiPreferences.reloadWikiSpaceMap(getPreferenceStore()));
-		populateTable();
-	}
-
-	protected void doLoadDefault() {
+	private void load() {
 		wikis = new HashMap(WikiPreferences.getWikiSpace());
 		populateTable();
 	}
 
-	protected void doStore() {
+	public void loadDefault() {
+		wikis = new HashMap(WikiPreferences.reloadWikiSpaceMap(preferenceStore));
+		populateTable();
+	}
+
+	public void store() {
+		updatePreferences();
+		preferenceStore.putValue(WikiConstants.WIKISPACE_NAMES, names.toString());
+		preferenceStore.putValue(WikiConstants.WIKISPACE_URLS, urls.toString());
 		WikiPreferences.setWikiSpace(wikis);
 	}
 
-	public int getNumberOfControls() {
-		return 1;
+	private void updatePreferences() {
+		names = new StringBuffer();
+		urls = new StringBuffer();
+		Iterator wikiNames = wikis.keySet().iterator();
+		while (wikiNames.hasNext()) {
+			String wikiName = wikiNames.next().toString();
+			names.append(wikiName).append(WikiConstants.WIKISPACE_SEPARATOR);
+			urls.append(wikis.get(wikiName).toString()).append(WikiConstants.WIKISPACE_SEPARATOR);
+		}
 	}
 
-	protected void doFillIntoGrid(final Composite parent, int numColumns) {
+	private void createControl(final Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
-		layout.numColumns = numColumns;
+		layout.numColumns = 1;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		container.setLayout(layout);
@@ -94,7 +106,6 @@ public final class WikiSpacePreferencePage extends FieldEditor {
 
 		urlColumn = new TableColumn(table, SWT.NONE);
 		urlColumn.setText(WikiPlugin.getResourceString("WikiSpacePreferencePage.url")); //$NON-NLS-1$
-
 
 		Composite buttons = new Composite(basicComposite, SWT.NONE);
 		buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
@@ -138,6 +149,17 @@ public final class WikiSpacePreferencePage extends FieldEditor {
 		return button;
 	}
 
+	private int convertHorizontalDLUsToPixels(Control control, int dlus) {
+        GC gc = new GC(control);
+        gc.setFont(control.getFont());
+        int averageWidth = gc.getFontMetrics().getAverageCharWidth();
+        gc.dispose();
+
+        double horizontalDialogUnitSize = averageWidth * 0.25;
+
+        return (int) Math.round(dlus * horizontalDialogUnitSize);
+    }
+	
 	private void populateTable() {
 		table.removeAll();
 		Iterator wikiNames = wikis.keySet().iterator();
@@ -157,7 +179,6 @@ public final class WikiSpacePreferencePage extends FieldEditor {
 			String name = items[0].getText(0);
 			wikis.remove(name);
 			populateTable();
-			updatePreferences();
 		}
 	}
 
@@ -169,7 +190,6 @@ public final class WikiSpacePreferencePage extends FieldEditor {
 			String newName = add(shell, name, url);
 			if (newName.length() > 0 && !name.equals(newName)) {
 				wikis.remove(name);
-				updatePreferences();
 				populateTable();
 			}
 		}
@@ -193,22 +213,10 @@ public final class WikiSpacePreferencePage extends FieldEditor {
 				newEntry[1] += WikiConstants.PATH_SEPARATOR;
 			}
 			wikis.put(newEntry[0], newEntry[1]);
-			updatePreferences();
 			populateTable();
 			return newEntry[0];
 		}
 		return "";
-	}
-
-	private void updatePreferences() {
-		StringBuffer names = new StringBuffer();
-		StringBuffer urls = new StringBuffer();
-		Iterator wikiNames = wikis.keySet().iterator();
-		while (wikiNames.hasNext()) {
-			String wikiName = wikiNames.next().toString();
-			names.append(wikiName).append(WikiConstants.WIKISPACE_SEPARATOR);
-			urls.append(wikis.get(wikiName).toString()).append(WikiConstants.WIKISPACE_SEPARATOR);
-		}
 	}
 
 }
