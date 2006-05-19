@@ -12,13 +12,10 @@ public class ComboListEditor extends FieldEditor {
 
 	private final String[]	labels;
 	private final String[]	choices;
-	private final String	preferenceKey;
-	private final String	description;
 	private Combo			combo;
 
 	public ComboListEditor(String preferenceKey, String description, String[] labels, String[] choices, Composite parent) {
-		this.preferenceKey = preferenceKey;
-		this.description = description;
+		init(preferenceKey, description);
 		this.labels = labels;
 		this.choices = choices;
 		createControl(parent);
@@ -32,15 +29,15 @@ public class ComboListEditor extends FieldEditor {
 		combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		combo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 		combo.setItems(labels);
-		combo.setText(description);
+		combo.setText(getLabelText());
 	}
 
 	protected void doLoad() {
-		combo.select(getIndexOf(getPreferenceStore().getString(preferenceKey), choices));
+		combo.select(getIndexOf(getPreferenceStore().getString(getPreferenceName()), choices));
 	}
 
 	protected void doLoadDefault() {
-		combo.select(getIndexOf(getPreferenceStore().getDefaultString(preferenceKey), choices));
+		combo.select(getIndexOf(getPreferenceStore().getDefaultString(getPreferenceName()), choices));
 	}
 
 	private int getIndexOf(String value, String[] list) {
@@ -53,7 +50,7 @@ public class ComboListEditor extends FieldEditor {
 	}
 
 	protected void doStore() {
-		getPreferenceStore().setValue(preferenceKey, choices[combo.getSelectionIndex()]);
+		getPreferenceStore().setValue(getPreferenceName(), choices[combo.getSelectionIndex()]);
 	}
 
 	public int getNumberOfControls() {
