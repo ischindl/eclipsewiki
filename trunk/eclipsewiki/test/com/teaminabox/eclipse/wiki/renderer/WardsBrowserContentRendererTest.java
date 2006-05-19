@@ -11,15 +11,15 @@ public final class WardsBrowserContentRendererTest extends AbstractContentRender
 	}
 
 	public void testIsHeaderWithHeader() {
-		assertTrue(getRenderer().isHeader(WardsBrowserContentRenderer.HEADER_MARKUP + "foo" + WardsBrowserContentRenderer.HEADER_MARKUP));
+		assertTrue(getRenderer().isHeader("'''foo'''"));
 	}
 
 	public void testIsHeaderWithHeaderMarkupFollowedByText() {
-		assertFalse(getRenderer().isHeader(WardsBrowserContentRenderer.HEADER_MARKUP + "foo" + WardsBrowserContentRenderer.HEADER_MARKUP + " foo"));
+		assertFalse(getRenderer().isHeader("'''foo'''" + " foo"));
 	}
 
 	public void testIsHeaderWithEmphasis() {
-		assertFalse(getRenderer().isHeader(WardsBrowserContentRenderer.EMPHASIS_MARKUP + "foo" + WardsBrowserContentRenderer.EMPHASIS_MARKUP));
+		assertFalse(getRenderer().isHeader("'''''foo'''''"));
 	}
 
 	/**

@@ -1,8 +1,8 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
-public final class TwikiContentRendererTest extends AbstractContentRendererTest {
+public final class TwikiBrowserContentRendererTest extends AbstractContentRendererTest {
 
-	public TwikiContentRendererTest(String name) {
+	public TwikiBrowserContentRendererTest(String name) {
 		super(name);
 	}
 

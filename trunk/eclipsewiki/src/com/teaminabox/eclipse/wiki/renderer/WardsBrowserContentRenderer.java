@@ -2,23 +2,15 @@ package com.teaminabox.eclipse.wiki.renderer;
 
 public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 
-	public static final String	BULLET_MARKUP		= "*";
-
-	public static final String	QUOTE_MARKUP_REGEX	= "^\t :\t.*";
-
-	public static final String	HEADER_MARKUP_REGEX	= "^'''.+'''$";
-
-	public static final String	HEADER_MARKUP		= "'''";
-
-	public static final String	BOLD_MARKUP			= "__";
-
-	public static final String	EMPHASIS_MARKUP		= "'''''";
-
-	public static final String	ITALIC_MARKUP		= "''";
-
-	public static final String	LIST_MARKUP_REGEX	= "^[\\*]+.*";
-
-	public static final String	PLURAL				= "''''''s";
+	private static final String	BULLET_MARKUP		= "*";
+	private static final String	QUOTE_MARKUP_REGEX	= "^\t :\t.*";
+	private static final String	HEADER_MARKUP_REGEX	= "^'''.+'''$";
+	private static final String	HEADER_MARKUP		= "'''";
+	private static final String	BOLD_MARKUP			= "__";
+	private static final String	EMPHASIS_MARKUP		= "'''''";
+	private static final String	ITALIC_MARKUP		= "''";
+	private static final String	LIST_MARKUP_REGEX	= "^[\\*]+.*";
+	private static final String	PLURAL				= "''''''s";
 
 	protected void initialise() {
 
