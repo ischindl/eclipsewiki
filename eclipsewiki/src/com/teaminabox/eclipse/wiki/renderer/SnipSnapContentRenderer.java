@@ -17,16 +17,15 @@ import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 
 public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 
-	public static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new BasicWikiNameMatcher(), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
+	private static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new BasicWikiNameMatcher(), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
 
-	public static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new BasicWikiNameMatcher(), };
+	private static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new BasicWikiNameMatcher(), };
 
-	public static final String			UNORDERED_LIST_MARKUP		= "*";
-	public static final String			ALT_UNORDERED_LIST_MARKUP	= "-";
+	private static final String			UNORDERED_LIST_MARKUP		= "*";
+	private static final String			ALT_UNORDERED_LIST_MARKUP	= "-";
 
-	public static final String			ORDERED_LIST_END_MARKER		= ".";
-	public static final String			ORDERED_LIST_REGEX			= "^[1|a|A|i|I]\\..*";
-	public static final String			TABLE_MACRO					= "{table}";
+	private static final String			ORDERED_LIST_REGEX			= "^[1|a|A|i|I]\\..*";
+	private static final String			TABLE_MACRO					= "{table}";
 	private boolean						tableHeader;
 
 	public TextRegionMatcher[] getRendererMatchers() {
