@@ -42,7 +42,7 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 	public void testFunctional() throws IOException {
 		String functionalTest = getFunctionalTestFileName();
 		String content = load(functionalTest + ".wiki");
-		String expected = load(functionalTest + ".html");
+		String expected = load(functionalTest + ".expected");
 		WikiPlugin.getDefault().getPluginPreferences().setValue(WikiConstants.BROWSER_RENDERER, getRenderer().getClass().getName());
 		WikiBrowserEditor editor = createWikiDocumentAndOpen(content, functionalTest + ".wiki");
 		WikiDocumentContext context = editor.getEditor().getContext();
