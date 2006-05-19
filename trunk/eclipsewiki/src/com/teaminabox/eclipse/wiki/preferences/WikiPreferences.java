@@ -73,12 +73,12 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 	private void createEditorPreferences(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout basicLayout = new GridLayout();
-		basicLayout.numColumns = 1;
+		basicLayout.numColumns = 2;
 		composite.setLayout(basicLayout);
 
 		backgroundColourEditor = new BackgroundColourEditor(composite, getPreferenceStore());
 		editorColours = new EditorColours(composite, getPreferenceStore());
-		addField(new StringFieldEditor(WikiConstants.RESOURCE_WIKI_SYNTAX_PREFERENCE_PAGE_HOVER_LENGTH, WikiPlugin.getResourceString(WikiConstants.HOVER_PREVIEW_LENGTH), composite));
+		addField(new StringFieldEditor(WikiConstants.HOVER_PREVIEW_LENGTH, WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_SYNTAX_PREFERENCE_PAGE_HOVER_LENGTH), composite));
 		addField(new BooleanFieldEditor(WikiConstants.REUSE_EDITOR, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.reuseEditor"), composite));
 		addField(new BooleanFieldEditor(WikiConstants.WORD_WRAP, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.wordWrap"), composite));
 	}
