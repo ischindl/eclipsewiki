@@ -125,6 +125,6 @@ a line with <a href="http://--wiki/WardsBrowserContentRendererTest">WardsBrowser
 <p>
 </p>
 <p>
-Text with Java types <a href="http://--wiki/Eclipse:/wikitest/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass</a> and an inner class <a href="http://--wiki/Eclipse:/wikitest/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass.InnerClass</a></p>
+Text with Java types <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass</a> and an inner class <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass.InnerClass</a></p>
   </body>
 </html>

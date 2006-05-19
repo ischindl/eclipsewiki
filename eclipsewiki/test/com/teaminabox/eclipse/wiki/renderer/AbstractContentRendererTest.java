@@ -43,6 +43,7 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 		String functionalTest = getFunctionalTestFileName();
 		String content = load(functionalTest + ".wiki");
 		String expected = load(functionalTest + ".expected");
+		expected = expected.replaceAll("TEST_PROJECT_NAME", getJavaProject().getElementName());
 		WikiPlugin.getDefault().getPluginPreferences().setValue(WikiConstants.BROWSER_RENDERER, getRenderer().getClass().getName());
 		WikiBrowserEditor editor = createWikiDocumentAndOpen(content, functionalTest + ".wiki");
 		WikiDocumentContext context = editor.getEditor().getContext();
