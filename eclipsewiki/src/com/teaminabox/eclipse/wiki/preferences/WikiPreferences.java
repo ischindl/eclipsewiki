@@ -63,9 +63,9 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 
 		TabFolder folder = new TabFolder(composite, SWT.NONE);
 
-		createEditorPreferences(createTab(folder, "WikiPreferences.editorPreferencesTitle"));
-		wikiSpacePreferencePage = new WikiSpacePreferencePage(createTab(folder, "WikiPreferences.WikiSpacePreferencesTitle"), getPreferenceStore());
-		createRendererFieldEditors(createTab(folder, "WikiPreferences.rendererPreferencesTitle"));
+		createEditorPreferences(createTab(folder, "WikiPreferences.editorPreferencesTitle")); //$NON-NLS-1$
+		wikiSpacePreferencePage = new WikiSpacePreferencePage(createTab(folder, "WikiPreferences.WikiSpacePreferencesTitle"), getPreferenceStore()); //$NON-NLS-1$
+		createRendererFieldEditors(createTab(folder, "WikiPreferences.rendererPreferencesTitle")); //$NON-NLS-1$
 
 		Dialog.applyDialogFont(composite);
 	}
@@ -78,9 +78,9 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 
 		backgroundColourEditor = new BackgroundColourEditor(composite, getPreferenceStore());
 		editorColours = new EditorColours(composite, getPreferenceStore());
-		addField(new StringFieldEditor(WikiConstants.HOVER_PREVIEW_LENGTH, WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_SYNTAX_PREFERENCE_PAGE_HOVER_LENGTH), composite));
-		addField(new BooleanFieldEditor(WikiConstants.REUSE_EDITOR, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.reuseEditor"), composite));
-		addField(new BooleanFieldEditor(WikiConstants.WORD_WRAP, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.wordWrap"), composite));
+		addField(new StringFieldEditor(WikiConstants.HOVER_PREVIEW_LENGTH, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.HoverLength"), composite)); //$NON-NLS-1$
+		addField(new BooleanFieldEditor(WikiConstants.REUSE_EDITOR, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.reuseEditor"), composite)); //$NON-NLS-1$
+		addField(new BooleanFieldEditor(WikiConstants.WORD_WRAP, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.wordWrap"), composite));//$NON-NLS-1$
 	}
 
 	private void createRendererFieldEditors(Composite parent) {

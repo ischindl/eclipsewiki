@@ -77,8 +77,6 @@ public interface WikiConstants {
 	String		RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE		= WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE + "ProgrammaticErrorTitle";
 	String		RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT		= WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE + "ProgrammaticErrorText";
 
-	String		RESOURCE_WIKI_SYNTAX_PREFERENCE_PAGE						= "WikiSyntaxPreferencePage.";
-	String		RESOURCE_WIKI_SYNTAX_PREFERENCE_PAGE_HOVER_LENGTH			= WikiConstants.RESOURCE_WIKI_SYNTAX_PREFERENCE_PAGE + "HoverLength";
 	String		PATH_SEPARATOR												= "/";
 
 	String		WIKI_ICON													= "icons/wiki.png";
