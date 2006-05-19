@@ -93,6 +93,14 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 			appendln(getTableTag());
 			return;
 		}
+		appendTableRow(line);
+		if (SnipSnapContentRenderer.TABLE_MACRO.equals(peekNextLine())) {
+			appendln("</table>");
+		}
+		tableHeader = false;
+	}
+
+	private void appendTableRow(String line) {
 		getBuffer().append("<tr>");
 		String[] cells = split(line, AbstractContentRenderer.TABLE_DELIMITER);
 		for (int i = 0; i < cells.length; i++) {
@@ -102,10 +110,6 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 			getBuffer().append("</").append(element).append(">");
 		}
 		appendln("</tr>");
-		if (SnipSnapContentRenderer.TABLE_MACRO.equals(peekNextLine())) {
-			appendln("</table>");
-		}
-		tableHeader = false;
 	}
 
 	protected boolean process(String line) {
