@@ -5,6 +5,7 @@
 package com.teaminabox.eclipse.wiki.text;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,23 +58,8 @@ public final class PluginProjectVisitor extends ProjectVisitor {
 				type = "fragment";
 			}
 			if (member != null && member.exists()) {
-				IFile pluginFile = (IFile) member;
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				try {
-					byte[] buf = new byte[10000];
-					InputStream in = pluginFile.getContents();
-					while (in.available() > 0) {
-						int len = in.available();
-						if (len > buf.length) {
-							len = buf.length;
-						}
-						in.read(buf, 0, len);
-						bos.write(buf, 0, len);
-					}
-					in.close();
-					bos.close();
-
-					String content = bos.toString();
+					String content = loadContents(member);
 					int pos = content.indexOf("<" + type);
 					if (pos > 0) {
 						int pos2 = content.indexOf(">", pos);
@@ -96,6 +82,26 @@ public final class PluginProjectVisitor extends ProjectVisitor {
 			}
 		}
 		return id;
+	}
+
+	private static String loadContents(IResource member) throws CoreException, IOException {
+		IFile pluginFile = (IFile) member;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		byte[] buf = new byte[10000];
+		InputStream in = pluginFile.getContents();
+		while (in.available() > 0) {
+			int len = in.available();
+			if (len > buf.length) {
+				len = buf.length;
+			}
+			in.read(buf, 0, len);
+			bos.write(buf, 0, len);
+		}
+		in.close();
+		bos.close();
+
+		String content = bos.toString();
+		return content;
 	}
 
 	// ------------------------------------------------------------

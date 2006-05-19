@@ -14,16 +14,16 @@ import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 
 public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
-	public static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new BasicWikiNameMatcher(), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher() };
+	private static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new BasicWikiNameMatcher(), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher() };
 
-	public static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new BasicWikiNameMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher() };
+	private static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new BasicWikiNameMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher() };
 
 	private static final char				ORDERED_LIST_END_MARKER		= '.';
 
-	public static final String				UNORDERED_LIST_MARKUP		= "*";
-	public static final String				UNORDERED_LIST_MARKUP_REGEX	= "^\\s+\\*\\s.*";
-	public static final String				ORDERED_LIST_MARKUP_REGEX	= "^\\s+[1|a|A|i|I]\\.\\s.*";
-	public static final String				HEADER_MARKUP_REGEX			= "^---+(\\++|\\#+)\\s*(.+)\\s*$";
+	private static final String				UNORDERED_LIST_MARKUP		= "*";
+	private static final String				UNORDERED_LIST_MARKUP_REGEX	= "^\\s+\\*\\s.*";
+	private static final String				ORDERED_LIST_MARKUP_REGEX	= "^\\s+[1|a|A|i|I]\\.\\s.*";
+	private static final String				HEADER_MARKUP_REGEX			= "^---+(\\++|\\#+)\\s*(.+)\\s*$";
 
 	public TextRegionMatcher[] getRendererMatchers() {
 		return TwikiBrowserContentRenderer.RENDERER_MATCHERS;

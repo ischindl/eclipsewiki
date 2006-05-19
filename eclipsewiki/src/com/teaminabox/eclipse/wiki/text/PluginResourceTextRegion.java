@@ -45,7 +45,6 @@ public final class PluginResourceTextRegion extends TextRegion {
 					}
 				} catch (IOException e) {
 				}
-				return null;
 			}
 			return null;
 		}
