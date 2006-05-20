@@ -29,7 +29,7 @@ import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
-import com.teaminabox.eclipse.wiki.text.WikiNameTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 
 /**
@@ -50,7 +50,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 		return Boolean.TRUE;
 	}
 
-	public Object visit(WikiNameTextRegion wikiNameTextRegion) {
+	public Object visit(WikiWordTextRegion wikiNameTextRegion) {
 		try {
 			openWikiDocument(wikiNameTextRegion.getText());
 		} catch (Exception e) {

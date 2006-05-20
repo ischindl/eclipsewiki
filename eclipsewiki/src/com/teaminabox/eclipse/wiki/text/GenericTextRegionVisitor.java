@@ -19,7 +19,7 @@ public class GenericTextRegionVisitor implements TextRegionVisitor {
 		return defaultReturnValue;
 	}
 
-	public Object visit(WikiNameTextRegion wikiNameTextRegion) {
+	public Object visit(WikiWordTextRegion wikiNameTextRegion) {
 		return defaultReturnValue;
 	}
 

@@ -6,25 +6,26 @@ import java.util.regex.Pattern;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
 /**
- * I match standard WikiNames.
+ * I match a region of text based on a regex.
  */
-public final class BasicWikiNameMatcher extends AbstractTextRegionMatcher {
+public final class WikiWordMatcher extends AbstractTextRegionMatcher {
 
-	/**
-	 * The pattern to match wiki names: <code>([A-Z][a-z]+){2,}[0-9]*</code>
-	 */
-	private static final Pattern	WIKI_PATTERN	= Pattern.compile("([A-Z][a-z]+){2,}[0-9]*");
+	private final Pattern	pattern;
+
+	public WikiWordMatcher(String pattern) {
+		this.pattern = Pattern.compile(pattern);;
+	}
 
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		int matchLength = matchLength(text);
 		if (matchLength > 0) {
-			return new WikiNameTextRegion(text.substring(0, matchLength));
+			return new WikiWordTextRegion(text.substring(0, matchLength));
 		}
 		return null;
 	}
 
 	private int matchLength(String text) {
-		Matcher m = BasicWikiNameMatcher.WIKI_PATTERN.matcher(text);
+		Matcher m = pattern.matcher(text);
 		if (m.find() && m.start() == 0) {
 			return m.end();
 		}

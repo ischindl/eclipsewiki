@@ -5,7 +5,7 @@ import org.eclipse.core.resources.IResource;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiTest;
 import com.teaminabox.eclipse.wiki.preferences.WikiPreferences;
-import com.teaminabox.eclipse.wiki.text.WikiNameTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 
 public final class WikiDocumentContextTest extends WikiTest {
@@ -45,13 +45,13 @@ public final class WikiDocumentContextTest extends WikiTest {
 	}
 
 	public void testHasWikiSiblingWhenFalse() {
-		WikiLinkTextRegion region = new WikiNameTextRegion("FooBar");
+		WikiLinkTextRegion region = new WikiWordTextRegion("FooBar");
 		assertFalse(context.hasWikiSibling(region));
 	}
 
 	public void testHasWikiSiblingWhenTrue() {
 		create("", "FooBar" + WikiConstants.WIKI_FILE_EXTENSION);
-		WikiLinkTextRegion region = new WikiNameTextRegion("FooBar");
+		WikiLinkTextRegion region = new WikiWordTextRegion("FooBar");
 		assertTrue(context.hasWikiSibling(region));
 	}
 

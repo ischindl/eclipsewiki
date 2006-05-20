@@ -8,9 +8,9 @@ import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 
 public abstract class LinkNavigator {
 
-	private final WikiEditor	editor;
-	private IDocument			document;
-	private ITextSelection		selection;
+	private final WikiEditor		editor;
+	private final IDocument			document;
+	private final ITextSelection	selection;
 
 	public LinkNavigator(WikiEditor editor) {
 		this.editor = editor;

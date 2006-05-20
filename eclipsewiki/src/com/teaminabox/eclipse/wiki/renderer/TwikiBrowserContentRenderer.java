@@ -1,6 +1,6 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
-import com.teaminabox.eclipse.wiki.text.BasicWikiNameMatcher;
+import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkMatcher;
 import com.teaminabox.eclipse.wiki.text.IgnoredTextRegionMatcher;
@@ -13,10 +13,12 @@ import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 
 public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
+	
+	private static final String WIKI_WORD_PATTERN = "(\\s)*([A-Z][^\\s]+[A-Z][^\\s]*)";
 
-	private static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new BasicWikiNameMatcher(), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher() };
+	private static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
 
-	private static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new BasicWikiNameMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher() };
+	private static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new WikiWordMatcher(WIKI_WORD_PATTERN), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
 
 	private static final char				ORDERED_LIST_END_MARKER		= '.';
 
