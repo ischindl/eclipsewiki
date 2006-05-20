@@ -5,7 +5,7 @@ public interface TextRegionVisitor {
 
 	Object visit(UrlTextRegion urlTextRegion);
 
-	Object visit(WikiNameTextRegion wikiNameTextRegion);
+	Object visit(WikiWordTextRegion wikiNameTextRegion);
 
 	Object visit(WikiUrlTextRegion wikiUrlTextRegion);
 

@@ -3,7 +3,7 @@
  */
 package com.teaminabox.eclipse.wiki.renderer;
 
-import com.teaminabox.eclipse.wiki.text.BasicWikiNameMatcher;
+import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkMatcher;
 import com.teaminabox.eclipse.wiki.text.IgnoredTextRegionMatcher;
@@ -16,10 +16,12 @@ import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 
 public final class SnipSnapContentRenderer extends AbstractContentRenderer {
+	
+	private static final String	WIKI_WORD_PATTERN	= "([A-Z][a-z]+){2,}[0-9]*";
 
-	private static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new BasicWikiNameMatcher(), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
+	private static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
 
-	private static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new BasicWikiNameMatcher(), };
+	private static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new WikiWordMatcher(WIKI_WORD_PATTERN), };
 
 	private static final String			UNORDERED_LIST_MARKUP		= "*";
 	private static final String			ALT_UNORDERED_LIST_MARKUP	= "-";

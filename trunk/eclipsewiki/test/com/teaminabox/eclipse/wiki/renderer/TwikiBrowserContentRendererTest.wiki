@@ -27,10 +27,10 @@ Verbatim!
 
 |*A*|*Big*|*Table*|
 |very|cool|indeed|
-|WardsBrowserContentRendererTest|SnipSnapContentRendererTest|TwikiContentRendererTest|
+|WardsBrowserContentRendererTest|SnipSnapContentRendererTest|TwikiBrowserContentRendererTest|
 |Acronym:WTF |http://www.google.com |EclipseWiki:license.html |
 |an|image|http://www.eclipse.org/images/EclipseBannerPic.jpg |
 
 Text with Java types com.teaminabox.foo.BigClass and an inner class com.teaminabox.foo.BigClass.InnerClass
 
-[[TwikiContentRendererTest]] links and [[TwikiContentRendererTest]]
+[[TwikiBrowserContentRendererTest]] links and [[TwikiBrowserContentRendererTest]]

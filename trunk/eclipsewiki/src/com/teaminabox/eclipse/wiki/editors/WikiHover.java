@@ -16,7 +16,7 @@ import org.eclipse.jface.text.Region;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
-import com.teaminabox.eclipse.wiki.text.WikiNameTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
@@ -51,7 +51,7 @@ public final class WikiHover implements ITextHover {
 
 	private String getHoverInfo(TextRegion textRegion) {
 		String hoverInfo = (String) textRegion.accept(new GenericTextRegionVisitor(null) {
-			public Object visit(WikiNameTextRegion wikiNameTextRegion) {
+			public Object visit(WikiWordTextRegion wikiNameTextRegion) {
 				return getHoverText(wikiNameTextRegion);
 			}
 

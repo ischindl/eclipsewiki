@@ -18,7 +18,7 @@ a line with __bold__ and ~~italic~~ and --strike--
 {table}
 A|Big|Table
 very|cool|indeed
-WardsBrowserContentRendererTest|SnipSnapContentRendererTest|TwikiContentRendererTest
+WardsBrowserContentRendererTest|SnipSnapContentRendererTest|TwikiBrowserContentRendererTest
 Acronym:WTF |http://www.google.com |EclipseWiki:license.html
 {table}
 

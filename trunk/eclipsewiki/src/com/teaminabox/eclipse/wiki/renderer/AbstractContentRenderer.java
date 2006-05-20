@@ -12,35 +12,22 @@ import org.eclipse.jface.text.BadLocationException;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
-import com.teaminabox.eclipse.wiki.text.ForcedLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
-import com.teaminabox.eclipse.wiki.text.BasicWikiNameMatcher;
-import com.teaminabox.eclipse.wiki.text.WikiNameTextRegion;
-import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
-import com.teaminabox.eclipse.wiki.text.IgnoredTextRegionMatcher;
-import com.teaminabox.eclipse.wiki.text.JavaTypeMatcher;
+import com.teaminabox.eclipse.wiki.text.ForcedLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
-import com.teaminabox.eclipse.wiki.text.LetterOrDigitMatcher;
-import com.teaminabox.eclipse.wiki.text.NonLetterOrDigitMatcher;
-import com.teaminabox.eclipse.wiki.text.PluginResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.TextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.UndefinedTextRegion;
-import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
-import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
-
-	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new BasicWikiNameMatcher(), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
-
-	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new BasicWikiNameMatcher() };
 
 	public static final String			CLASS_MONO_SPACE			= "monospace";
 	public static final String			CLASS_QUOTE					= "quote";
@@ -57,13 +44,9 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	private LinkMaker					linkMaker;
 
-	public TextRegionMatcher[] getRendererMatchers() {
-		return AbstractContentRenderer.DEFAULT_RENDERER_MATCHERS;
-	}
+	public abstract TextRegionMatcher[] getRendererMatchers();
 
-	public TextRegionMatcher[] getScannerMatchers() {
-		return AbstractContentRenderer.DEFAULT_SCANNER_MATCHERS;
-	}
+	public abstract TextRegionMatcher[] getScannerMatchers();
 
 	protected StringBuffer getBuffer() {
 		return buffer;
@@ -250,7 +233,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 					return null;
 				}
 
-				public Object visit(WikiNameTextRegion wikiNameTextRegion) {
+				public Object visit(WikiWordTextRegion wikiNameTextRegion) {
 					buffer.append(linkMaker.make(wikiNameTextRegion));
 					return null;
 				}

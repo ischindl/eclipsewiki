@@ -2,7 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
-    <title>Twiki Content Renderer Test</title>
+    <title>Twiki Browser Content Renderer Test</title>
 <style type="text/css"><!--
 body {
 	text-align:justify;
@@ -48,7 +48,7 @@ td {
 --></style>
   </head>
   <body>
-<h1>Twiki Content Renderer Test</h1><h1>Header 1</h1><h2>Header 2</h2><h3>Header 3</h3><h4>Header 4</h4><h5>Header 5</h5><h6>Header 6</h6><h6>Header 7</h6><p>
+<h1>Twiki Browser Content Renderer Test</h1><h1>Header 1</h1><h2>Header 2</h2><h3>Header 3</h3><h4>Header 4</h4><h5>Header 5</h5><h6>Header 6</h6><h6>Header 7</h6><p>
 </p>
 <p>
 <strong>bold</strong> <em>italic</em>  <strong><em>bold italic</em></strong> <code>fixed font</code> <code><b>bold fixed font</b></code></p>
@@ -75,7 +75,7 @@ td {
 </p>
 <table><tr><th>A</th><th>Big</th><th>Table</th></tr>
 <tr><td>very</td><td>cool</td><td>indeed</td></tr>
-<tr><td>WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></td><td>SnipSnapContentRendererTest<a href="http://--wiki/SnipSnapContentRendererTest">?</a></td><td><a href="http://--wiki/TwikiContentRendererTest">TwikiContentRendererTest</a></td></tr>
+<tr><td>WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></td><td>SnipSnapContentRendererTest<a href="http://--wiki/SnipSnapContentRendererTest">?</a></td><td><a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></td></tr>
 <tr><td><a href="http://www.acronymfinder.com/af-query.asp?Acronym=WTF">Acronym:WTF</a> </td><td><a href="http://www.google.com">http://www.google.com</a> </td><td><a href="http://eclipsewiki.free.fr/index.php?page=license.html">EclipseWiki:license.html</a> </td></tr>
 <tr><td>an</td><td>image</td><td><img alt="" src="http://www.eclipse.org/images/EclipseBannerPic.jpg"/> </td></tr>
 </table>
@@ -86,6 +86,6 @@ Text with Java types <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teami
 <p>
 </p>
 <p>
-<a href="http://--wiki/TwikiContentRendererTest">TwikiContentRendererTest</a> links and <a href="http://--wiki/TwikiContentRendererTest">TwikiContentRendererTest</a></p>
+<a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a> links and <a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></p>
   </body>
 </html>
