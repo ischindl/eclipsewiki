@@ -2,7 +2,7 @@
 
 WikiLinks are formed in the usual way for a wiki.
 Other links are:
-* URLs: for example http://www.teaminabox.co.uk mailto:channing@teaminabox.co.uk ftp://ftp.foo.com
+* URLs: for example http://www.stateofflow.com mailto:channing@mac.com ftp://ftp.foo.com
 * Eclipse Resources: Eclipse:/eclipsewiki/ChangeLog.txt
 * Java Types: com.teaminabox.eclipse.wiki.WikiPlugin
 * Files file:///Users/channing/file.txt
