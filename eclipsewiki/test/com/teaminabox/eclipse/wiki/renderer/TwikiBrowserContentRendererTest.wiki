@@ -36,3 +36,4 @@ Text with Java types com.teaminabox.foo.BigClass and an inner class com.teaminab
 [[TwikiBrowserContentRendererTest]] links and [[TwikiBrowserContentRendererTest]]
 
 Bug: [ 1490342 ] URL in brackets detected incorrectly: I am sure you have heard of Google (http://www.google.com).
+Bug: [ 1487063 ] Some WikiWords not recognized: TipsJ2ME EclipseME MyVPN MeetingNotes2006x03x25 blah
