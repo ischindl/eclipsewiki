@@ -5,6 +5,7 @@ Version XXX
 	Rewrote the preferences code.
 	Fixed [ 1490342 ] URL in brackets detected incorrectly
 	Fixed [ 1487063 ] Some WikiWords not recognized
+	Implemented [ 1444086 ] Shorten Class names in exports
 
 Version 2.4.2
 	Fixed use of deprecated key binding services.
