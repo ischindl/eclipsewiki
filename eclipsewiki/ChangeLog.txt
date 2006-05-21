@@ -2,7 +2,8 @@ Versin XXX
 	Added Kim Tiedemanm's patch for forced links in the SnipSnap renderer.
 	Lots of refactoring to clean up the mess of the editor code.
 	Added Craig Jones code to make the tests work properly on windows.
-	Rerwrote the preferences code.
+	Rewrote the preferences code.
+	Fixed [ 1490342 ] URL in brackets detected incorrectly
 
 Version 2.4.2
 	Fixed use of deprecated key binding services.
