@@ -251,7 +251,7 @@ a line with <b>bold</b> and <i>italic</i> and <strike>strike</strike></p>
 <table class="wiki-table" cellpadding="0" cellspacing="0" border="0">
 <tr><th>A</th><th>Big</th><th>Table</th></tr>
 <tr><td>very</td><td>cool</td><td>indeed</td></tr>
-<tr><td>WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></td><td><a href="http://--wiki/SnipSnapContentRendererTest">SnipSnapContentRendererTest</a></td><td>TwikiContentRendererTest<a href="http://--wiki/TwikiContentRendererTest">?</a></td></tr>
+<tr><td>WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></td><td><a href="http://--wiki/SnipSnapContentRendererTest">SnipSnapContentRendererTest</a></td><td>TwikiBrowserContentRendererTest<a href="http://--wiki/TwikiBrowserContentRendererTest">?</a></td></tr>
 <tr><td><a href="http://www.acronymfinder.com/af-query.asp?Acronym=WTF">Acronym:WTF</a> </td><td><a href="http://www.google.com">http://www.google.com</a> </td><td><a href="http://eclipsewiki.free.fr/index.php?page=license.html">EclipseWiki:license.html</a></td></tr>
 </table>
 <p>
@@ -276,6 +276,6 @@ A [forced link]<a href="http://--wiki/forcedlink">?</a> and one to an existing p
 <p>
 </p>
 <p>
-Bug: [ 1490342 ] URL in brackets detected incorrectly: I am sure you have heard of Google (<a href="http://www.google.com">http://www.google.com</a>).</p>
+Bug: 1490342 URL in brackets detected incorrectly: I am sure you have heard of Google (<a href="http://www.google.com">http://www.google.com</a>).</p>
   </body>
 </html>

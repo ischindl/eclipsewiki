@@ -1,9 +1,10 @@
-Versin XXX
+Version XXX
 	Added Kim Tiedemanm's patch for forced links in the SnipSnap renderer.
 	Lots of refactoring to clean up the mess of the editor code.
 	Added Craig Jones code to make the tests work properly on windows.
 	Rewrote the preferences code.
 	Fixed [ 1490342 ] URL in brackets detected incorrectly
+	Fixed [ 1487063 ] Some WikiWords not recognized
 
 Version 2.4.2
 	Fixed use of deprecated key binding services.
