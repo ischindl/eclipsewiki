@@ -126,5 +126,9 @@ a line with <a href="http://--wiki/WardsBrowserContentRendererTest">WardsBrowser
 </p>
 <p>
 Text with Java types <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass</a> and an inner class <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass.InnerClass</a></p>
+<p>
+</p>
+<p>
+Bug: [ 1490342 ] URL in brackets detected incorrectly: I am sure you have heard of Google (<a href="http://www.google.com">http://www.google.com</a>).</p>
   </body>
 </html>

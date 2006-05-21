@@ -25,7 +25,7 @@ public interface WikiConstants {
 
 	String		EXCLUDES_FILE												= "wiki.exclude";
 
-	String[]	URL_PREFIXES												= new String[] { "http:", "https:", "ftp:", "mailto:", "file:", "news:", "gopher:", "telnet:" };
+	String[]	URL_PREFIXES												= new String[] { "http:", "https:", "ftp:", "sftp:", "mailto:", "file:", "news:", "gopher:", "telnet:", "afp:", "nfs:", "smb:" };
 	String		ECLIPSE_PREFIX												= "Eclipse:";
 	String		PLUGIN_PREFIX												= "Plugin:";
 	char		LINE_NUMBER_SEPARATOR										= ':';
