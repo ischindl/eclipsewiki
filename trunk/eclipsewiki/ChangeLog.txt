@@ -6,6 +6,7 @@ Version XXX
 	Fixed [ 1490342 ] URL in brackets detected incorrectly
 	Fixed [ 1487063 ] Some WikiWords not recognized
 	Implemented [ 1444086 ] Shorten Class names in exports
+	Implemented [ 1181020 ] Escape WikiWords for the TWiki Renderer
 
 Version 2.4.2
 	Fixed use of deprecated key binding services.

@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import com.teaminabox.eclipse.wiki.text.EscapedWikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkMatcher;
@@ -15,10 +16,11 @@ import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	
 	private static final String TWIKI_WORD_PATTERN = "[A-Z]+[a-z]+[A-Z]+\\w*";
+	private static final String ESCAPED_TWIKI_WORD_PATTERN = "!(\\[\\[)?" + TWIKI_WORD_PATTERN + "[\\]\\]]{0,1}";
 
-	private static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new WikiWordMatcher(TWIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
+	private static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new EscapedWikiWordMatcher(ESCAPED_TWIKI_WORD_PATTERN, '!'), new WikiWordMatcher(TWIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
 
-	private static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new WikiWordMatcher(TWIKI_WORD_PATTERN), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
+	private static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new EscapedWikiWordMatcher(ESCAPED_TWIKI_WORD_PATTERN, '!'), new WikiWordMatcher(TWIKI_WORD_PATTERN), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
 
 	private static final char				ORDERED_LIST_END_MARKER		= '.';
 

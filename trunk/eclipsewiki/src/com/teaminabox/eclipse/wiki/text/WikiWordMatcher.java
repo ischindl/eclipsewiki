@@ -1,35 +1,17 @@
 package com.teaminabox.eclipse.wiki.text;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
 /**
- * I match a region of text based on a regex.
+ * I match a region of text representing a Wiki word based on a regex.
  */
-public final class WikiWordMatcher extends AbstractTextRegionMatcher {
-
-	private final Pattern	pattern;
+public final class WikiWordMatcher extends PatternMatcher {
 
 	public WikiWordMatcher(String pattern) {
-		this.pattern = Pattern.compile(pattern);;
+		super(pattern);
 	}
 
-	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
-		int matchLength = matchLength(text);
-		if (matchLength > 0) {
-			return new WikiWordTextRegion(text.substring(0, matchLength));
-		}
-		return null;
-	}
-
-	private int matchLength(String text) {
-		Matcher m = pattern.matcher(text);
-		if (m.find() && m.start() == 0) {
-			return m.end();
-		}
-		return -1;
+	protected TextRegion createTextRegion(String text) {
+		return new WikiWordTextRegion(text);
 	}
 
 	protected boolean accepts(char c, boolean firstCharacter) {
