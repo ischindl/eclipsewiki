@@ -92,8 +92,8 @@ Text with Java types <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teami
 <p>
 Bug: [ 1490342 ] URL in brackets detected incorrectly: I am sure you have heard of Google (<a href="http://www.google.com">http://www.google.com</a>).</p>
 <p>
-Bug: [ 1487063 ] Some !WikiWords not recognized: TipsJ2ME<a href="http://--wiki/TipsJ2ME">?</a> EclipseME<a href="http://--wiki/EclipseME">?</a> MyVPN<a href="http://--wiki/MyVPN">?</a> MeetingNotes2006x03x25<a href="http://--wiki/MeetingNotes2006x03x25">?</a> blah</p>
+Bug: [ 1487063 ] Some WikiWords not recognized: TipsJ2ME<a href="http://--wiki/TipsJ2ME">?</a> EclipseME<a href="http://--wiki/EclipseME">?</a> MyVPN<a href="http://--wiki/MyVPN">?</a> MeetingNotes2006x03x25<a href="http://--wiki/MeetingNotes2006x03x25">?</a> blah</p>
 <p>
-Bug: [ 1181020 ] Escape !WikiWords such as !WardsBrowserContentRendererTest !TipsJ2ME !MeetingNotes2006x03x25 ![[TwikiBrowserContentRendererTest]]</p>
+Bug: [ 1181020 ] Escape WikiWords such as WardsBrowserContentRendererTest TipsJ2ME MeetingNotes2006x03x25 TwikiBrowserContentRendererTest</p>
   </body>
 </html>

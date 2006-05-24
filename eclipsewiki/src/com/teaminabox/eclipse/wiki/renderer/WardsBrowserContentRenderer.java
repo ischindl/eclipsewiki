@@ -5,28 +5,28 @@ import com.teaminabox.eclipse.wiki.text.IgnoredTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.JavaTypeMatcher;
 import com.teaminabox.eclipse.wiki.text.LetterOrDigitMatcher;
 import com.teaminabox.eclipse.wiki.text.NonLetterOrDigitMatcher;
-import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.PluginResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
+import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 
 public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
-	
-	private static final String	WIKI_WORD_PATTERN	= "([A-Z][a-z]+){2,}[0-9]*";
-	
+
+	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
+
 	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
 	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new WikiWordMatcher(WIKI_WORD_PATTERN) };
 
-	private static final String	BULLET_MARKUP		= "*";
-	private static final String	QUOTE_MARKUP_REGEX	= "^\t :\t.*";
-	private static final String	HEADER_MARKUP_REGEX	= "^'''.+'''$";
-	private static final String	HEADER_MARKUP		= "'''";
-	private static final String	BOLD_MARKUP			= "__";
-	private static final String	EMPHASIS_MARKUP		= "'''''";
-	private static final String	ITALIC_MARKUP		= "''";
-	private static final String	LIST_MARKUP_REGEX	= "^[\\*]+.*";
-	private static final String	PLURAL				= "''''''s";
+	private static final String			BULLET_MARKUP				= "*";
+	private static final String			QUOTE_MARKUP_REGEX			= "^\t :\t.*";
+	private static final String			HEADER_MARKUP_REGEX			= "^'''.+'''$";
+	private static final String			HEADER_MARKUP				= "'''";
+	private static final String			BOLD_MARKUP					= "__";
+	private static final String			EMPHASIS_MARKUP				= "'''''";
+	private static final String			ITALIC_MARKUP				= "''";
+	private static final String			LIST_MARKUP_REGEX			= "^[\\*]+.*";
+	private static final String			PLURAL						= "''''''s";
 
 	public TextRegionMatcher[] getRendererMatchers() {
 		return DEFAULT_RENDERER_MATCHERS;
@@ -35,7 +35,7 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 	public TextRegionMatcher[] getScannerMatchers() {
 		return DEFAULT_SCANNER_MATCHERS;
 	}
-	
+
 	protected void initialise() {
 
 	}

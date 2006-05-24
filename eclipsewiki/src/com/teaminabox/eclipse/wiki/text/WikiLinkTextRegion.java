@@ -27,8 +27,6 @@ public abstract class WikiLinkTextRegion extends TextRegion {
 
 	public abstract String getWikiDocumentName();
 
-	public abstract String getDisplayText();
-
 	/**
 	 * This is a special Wiki region of text.
 	 * 

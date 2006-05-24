@@ -11,9 +11,10 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 public abstract class PatternMatcher extends AbstractTextRegionMatcher {
 
 	private final Pattern	pattern;
+	private Matcher	matcher;
 
 	public PatternMatcher(String pattern) {
-		this.pattern = Pattern.compile(pattern);;
+		this.pattern = Pattern.compile(pattern);
 	}
 
 	public final TextRegion createTextRegion(String text, WikiDocumentContext context) {
@@ -27,11 +28,17 @@ public abstract class PatternMatcher extends AbstractTextRegionMatcher {
 	protected abstract TextRegion createTextRegion(String string);
 
 	private int matchLength(String text) {
-		Matcher m = pattern.matcher(text);
-		if (m.find() && m.start() == 0) {
-			return m.end();
+		matcher = pattern.matcher(text);
+		if (matcher.find() && matcher.start() == 0) {
+			return matcher.end();
 		}
 		return -1;
 	}
 
+	/**
+	 * @return the most recent matcher or NULL if one has not been created yet
+	 */
+	public Matcher getMatcher() {
+		return matcher;
+	}
 }

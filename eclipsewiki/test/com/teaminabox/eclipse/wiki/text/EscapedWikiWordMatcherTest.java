@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.text;
 
+import junit.framework.Assert;
+
 public final class EscapedWikiWordMatcherTest extends AbstractTextRegionMatcherTest {
 	
 	private static final String	WIKI_WORD_PATTERN	= "\\!([A-Z][a-z]+){2,}[0-9]*";
@@ -18,7 +20,7 @@ public final class EscapedWikiWordMatcherTest extends AbstractTextRegionMatcherT
 	}
 
 	protected TextRegionMatcher getMatcher() {
-		return new EscapedWikiWordMatcher(WIKI_WORD_PATTERN, '!');
+		return new EscapedWikiWordMatcher(WIKI_WORD_PATTERN, '!', new String[] {"\\!"});
 	}
 
 	protected String[] getUnacceptableText() {
@@ -27,6 +29,11 @@ public final class EscapedWikiWordMatcherTest extends AbstractTextRegionMatcherT
 
 	protected TextRegionTestBean[] getAcceptableCases() {
 		return EscapedWikiWordMatcherTest.ACCEPTABLE_CASES;
+	}
+	
+	public void testDisplayTextRemovesEscapeCharacter() {
+		BasicTextRegion region = (BasicTextRegion) getMatcher().createTextRegion("!WikiWord", getContext());
+		Assert.assertEquals("WikiWord", region.getDisplayText());
 	}
 
 }

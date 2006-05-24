@@ -17,6 +17,7 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 public abstract class TextRegion {
 
 	private String	text;
+	private String	displayText;
 
 	/**
 	 * The position of the cursor relative to the start of this TextRegion
@@ -25,8 +26,10 @@ public abstract class TextRegion {
 	private boolean	cursorPositionSet;
 	private int		locationInDocument;
 
+
 	public TextRegion(String text) {
 		setText(text);
+		setDisplayText(text);
 	}
 
 	public TextRegion() {
@@ -43,6 +46,14 @@ public abstract class TextRegion {
 
 	public String getText() {
 		return text;
+	}
+	
+	public String getDisplayText() {
+		return displayText;
+	}
+	
+	public void setDisplayText(String displayText) {
+		this.displayText = displayText;
 	}
 
 	public abstract IToken getToken(ColourManager colourManager);
