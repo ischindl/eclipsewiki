@@ -244,7 +244,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 				}
 
 				public Object visit(BasicTextRegion basicTextRegion) {
-					buffer.append(basicTextRegion.getText());
+					buffer.append(basicTextRegion.getDisplayText());
 					return null;
 				}
 
@@ -297,10 +297,14 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {
-		int indexes = countTokens(line, search);
+		return replacePair(line, search, search, openingTag, closingTag);
+	}
+
+	protected String replacePair(String line, String openingSearch, String closingSearch, String openingTag, String closingTag) {
+		int indexes = countTokens(line, openingSearch);
 		for (int i = 0; i < indexes / 2; i++) {
-			line = replaceFirst(line, search, openingTag);
-			line = replaceFirst(line, search, closingTag);
+			line = replaceFirst(line, openingSearch, openingTag);
+			line = replaceFirst(line, closingSearch, closingTag);
 		}
 		return line;
 	}
