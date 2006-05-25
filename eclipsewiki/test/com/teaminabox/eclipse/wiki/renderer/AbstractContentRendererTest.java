@@ -48,7 +48,13 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 		WikiBrowserEditor editor = createWikiDocumentAndOpen(content, functionalTest + ".wiki");
 		WikiDocumentContext context = editor.getEditor().getContext();
 		String html = getRenderer().render(context, new IdeLinkMaker(context));
-		assertEquals(expected, html);
+        assertEquals(expected, convertWindowsHtmlToMac(html));
+	}
+
+	private String convertWindowsHtmlToMac(String actual) {
+		actual = actual.replaceFirst("windows-1252","MacRoman");
+ 		actual = actual.replaceAll("\\x0D\\x0A", "\n");
+		return actual;
 	}
 
 	protected final String getFunctionalTestFileName() {
@@ -61,13 +67,18 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 	}
 
 	protected void assertRenderedContains(String markup, String fragment) {
-		assertTrue(getHtml(markup).indexOf(fragment) >= 0);
+        String html = getHtml(markup);
+		if (html.indexOf(fragment) < 0) {
+            // this assert will always fail, but this way JUnit Runner will show us the difference
+			assertEquals(html,fragment); 
+		}
 	}
 
 	protected String getHtml(String text) {
 		WikiBrowserEditor editor = createWikiDocumentAndOpen(text);
 		WikiDocumentContext context = editor.getEditor().getContext();
 		String html = getRenderer().render(context, new IdeLinkMaker(context));
-		return html.replaceAll("\\n", "");
+        // \n doesn't work on HTML rendered in Windows, so we need to filter out CR & LF chars separately
+        return html.replaceAll("[\\x0A|\\x0D|\\n]", "");
 	}
 }
