@@ -63,6 +63,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 			buffer = new StringBuffer();
 			appendHeader();
 			buffer.append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
+			appendNewLine();
 			appendContents();
 			appendFooter();
 			return buffer.toString();

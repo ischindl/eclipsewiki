@@ -111,6 +111,9 @@ public final class WikiPlugin extends AbstractUIPlugin {
 	}
 
 	public void log(String message, Exception e) {
+		if (message == null) {
+			message = e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
+		}
 		getDefault().getLog().log(new Status(IStatus.ERROR, WikiConstants.PLUGIN_ID, IStatus.OK, message, e));
 	}
 

@@ -48,6 +48,7 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 		getBuffer().append(headerStartTag);
 		getBuffer().append(header);
 		getBuffer().append("</h1>");
+		appendNewLine();
 	}
 
 	private int getHeaderSize(String line) {

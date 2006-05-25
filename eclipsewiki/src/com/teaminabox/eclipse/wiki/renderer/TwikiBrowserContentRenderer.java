@@ -44,8 +44,9 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	protected void appendHeader(String line) {
 		int headerSize = getHeaderSize(line);
 		getBuffer().append("<h").append(headerSize).append(">");
-		getBuffer().append(getHeaderText(line));
+		append(getHeaderText(line));
 		getBuffer().append("</h").append(headerSize).append(">");
+		appendNewLine();
 	}
 
 	protected String getHeaderText(String line) {

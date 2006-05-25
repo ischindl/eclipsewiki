@@ -80,7 +80,8 @@ a:active {
 --></style>
   </head>
   <body>
-<h1>Wards Browser Content Renderer Test</h1><p>
+<h1>Wards Browser Content Renderer Test</h1>
+<p>
 Horizontal lines</p>
 <hr>
 <p>
