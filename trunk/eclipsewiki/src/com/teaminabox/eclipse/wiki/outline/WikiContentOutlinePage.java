@@ -89,6 +89,9 @@ public final class WikiContentOutlinePage extends ContentOutlinePage implements 
 	 * outline could not be generated.
 	 */
 	private IAdaptable getContentOutline(IAdaptable input) {
+		if (editor.isDirty()) {
+			return null;
+		}
 		return WikiModelFactory.getInstance().getContentOutline(input, editor);
 	}
 
