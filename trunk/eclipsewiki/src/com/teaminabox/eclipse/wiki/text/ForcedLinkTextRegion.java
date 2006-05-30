@@ -8,7 +8,7 @@ public final class ForcedLinkTextRegion extends WikiLinkTextRegion {
 	public ForcedLinkTextRegion(String text, int brackets) {
 		super(text);
 		int end = getText().indexOf(']');
-		displayText = getText().substring(brackets, end);
+		displayText = new String(getText().substring(brackets, end));
 		link = displayText.replaceAll(" ", "");
 	}
 

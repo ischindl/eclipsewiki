@@ -203,9 +203,9 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	}
 
 	private void openWikiLocation(String location) {
-		String wikiDoc = location.substring(WikiConstants.WIKI_HREF.length());
+		String wikiDoc = new String(location.substring(WikiConstants.WIKI_HREF.length()));
 		if (wikiDoc.endsWith("/")) { //$NON-NLS-1$
-			wikiDoc = wikiDoc.substring(0, wikiDoc.length() - 1);
+			wikiDoc = new String(wikiDoc.substring(0, wikiDoc.length() - 1));
 		}
 
 		if (wikiDoc.startsWith(WikiConstants.ECLIPSE_PREFIX)) {

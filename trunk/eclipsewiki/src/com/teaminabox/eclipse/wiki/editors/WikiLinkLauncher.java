@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.program.Program;
@@ -107,14 +108,14 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 	}
 
 	void openEclipseLocation(String location) {
-		String resource = location.substring(WikiConstants.ECLIPSE_PREFIX.length());
+		String resource = new String(location.substring(WikiConstants.ECLIPSE_PREFIX.length()));
 		if (resource.length() > 0) {
 			openProjectResource(resource);
 		}
 	}
 
 	public void openPluginLocation(String location) {
-		String resource = location.substring(WikiConstants.PLUGIN_PREFIX.length());
+		String resource = new String(location.substring(WikiConstants.PLUGIN_PREFIX.length()));
 		if (resource.length() > 0) {
 			openPluginResource(resource);
 		}
@@ -224,7 +225,8 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 
 	private void openType(JavaTypeTextRegion javaTypeTextRegion) {
 		try {
-			IDE.openEditor(getActivePage(), (IFile) javaTypeTextRegion.getType().getUnderlyingResource(), true);
+			// TODO how do we do this without using internal API?
+			EditorUtility.openInEditor(javaTypeTextRegion.getType());
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
 		}

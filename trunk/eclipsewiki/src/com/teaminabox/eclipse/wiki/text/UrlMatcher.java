@@ -135,7 +135,7 @@ public final class UrlMatcher extends AbstractTextRegionMatcher {
 	
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		if (accepts(text, context)) {
-			return new UrlTextRegion(text.substring(0, matchLength(text, context)));
+			return new UrlTextRegion(new String(text.substring(0, matchLength(text, context))));
 		}
 		return null;
 	}

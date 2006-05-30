@@ -315,7 +315,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		if (index < 0) {
 			return line;
 		}
-		return line.substring(0, index) + replacement + line.substring(index + search.length());
+		return new String(line.substring(0, index) + replacement + line.substring(index + search.length()));
 	}
 
 	private int countTokens(String line, String token) {
@@ -374,13 +374,13 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		int lastIndex = -1;
 		while (index >= 0 && index < line.length()) {
 			if (index > 0) {
-				bits.add(line.substring(lastIndex + 1, index));
+				bits.add(new String(line.substring(lastIndex + 1, index)));
 			}
 			lastIndex = index;
 			index = line.indexOf(delimiter, index + 1);
 		}
 		if (lastIndex < line.length() - 1) {
-			bits.add(line.substring(lastIndex + 1));
+			bits.add(new String(line.substring(lastIndex + 1)));
 		}
 		return (String[]) bits.toArray(new String[bits.size()]);
 	}

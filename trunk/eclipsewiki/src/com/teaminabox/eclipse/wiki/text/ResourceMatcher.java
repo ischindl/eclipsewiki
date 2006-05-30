@@ -25,11 +25,11 @@ public abstract class ResourceMatcher extends AbstractTextRegionMatcher {
 		String text = candidate;
 		// get rid of the next link if there is one.
 		if (text.indexOf(fPrefix, 1) > 0) {
-			text = text.substring(0, text.indexOf(fPrefix, 1));
+			text = new String(text.substring(0, text.indexOf(fPrefix, 1)));
 		}
 		// now try to find the longest match
 		for (int i = text.length(); i >= fPrefix.length(); i--) {
-			String section = text.substring(fPrefix.length(), i);
+			String section = new String(text.substring(fPrefix.length(), i));
 			if (section.length() > 0 && section.charAt(section.length() - 1) == WikiConstants.LINE_NUMBER_SEPARATOR) {
 				continue;
 			}
@@ -49,7 +49,7 @@ public abstract class ResourceMatcher extends AbstractTextRegionMatcher {
 	abstract protected File findResourceFromPath(String section);
 
 	private int getLineNumberLength(String text, int colon) {
-		String number = text.substring(colon + 1);
+		String number = new String(text.substring(colon + 1));
 		if (number.trim().length() == 0) {
 			return 0;
 		}
@@ -62,7 +62,7 @@ public abstract class ResourceMatcher extends AbstractTextRegionMatcher {
 
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		if (accepts(text, context)) {
-			return new PluginResourceTextRegion(text.substring(0, matchLength(text, context)));
+			return new PluginResourceTextRegion(new String(text.substring(0, matchLength(text, context))));
 		}
 		return null;
 	}

@@ -59,9 +59,9 @@ public abstract class LinkMaker {
 			return url;
 		}
 
-		url = url.substring(WikiConstants.WIKI_HREF.length());
+		url = new String(url.substring(WikiConstants.WIKI_HREF.length()));
 		if (url.startsWith(WikiConstants.ECLIPSE_PREFIX)) {
-			url = url.substring(WikiConstants.ECLIPSE_PREFIX.length());
+			url = new String(url.substring(WikiConstants.ECLIPSE_PREFIX.length()));
 		}
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(url));
 		if (resource == null) {
@@ -86,7 +86,7 @@ public abstract class LinkMaker {
 		if (lastSeparator < 0 || WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.RENDER_FULLY_QUALIFIED_TYPE_NAMES)) {
 			return region.getText();
 		}
-		return region.getText().substring(lastSeparator + 1);
+		return new String(region.getText().substring(lastSeparator + 1));
 	}
 
 }

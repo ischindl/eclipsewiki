@@ -11,12 +11,12 @@ public final class WikiSpaceMatcher extends WhiteSpaceTerminatedMatcher {
 			return false;
 		}
 
-		return context.getWikiSpace().containsKey(text.substring(0, colon));
+		return context.getWikiSpace().containsKey(new String(text.substring(0, colon)));
 	}
 
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		if (accepts(text, context)) {
-			String textRegion = text.substring(0, matchLength(text, context));
+			String textRegion = new String(text.substring(0, matchLength(text, context)));
 			String link = getLink(textRegion, context);
 			return new WikiUrlTextRegion(textRegion, link);
 		}
@@ -25,8 +25,8 @@ public final class WikiSpaceMatcher extends WhiteSpaceTerminatedMatcher {
 
 	private String getLink(String textRegion, WikiDocumentContext context) {
 		int colon = textRegion.indexOf(WikiConstants.WIKISPACE_DELIMITER);
-		String linkPrefix = context.getWikiSpaceLink(textRegion.substring(0, colon));
-		String linkSuffix = textRegion.substring(colon + 1);
+		String linkPrefix = context.getWikiSpaceLink(new String(textRegion.substring(0, colon)));
+		String linkSuffix = new String(textRegion.substring(colon + 1));
 		return linkPrefix + linkSuffix;
 	}
 

@@ -55,7 +55,7 @@ public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
 
 		IType match = null;
 		while (index > 0 && index <= text.length()) {
-			String candidate = text.substring(0, index);
+			String candidate = new String(text.substring(0, index));
 			IType javaType = javaProject.findType(candidate);
 			if (javaType == null) {
 				return match;
@@ -74,7 +74,7 @@ public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
 
 		int match = 0;
 		while (index > 0 && index <= text.length()) {
-			String candidate = text.substring(0, index);
+			String candidate = new String(text.substring(0, index));
 			IPath path = path(candidate);
 			IJavaElement javaElement = javaProject.findElement(path);
 			if (javaElement == null) {
@@ -92,7 +92,7 @@ public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
 		}
 		int maxIndex = maxLengthOfValidCharacters(text);
 		maxIndex = lengthWithDotsStripped(text, maxIndex);
-		return text.substring(0, maxIndex + 1);
+		return new String(text.substring(0, maxIndex + 1));
 	}
 
 	/**

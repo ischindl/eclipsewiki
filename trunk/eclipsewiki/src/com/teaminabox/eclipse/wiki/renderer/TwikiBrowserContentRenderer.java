@@ -50,7 +50,7 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	}
 
 	protected String getHeaderText(String line) {
-		return line.substring(getHeaderStart(line));
+		return new String(line.substring(getHeaderStart(line)));
 	}
 
 	private int getHeaderStart(String line) {
@@ -96,9 +96,9 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
 	protected String getListText(String line) {
 		if (isOrderedList(line)) {
-			return line.substring(line.indexOf(TwikiBrowserContentRenderer.ORDERED_LIST_END_MARKER) + 1).trim();
+			return new String(line.substring(line.indexOf(TwikiBrowserContentRenderer.ORDERED_LIST_END_MARKER) + 1).trim());
 		}
-		return line.substring(line.indexOf(TwikiBrowserContentRenderer.UNORDERED_LIST_MARKUP) + 1).trim();
+		return new String(line.substring(line.indexOf(TwikiBrowserContentRenderer.UNORDERED_LIST_MARKUP) + 1).trim());
 	}
 
 	protected boolean process(String line) {
@@ -147,7 +147,7 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		line = line.replaceAll("([\\s\\(])=([^\\s]+?|[^\\s].*?[^\\s])=([\\s\\,\\.\\;\\:\\!\\?\\)])", "$1<code>$2</code>$3");
 
 		// get rid of the enclosing white space we added above
-		return line.substring(1, line.length() - 1);
+		return new String(line.substring(1, line.length() - 1));
 	}
 
 }

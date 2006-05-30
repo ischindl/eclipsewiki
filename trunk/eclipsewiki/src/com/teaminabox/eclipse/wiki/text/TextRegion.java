@@ -97,7 +97,7 @@ public abstract class TextRegion {
 		} else if (cursorPosition >= text.length()) {
 			return text;
 		} else {
-			return text.substring(0, cursorPosition);
+			return new String(text.substring(0, cursorPosition));
 		}
 	}
 

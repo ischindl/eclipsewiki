@@ -135,7 +135,7 @@ public final class JavaCompletionProcessor {
 		}
 		String prefix = text;
 		if (text.indexOf('.') > 0) {
-			prefix = text.substring(text.lastIndexOf('.') + 1);
+			prefix = new String(text.substring(text.lastIndexOf('.') + 1));
 		}
 		if (prefix.length() == 0) {
 			return getTypesInPackages(fragments);
@@ -169,7 +169,7 @@ public final class JavaCompletionProcessor {
 	private IPackageFragment[] getMatchingPackageFragments(final String text) throws CoreException {
 		String prefix = text;
 		if (text.endsWith(".")) {
-			prefix = text.substring(0, text.length() - 1);
+			prefix = new String(text.substring(0, text.length() - 1));
 		}
 		final Set fragments = new TreeSet(JavaCompletionProcessor.IJAVA_ELEMENT_COMPARATOR);
 		SearchRequestor requestor = new SearchRequestor() {

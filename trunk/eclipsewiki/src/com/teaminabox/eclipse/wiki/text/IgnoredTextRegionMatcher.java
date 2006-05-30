@@ -20,7 +20,7 @@ public final class IgnoredTextRegionMatcher extends AbstractTextRegionMatcher {
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		int matchLengh = matchLength(text, context);
 		if (matchLengh > 0) {
-			return new BasicTextRegion(text.substring(0, matchLength(text, context)));
+			return new BasicTextRegion(new String(text.substring(0, matchLength(text, context))));
 		}
 		return null;
 	}
