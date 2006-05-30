@@ -44,7 +44,7 @@ public final class EclipseResourceTextRegion extends TextRegion {
 	}
 
 	public IResource getResource() {
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(getText().substring(WikiConstants.ECLIPSE_PREFIX.length()));
+		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(new String(getText().substring(WikiConstants.ECLIPSE_PREFIX.length())));
 		return resource;
 	}
 

@@ -10,7 +10,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
@@ -58,7 +57,7 @@ public final class JavaContext implements IResourceChangeListener {
 			packages = new HashSet();
 			IPackageFragment[] packageFragments = javaProject.getPackageFragments();
 			for (int i = 0; i < packageFragments.length; i++) {
-				if (packageFragments[i].getKind() == IPackageFragmentRoot.K_SOURCE && !packageFragments[i].isDefaultPackage()) {
+				if (!packageFragments[i].isDefaultPackage()) {
 					packages.add(packageFragments[i].getElementName());
 				}
 			}

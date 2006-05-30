@@ -20,7 +20,7 @@ public abstract class PatternMatcher extends AbstractTextRegionMatcher {
 	public final TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		int matchLength = matchLength(text);
 		if (matchLength > 0) {
-			return createTextRegion(text.substring(0, matchLength));
+			return createTextRegion(new String(text.substring(0, matchLength)));
 		}
 		return null;
 	}

@@ -7,7 +7,7 @@ public abstract class AbstractLetterOrDigitMatcher extends AbstractTextRegionMat
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		int matchLength = matchLength(text, context);
 		if (matchLength > 0) {
-			return new BasicTextRegion(text.substring(0, matchLength));
+			return new BasicTextRegion(new String(text.substring(0, matchLength)));
 		}
 		return null;
 	}

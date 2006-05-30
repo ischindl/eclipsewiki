@@ -75,7 +75,7 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 	}
 
 	protected String getHeaderText(String line) {
-		return line.substring(line.indexOf(' ')).trim();
+		return new String(line.substring(line.indexOf(' ')).trim());
 	}
 
 	protected boolean isHeader(String line) {
@@ -142,9 +142,9 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 
 	protected String getListText(String line) {
 		if (isOrderedList(line)) {
-			return line.substring(2).trim();
+			return new String(line.substring(2).trim());
 		}
-		return line.substring(getListDepth(line)).trim();
+		return new String(line.substring(getListDepth(line)).trim());
 	}
 
 	protected char getListType(String line) {

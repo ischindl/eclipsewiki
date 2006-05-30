@@ -4,6 +4,7 @@
  */
 package com.teaminabox.eclipse.wiki.text;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +74,7 @@ public final class PluginProjectVisitor extends ProjectVisitor {
 						pos = content.indexOf("id=");
 						pos = content.indexOf("\"", pos);
 						pos2 = content.indexOf("\"", pos + 1);
-						id = content.substring(pos + 1, pos2).trim();
+						id = new String(content.substring(pos + 1, pos2).trim());
 						gProjects.put(proj.getName(), id);
 					}
 				} catch (Exception e) {
@@ -88,7 +89,7 @@ public final class PluginProjectVisitor extends ProjectVisitor {
 		IFile pluginFile = (IFile) member;
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		byte[] buf = new byte[10000];
-		InputStream in = pluginFile.getContents();
+		InputStream in = new BufferedInputStream(pluginFile.getContents());
 		while (in.available() > 0) {
 			int len = in.available();
 			if (len > buf.length) {

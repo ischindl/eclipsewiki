@@ -10,8 +10,8 @@ public final class ForcedLinkMatcher extends AbstractTextRegionMatcher {
 
 	public ForcedLinkMatcher(int brackets) {
 		this.brackets = brackets;
-		openingBrackets = "[[".substring(0, brackets);
-		closingBrackets = "]]".substring(0, brackets);
+		openingBrackets = new String("[[".substring(0, brackets));
+		closingBrackets = new String("]]".substring(0, brackets));
 	}
 
 	protected boolean accepts(char c, boolean firstCharacter) {
@@ -38,6 +38,6 @@ public final class ForcedLinkMatcher extends AbstractTextRegionMatcher {
 	}
 
 	public TextRegion createTextRegionImpl(String text, WikiDocumentContext context) {
-		return new ForcedLinkTextRegion(text.substring(0, matchLength(text, context)), brackets);
+		return new ForcedLinkTextRegion(new String(text.substring(0, matchLength(text, context))), brackets);
 	}
 }

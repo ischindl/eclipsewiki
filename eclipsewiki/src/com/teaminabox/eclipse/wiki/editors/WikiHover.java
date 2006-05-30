@@ -82,9 +82,9 @@ public final class WikiHover implements ITextHover {
 
 	private String getEclipseResourceHover(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		String resourceLink = eclipseResourceTextRegion.getText();
-		String relPath = resourceLink.substring(WikiConstants.ECLIPSE_PREFIX.length());
+		String relPath = new String(resourceLink.substring(WikiConstants.ECLIPSE_PREFIX.length()));
 		if (relPath.indexOf(WikiConstants.LINE_NUMBER_SEPARATOR) > 0) {
-			relPath = relPath.substring(0, relPath.indexOf(WikiConstants.LINE_NUMBER_SEPARATOR));
+			relPath = new String(relPath.substring(0, relPath.indexOf(WikiConstants.LINE_NUMBER_SEPARATOR)));
 		}
 		try {
 			if (relPath.length() > 0) {
@@ -100,10 +100,10 @@ public final class WikiHover implements ITextHover {
 	}
 
 	private String getPluginResourceHover(PluginResourceTextRegion textRegion) {
-		String resourceLink = textRegion.getText().substring(WikiConstants.PLUGIN_PREFIX.length());
+		String resourceLink = new String(textRegion.getText().substring(WikiConstants.PLUGIN_PREFIX.length()));
 		String relPath = PluginResourceTextRegion.getPluginPath(resourceLink).toString();
 		if (relPath.lastIndexOf(WikiConstants.LINE_NUMBER_SEPARATOR) > 3) {
-			relPath = relPath.substring(0, relPath.lastIndexOf(WikiConstants.LINE_NUMBER_SEPARATOR));
+			relPath = new String(relPath.substring(0, relPath.lastIndexOf(WikiConstants.LINE_NUMBER_SEPARATOR)));
 		}
 		try {
 			if (relPath.length() > 0) {

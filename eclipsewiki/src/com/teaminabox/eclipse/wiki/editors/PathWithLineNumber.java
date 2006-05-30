@@ -18,7 +18,7 @@ class PathWithLineNumber {
 			if (lineIndex < path.length() - 1) {
 				line = Integer.parseInt(path.substring(lineIndex + 1)) - 1;
 			}
-			path = path.substring(0, lineIndex);
+			path = new String(path.substring(0, lineIndex));
 		}
 		relPath = new Path(path);
 	}

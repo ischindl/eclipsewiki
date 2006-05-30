@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
@@ -59,7 +60,7 @@ public final class WikiDocumentContext {
 			Path path = new Path(WikiConstants.WIKISPACE_FILE);
 			IFile file = container.getFile(path);
 			if (file.exists() && !file.isPhantom()) {
-				localWikispace.load(file.getContents());
+				localWikispace.load(new BufferedInputStream(file.getContents()));
 			}
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
@@ -139,7 +140,7 @@ public final class WikiDocumentContext {
 
 	public String getWikiNameBeingEdited() {
 		String fileName = wikiDocument.getName();
-		return fileName.substring(0, fileName.indexOf(WikiConstants.WIKI_FILE_EXTENSION));
+		return new String(fileName.substring(0, fileName.indexOf(WikiConstants.WIKI_FILE_EXTENSION)));
 	}
 
 	public boolean hasWikiSibling(WikiLinkTextRegion wikiNameTextRegion) {

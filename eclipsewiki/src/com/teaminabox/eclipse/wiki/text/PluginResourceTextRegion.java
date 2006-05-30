@@ -40,7 +40,7 @@ public final class PluginResourceTextRegion extends TextRegion {
 					if (entry != null) {
 						URL url = FileLocator.toFileURL(entry);
 						if (url != null) {
-							return new Path(url.getFile().substring(1));
+							return new Path(new String(url.getFile().substring(1)));
 						}
 					}
 				} catch (IOException e) {
@@ -105,7 +105,7 @@ public final class PluginResourceTextRegion extends TextRegion {
 	}
 
 	public IResource getResource() {
-		return PluginResourceTextRegion.findResource(getText().substring(WikiConstants.PLUGIN_PREFIX.length()));
+		return PluginResourceTextRegion.findResource(new String(getText().substring(WikiConstants.PLUGIN_PREFIX.length())));
 
 	}
 

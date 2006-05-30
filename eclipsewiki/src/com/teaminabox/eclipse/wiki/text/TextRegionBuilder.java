@@ -41,7 +41,7 @@ public final class TextRegionBuilder {
 		ArrayList list = new ArrayList();
 		int start = 0;
 		while (start < text.length()) {
-			TextRegion region = TextRegionBuilder.getFirstTextRegion(text.substring(start), context);
+			TextRegion region = TextRegionBuilder.getFirstTextRegion(new String(text.substring(start)), context);
 			list.add(region);
 			start += region.getLength();
 		}

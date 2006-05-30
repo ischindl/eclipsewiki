@@ -115,7 +115,7 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 	}
 
 	protected String getListText(String line) {
-		return line.substring(getListDepth(line)).trim();
+		return new String(line.substring(getListDepth(line)).trim());
 	}
 
 	/**

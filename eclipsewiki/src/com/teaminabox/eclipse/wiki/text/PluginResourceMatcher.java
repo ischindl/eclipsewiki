@@ -20,7 +20,7 @@ public final class PluginResourceMatcher extends ResourceMatcher {
 
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		if (accepts(text, context)) {
-			return new PluginResourceTextRegion(text.substring(0, matchLength(text, context)));
+			return new PluginResourceTextRegion(new String(text.substring(0, matchLength(text, context))));
 		}
 		return null;
 	}

@@ -8,6 +8,7 @@ Version XXX
 	Implemented [ 1444086 ] Shorten Class names in exports
 	Implemented [ 1181020 ] Escape WikiWords for the TWiki Renderer
 	Fixed [ 1490333 ] WikiWord in heading not recognized
+	Fixed [ 1489075 ] non-WIkiWord incorrectly recognized as WIkiWord
 	
 Version 2.4.2
 	Fixed use of deprecated key binding services.

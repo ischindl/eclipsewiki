@@ -144,7 +144,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			eclipseLinkIndex = nextEclipseLink;
 			nextEclipseLink = line.indexOf(WikiConstants.ECLIPSE_PREFIX, eclipseLinkIndex + 1);
 		}
-		String linkText = line.substring(eclipseLinkIndex, cursorPositionInLine);
+		String linkText = new String(line.substring(eclipseLinkIndex, cursorPositionInLine));
 
 		EclipseResourceTextRegion eclipseResourceTextRegion = new EclipseResourceTextRegion(linkText);
 		eclipseResourceTextRegion.setCursorPosition(cursorPositionInLine - eclipseLinkIndex);
@@ -166,7 +166,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			pluginLinkIndex = nextPluginLink;
 			nextPluginLink = line.indexOf(WikiConstants.PLUGIN_PREFIX, pluginLinkIndex + 1);
 		}
-		String linkText = line.substring(pluginLinkIndex, cursorPositionInLine);
+		String linkText = new String(line.substring(pluginLinkIndex, cursorPositionInLine));
 
 		PluginResourceTextRegion pluginResourceTextRegion = new PluginResourceTextRegion(linkText);
 		pluginResourceTextRegion.setCursorPosition(cursorPositionInLine - pluginLinkIndex);
@@ -185,13 +185,13 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 
 			public Object visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 				int colon = textRegion.getTextToCursor().indexOf(WikiConstants.WIKISPACE_DELIMITER) + 1;
-				String location = textRegion.getTextToCursor().substring(colon);
+				String location = new String(textRegion.getTextToCursor().substring(colon));
 				return getResourceCompletions(textRegion.getTextToCursor(), location, documentOffset);
 			}
 
 			public Object visit(PluginResourceTextRegion pluginResourceTextRegion) {
 				int colon = textRegion.getTextToCursor().indexOf(WikiConstants.WIKISPACE_DELIMITER) + 1;
-				String location = textRegion.getTextToCursor().substring(colon);
+				String location = new String(textRegion.getTextToCursor().substring(colon));
 				IPath path = PluginResourceTextRegion.getPluginPath(location);
 				int slashPos = location.indexOf('/');
 				if (slashPos < 0 || slashPos == location.lastIndexOf('/') && slashPos - 1 == location.length()) {
@@ -219,9 +219,9 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			String rest = "";
 			if (path == null) {
 				int slashPos = location.lastIndexOf('/');
-				String base = location.substring(0, slashPos);
+				String base = new String(location.substring(0, slashPos));
 				path = PluginResourceTextRegion.getPluginPath(base);
-				rest = location.substring(slashPos + 1);
+				rest = new String(location.substring(slashPos + 1));
 			}
 			String[] children = getChildren(path.toString() + rest);
 			return buildResourceProposals(children, "", replacementOffset, lengthToBeReplaced);
@@ -335,17 +335,17 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 		if (word.indexOf(WikiConstants.WIKISPACE_DELIMITER) < 0) {
 			return;
 		}
-		String wikiSpace = word.substring(0, word.indexOf(WikiConstants.WIKISPACE_DELIMITER));
+		String wikiSpace = new String(word.substring(0, word.indexOf(WikiConstants.WIKISPACE_DELIMITER)));
 		WikiDocumentContext context = wikiEditor.getContext();
 		if (context.getWikiSpace().containsKey(wikiSpace) && context.getWikiSpaceLink(wikiSpace).startsWith(WikiConstants.ECLIPSE_PREFIX)) {
-			String locationPrefix = context.getWikiSpaceLink(wikiSpace).substring(WikiConstants.ECLIPSE_PREFIX.length());
+			String locationPrefix = new String(context.getWikiSpaceLink(wikiSpace).substring(WikiConstants.ECLIPSE_PREFIX.length()));
 			// + 1 below to get the WIKISPACE_DELIMITER (:)
-			String location = locationPrefix + word.substring(wikiSpace.length() + 1);
+			String location = new String(locationPrefix + word.substring(wikiSpace.length() + 1));
 			list.addAll(getResourceCompletions(word, location, documentOffset));
 		} else if (context.getWikiSpace().containsKey(wikiSpace) && context.getWikiSpaceLink(wikiSpace).startsWith(WikiConstants.PLUGIN_PREFIX)) {
-			String locationPrefix = context.getWikiSpaceLink(wikiSpace).substring(WikiConstants.PLUGIN_PREFIX.length());
+			String locationPrefix = new String(context.getWikiSpaceLink(wikiSpace).substring(WikiConstants.PLUGIN_PREFIX.length()));
 			// + 1 below to get the WIKISPACE_DELIMITER (:)
-			String location = locationPrefix + word.substring(wikiSpace.length() + 1);
+			String location = new String(locationPrefix + word.substring(wikiSpace.length() + 1));
 			list.addAll(getResourceCompletions(word, location, documentOffset));
 		}
 	}
@@ -447,7 +447,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 	private String[] getProjectList(String text) {
 		String prefix = text;
 		if (prefix != null && prefix.startsWith(WikiConstants.PATH_SEPARATOR)) {
-			prefix = prefix.substring(1);
+			prefix = new String(prefix.substring(1));
 		}
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		ArrayList names = new ArrayList();
@@ -484,7 +484,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	private String getWikiWord(String fileName) {
-		return fileName.substring(0, fileName.indexOf(WikiConstants.WIKI_FILE_EXTENSION));
+		return new String(fileName.substring(0, fileName.indexOf(WikiConstants.WIKI_FILE_EXTENSION)));
 	}
 
 	private boolean isWikiFile(String name) {
