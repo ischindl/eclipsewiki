@@ -20,16 +20,16 @@ Once the event to open a Wiki link had been received, the WikiEditor is used to 
 
 Enter TextRegion com.teaminabox.eclipse.wiki.text.TextRegion ...
 
-TextRegion was introduced as the simplest way to identify the various regions of text (wiki name, url, etc) in a Wiki document. The WikiNameRule and code responding to actions obtains a TextRegion at a given location in the document, and acts according to the type of text region found using a visitor (com.teaminabox.eclipse.wiki.text.TextRegionVisitor). The TextRegionBuilder has methods for building an appropriate text region given arbitrary text. See com.teaminabox.eclipse.wiki.text.TextRegionBuilder
+TextRegion was introduced as the simplest way to identify the various regions of text (wiki name, url, etc) in a Wiki document. The WikiNameRule and code responding to actions obtains a TextRegion at a given location in the document, and acts according to the type of text region found using a visitor (com.teaminabox.eclipse.wiki.text.TextRegionVisitor). The com.teaminabox.eclipse.wiki.text.TextRegionBuilder has methods for building an appropriate text region given arbitrary text.
 
 Adding new types of links or text to the editor should now be pretty easy.
 
-The next thing I wanted to implement was completion. At first I wanted WikiName completion, but then Eclipse resource completion was definitely a good thing too. To implement completion you need to implement an eclipse IContentAssistProcessor, my implementation is com.teaminabox.eclipse.wiki.editors.WikiCompletionProcessor See WikiCompletion for more about this since its quite straightforward.
+The next thing I wanted to implement was completion. At first I wanted WikiName completion, but then Eclipse resource completion was definitely a good thing too. To implement completion you need to implement an eclipse org.eclipse.jface.text.contentassist.IContentAssistProcessor, my implementation is com.teaminabox.eclipse.wiki.editors.WikiCompletionProcessor See WikiCompletion for more about this since its quite straightforward.
 
-The last feature I added was HoverSupport which is supported by all editors through the SourceViewerConfiguration ... read about it in HoverSupport.
+The last feature I added was HoverSupport which is supported by all editors through the org.eclipse.jface.text.source.SourceViewerConfiguration ... read about it in HoverSupport.
 
 '''But, how does all this hang together?'''
-Editors use a SourceViewerConfiguration to configure content assist, hover support, scanner etc etc. In the constructor for the WikiEditor, a WikiConfiguration instance is set that sets up all the components (com.teaminabox.eclipse.wiki.editors.WikiConfiguration) However, the actions are configured externally in the plugin.xml by using extension points.
+Editors use a org.eclipse.jface.text.source.SourceViewerConfiguration to configure content assist, hover support, scanner etc etc. In the constructor for the WikiEditor, a com.teaminabox.eclipse.wiki.editors.WikiConfiguration instance is set that sets up all the components (com.teaminabox.eclipse.wiki.editors.WikiConfiguration) However, the actions are configured externally in the plugin.xml by using extension points.
 
 Finally, the thing that caused some pain (due to my stupidity more than anything else) was navigating the eclipse workspace because I started from the basic assumption that everything is a file. But of course Eclipse now supports links and may have more exotic resource implementations in the future. Fortunately, Eclipse provides everything you need to find resources in the workspace (although discovering this was more painful than it needed have been - more documentation is required I feel.)
 
