@@ -208,7 +208,9 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 			wikiDoc = new String(wikiDoc.substring(0, wikiDoc.length() - 1));
 		}
 
-		if (wikiDoc.startsWith(WikiConstants.ECLIPSE_PREFIX)) {
+		if (wikiDoc.startsWith(WikiConstants.JAVA_LINK_PREFIX)) {
+			new WikiLinkLauncher(editor).openJavaType(wikiDoc.substring(WikiConstants.JAVA_LINK_PREFIX.length()));
+		} else if (wikiDoc.startsWith(WikiConstants.ECLIPSE_PREFIX)) {
 			String escaped = wikiDoc.replaceAll("%20", " "); //$NON-NLS-1$ //$NON-NLS-2$
 			new WikiLinkLauncher(editor).openEclipseLocation(escaped);
 		} else if (wikiDoc.startsWith(WikiConstants.PLUGIN_PREFIX)) {

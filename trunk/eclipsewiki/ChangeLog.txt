@@ -1,4 +1,4 @@
-Version XXX
+Version XXX (don't forget to add the full source in the build)
 	Added Kim Tiedemanm's patch for forced links in the SnipSnap renderer.
 	Lots of refactoring to clean up the mess of the editor code.
 	Added Craig Jones code to make the tests work properly on windows.
@@ -9,6 +9,7 @@ Version XXX
 	Implemented [ 1181020 ] Escape WikiWords for the TWiki Renderer
 	Fixed [ 1490333 ] WikiWord in heading not recognized
 	Fixed [ 1489075 ] non-WIkiWord incorrectly recognized as WIkiWord
+	Added support to link to any Java type in the current project
 	
 Version 2.4.2
 	Fixed use of deprecated key binding services.

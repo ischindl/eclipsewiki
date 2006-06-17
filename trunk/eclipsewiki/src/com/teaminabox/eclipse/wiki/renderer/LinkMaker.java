@@ -40,7 +40,7 @@ public abstract class LinkMaker {
 		if (isLinkToImage(url)) {
 			String resolved = resolveWikiLink(url);
 			if (resolved != null) {
-				return "<img alt=\"\" src=\"" + resolved + "\"/>";
+				return "<img alt=\"" + text + "\" src=\"" + resolved + "\"/>";
 			}
 			return text + " [?]";
 		}

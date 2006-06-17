@@ -41,11 +41,7 @@ public final class JavaCompletionProcessor {
 																	public int compare(Object o1, Object o2) {
 																		IJavaElement first = (IJavaElement) o1;
 																		IJavaElement second = (IJavaElement) o2;
-																		int typeName = first.getElementName().compareTo(second.getElementName());
-																		if (typeName != 0) {
-																			return typeName;
-																		}
-																		return first.getElementName().compareTo(second.getElementName());
+																		return first.getHandleIdentifier().compareTo(second.getHandleIdentifier());
 																	}
 																};
 
@@ -140,7 +136,7 @@ public final class JavaCompletionProcessor {
 		if (prefix.length() == 0) {
 			return getTypesInPackages(fragments);
 		}
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements, IJavaSearchScope.SOURCES);
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
 		SearchEngine searchEngine = new SearchEngine();
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
 		searchEngine.search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, requestor, null);
@@ -180,7 +176,7 @@ public final class JavaCompletionProcessor {
 				}
 			}
 		};
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { project }, IJavaSearchScope.SOURCES);
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { project });
 		SearchEngine searchEngine = new SearchEngine();
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.PACKAGE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
 		searchEngine.search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, requestor, null);

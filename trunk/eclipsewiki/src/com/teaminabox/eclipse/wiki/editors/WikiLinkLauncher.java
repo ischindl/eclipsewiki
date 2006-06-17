@@ -11,7 +11,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.program.Program;
@@ -30,8 +30,8 @@ import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
-import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
 /**
  * Each visitor method will return {@link Boolean#TRUE Boolean.TRUE} or {@link Boolean#FALSE Boolean.FALSE} depending on
@@ -225,8 +225,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 
 	private void openType(JavaTypeTextRegion javaTypeTextRegion) {
 		try {
-			// TODO how do we do this without using internal API?
-			EditorUtility.openInEditor(javaTypeTextRegion.getType());
+			JavaUI.openInEditor(javaTypeTextRegion.getType());
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
 		}
@@ -234,5 +233,13 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 
 	private IWorkbenchPage getActivePage() {
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+	}
+
+	public void openJavaType(String typeName) {
+		try {
+			JavaUI.openInEditor(editor.getContext().getJavaContext().getJavaProject().findType(typeName));
+		} catch (Exception e) {
+			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
+		}
 	}
 }
