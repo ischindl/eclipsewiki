@@ -85,12 +85,12 @@ td {
 <tr><td>very</td><td>cool</td><td>indeed</td></tr>
 <tr><td>WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></td><td>SnipSnapContentRendererTest<a href="http://--wiki/SnipSnapContentRendererTest">?</a></td><td><a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></td></tr>
 <tr><td><a href="http://www.acronymfinder.com/af-query.asp?Acronym=WTF">Acronym:WTF</a> </td><td><a href="http://www.google.com">http://www.google.com</a> </td><td><a href="http://eclipsewiki.free.fr/index.php?page=license.html">EclipseWiki:license.html</a> </td></tr>
-<tr><td>an</td><td>image</td><td><img alt="" src="http://www.eclipse.org/images/EclipseBannerPic.jpg"/> </td></tr>
+<tr><td>an</td><td>image</td><td><img alt="http://www.eclipse.org/images/EclipseBannerPic.jpg" src="http://www.eclipse.org/images/EclipseBannerPic.jpg"/> </td></tr>
 </table>
 <p>
 </p>
 <p>
-Text with Java types <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass</a> and an inner class <a href="http://--wiki/Eclipse:/TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">com.teaminabox.foo.BigClass.InnerClass</a></p>
+Text with Java types <a href="http://--wiki/Java:com.teaminabox.foo.BigClass">com.teaminabox.foo.BigClass</a> and an inner class <a href="http://--wiki/Java:com.teaminabox.foo.BigClass$InnerClass">com.teaminabox.foo.BigClass.InnerClass</a></p>
 <p>
 </p>
 <p>

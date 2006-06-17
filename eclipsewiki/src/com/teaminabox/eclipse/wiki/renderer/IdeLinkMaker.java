@@ -1,9 +1,6 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
-import org.eclipse.jdt.core.JavaModelException;
-
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
@@ -46,16 +43,8 @@ public final class IdeLinkMaker extends LinkMaker {
 	}
 
 	public String make(JavaTypeTextRegion region) {
-		try {
-			if (region.getType().getUnderlyingResource() != null) {
-				String url = WikiConstants.WIKI_HREF + WikiConstants.ECLIPSE_PREFIX + region.getType().getUnderlyingResource().getFullPath().toString();
-				return getLink(url, getTextForJavaType(region));
-			}
-			return getTextForJavaType(region);
-		} catch (JavaModelException e) {
-			WikiPlugin.getDefault().logAndReport("Error", e.getLocalizedMessage(), e);
-			return "Error";
-		}
+		String url = WikiConstants.WIKI_HREF + WikiConstants.JAVA_LINK_PREFIX + region.getType().getFullyQualifiedName();
+		return getLink(url, getTextForJavaType(region));
 	}
 
 	public String make(UrlTextRegion urlTextRegion) {

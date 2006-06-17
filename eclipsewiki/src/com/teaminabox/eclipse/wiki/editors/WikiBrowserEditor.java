@@ -30,6 +30,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.outline.WikiContentOutlinePage;
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
@@ -176,7 +177,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 
 	private void initialiseSyntaxBrowser() {
 		String renderer = RendererFactory.getContentRendererName();
-		IPath path = new Path("/help").append(renderer + ".html");
+		IPath path = new Path(WikiConstants.HELP_PATH).append(renderer + ".html");
 		try {
 			URL url = FileLocator.find(WikiPlugin.getDefault().getBundle(), path, null);
 			url = FileLocator.resolve(url);
