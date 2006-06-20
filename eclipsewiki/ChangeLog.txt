@@ -8,7 +8,7 @@ Version XXX (don't forget to add the full source in the build)
 	Implemented [ 1444086 ] Shorten Class names in exports
 	Implemented [ 1181020 ] Escape WikiWords for the TWiki Renderer
 	Fixed [ 1490333 ] WikiWord in heading not recognized
-	Fixed [ 1489075 ] non-WIkiWord incorrectly recognized as WIkiWord
+	Fixed [ 1489075 ] non-WIkiWord incorrectly recognized as WikiWord
 	Added support to link to any Java type in the current project
 	
 Version 2.4.2

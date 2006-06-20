@@ -70,6 +70,7 @@ public final class JavaCompletionProcessor {
 			if (includePackages) {
 				buildProposals(packages, text, documentOffset);
 			}
+			proposals.addAll(new JavaCompletionProcessor2().getProposals(project, viewer, documentOffset));
 		} catch (CoreException e) {
 			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
 		}
@@ -136,7 +137,7 @@ public final class JavaCompletionProcessor {
 		if (prefix.length() == 0) {
 			return getTypesInPackages(fragments);
 		}
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements, IJavaSearchScope.SOURCES);
 		SearchEngine searchEngine = new SearchEngine();
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
 		searchEngine.search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, requestor, null);

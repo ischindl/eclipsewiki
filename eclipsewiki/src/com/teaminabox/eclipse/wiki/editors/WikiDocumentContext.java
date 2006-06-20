@@ -121,8 +121,7 @@ public final class WikiDocumentContext {
 		IContainer container = getWorkingLocation();
 		String wikiFileName = word + WikiConstants.WIKI_FILE_EXTENSION;
 		Path path = new Path(wikiFileName);
-		IFile file = container.getFile(path);
-		return file;
+		return container.getFile(path);
 	}
 
 	void createNewFileIfNeeded(IFile file) throws CoreException {
