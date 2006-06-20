@@ -30,6 +30,6 @@ Mnemonic | Rendering | Comment
 
 Text with Java types com.teaminabox.foo.BigClass and an inner class com.teaminabox.foo.BigClass.InnerClass
 
-A [forced link] and one to an existing page: [wards browser content renderer test]
+A [forced link] and one to an existing page: [Wards Browser Content Renderer Test]
 
 Bug: 1490342 URL in brackets detected incorrectly: I am sure you have heard of Google (http://www.google.com).

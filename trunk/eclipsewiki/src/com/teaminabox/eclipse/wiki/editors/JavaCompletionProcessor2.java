@@ -18,12 +18,16 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.IEditorPart;
 
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
+/**
+ * This is a replacement for the JavaCompletionProcessor.
+ * It will replace the JavaCompletionProcessor when I've figured out how to make it search in source too.
+ */
 public class JavaCompletionProcessor2 {
+	
 	private static final DecimalFormat	SORT_FORMAT	= new DecimalFormat("0000000000");
 	private String						textToComplete;
 	private TreeMap						proposals	= new TreeMap(new Comparator() {
@@ -36,7 +40,7 @@ public class JavaCompletionProcessor2 {
 
 													});
 
-	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, final int documentOffset, IEditorPart editor) throws BadLocationException {
+	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, final int documentOffset) throws BadLocationException {
 		proposals.clear();
 		textToComplete = getTextToComplete(viewer, documentOffset);
 
