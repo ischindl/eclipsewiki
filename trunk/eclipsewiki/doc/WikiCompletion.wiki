@@ -2,3 +2,4 @@ Back to HomePage, GeneralOverview
 
 The class of interest is the com.teaminabox.eclipse.wiki.editors.WikiCompletionProcessor which is fairly self explanatory. Once again, there were complications do to the fact that the Eclipse resource links can have spaces in them so its more fiddly than it otherwise might have been.
 
+A problem I am working with at the moment is to use Eclipse 3.2 Java completion support. I have started the class com.teaminabox.eclipse.wiki.editors.JavaCompletionProcessor2 which does everything we need except search for completions in source code in the project. The compromise is to use com.teaminabox.eclipse.wiki.editors.JavaCompletionProcessor for searching source code only and com.teaminabox.eclipse.wiki.editors.JavaCompletionProcessor2 for everything else.
