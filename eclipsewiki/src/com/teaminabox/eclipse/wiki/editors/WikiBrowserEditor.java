@@ -1,12 +1,9 @@
 package com.teaminabox.eclipse.wiki.editors;
 
-import java.net.URL;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -174,14 +171,12 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 	public void propertyChange(PropertyChangeEvent event) {
 		initialiseSyntaxBrowser();
 	}
-
+	
 	private void initialiseSyntaxBrowser() {
 		String renderer = RendererFactory.getContentRendererName();
 		IPath path = new Path(WikiConstants.HELP_PATH).append(renderer + ".html");
 		try {
-			URL url = FileLocator.find(WikiPlugin.getDefault().getBundle(), path, null);
-			url = FileLocator.resolve(url);
-			syntaxBrowser.setUrl(url.toExternalForm());
+			syntaxBrowser.setText(WikiPlugin.getDefault().loadTextContents(path));
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Unable to load syntax", e);
 			syntaxBrowser.setText(e.getLocalizedMessage());
