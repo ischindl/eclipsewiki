@@ -176,7 +176,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		String renderer = RendererFactory.getContentRendererName();
 		IPath path = new Path(WikiConstants.HELP_PATH).append(renderer + ".html");
 		try {
-			syntaxBrowser.setText(WikiPlugin.getDefault().loadTextContents(path));
+			syntaxBrowser.setText(WikiPlugin.getDefault().loadTextContentsInPlugin(path));
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Unable to load syntax", e);
 			syntaxBrowser.setText(e.getLocalizedMessage());

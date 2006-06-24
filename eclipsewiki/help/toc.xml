@@ -10,6 +10,7 @@
 		<topic label="Wards Wiki"  href="help/com.teaminabox.eclipse.wiki.renderer.WardsBrowserContentRenderer.html"></topic>
 		<topic label="TWiki"  href="help/com.teaminabox.eclipse.wiki.renderer.TwikiBrowserContentRenderer.html"></topic>
 		<topic label="SnipSnap"  href="help/com.teaminabox.eclipse.wiki.renderer.SnipSnapContentRenderer.html"></topic>
+		<topic label="Headers and Footers"  href="help/headersAndFooters.html"></topic>
 	</topic>
 	<topic label="WikiSpace"  href="help/wikispace.html"> </topic>
 </toc>

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
@@ -29,20 +32,23 @@ import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
 
-	public static final String			CLASS_MONO_SPACE			= "monospace";
-	public static final String			CLASS_QUOTE					= "quote";
-	public static final String			TABLE_DELIMITER				= "|";
-	public static final String			HR							= "hr";
-	public static final String			NEW_WIKIDOC_HREF			= "?";
-	private StringBuffer				buffer;
-	private int							currentLine;
-	private int							currentListDepth;
-	private boolean						inTable;
-	private WikiDocumentContext			context;
-	private String[]					document;
-	private String						encoding;
+	public static final String	FOOTER_FILE			= "footer.html";
+	public static final String	HEADER_FILE			= "header.html";
+	public static final String	CLASS_MONO_SPACE	= "monospace";
+	public static final String	CLASS_QUOTE			= "quote";
+	public static final String	TABLE_DELIMITER		= "|";
+	public static final String	HR					= "hr";
+	public static final String	NEW_WIKIDOC_HREF	= "?";
+	
+	private WikiDocumentContext	context;
+	private StringBuffer		buffer;
+	private int					currentLine;
+	private int					currentListDepth;
+	private boolean				inTable;
+	private String[]			document;
+	private String				encoding;
 
-	private LinkMaker					linkMaker;
+	private LinkMaker			linkMaker;
 
 	public abstract TextRegionMatcher[] getRendererMatchers();
 
@@ -61,16 +67,25 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		initialise(context);
 		try {
 			buffer = new StringBuffer();
-			appendHeader();
+			appendHtmlHead();
+			appendContentsIfExists(AbstractContentRenderer.HEADER_FILE);
 			buffer.append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
 			appendNewLine();
 			appendContents();
+			appendContentsIfExists(AbstractContentRenderer.FOOTER_FILE);
 			appendFooter();
 			return buffer.toString();
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log(buffer.toString());
 			WikiPlugin.getDefault().log(e.getLocalizedMessage(), e);
 			return "<html><body><p>" + e.getLocalizedMessage() + "</p></body></html>";
+		}
+	}
+
+	private void appendContentsIfExists(String fileName) throws IOException, CoreException {
+		IResource content = context.getWorkingLocation().findMember(fileName);
+		if (content != null && content.exists() && content.getType() == IResource.FILE) {
+			append(context.loadContents((IFile) content));
 		}
 	}
 
@@ -84,7 +99,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	protected abstract void initialise();
 
-	private void appendHeader() throws IOException {
+	private void appendHtmlHead() throws IOException {
 		appendln("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
 		appendln("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 		appendln("<html>");
@@ -151,7 +166,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	protected void appendStyle() throws IOException {
 		appendln("<style type=\"text/css\"><!--");
 		IPath path = new Path("style").append(RendererFactory.getContentRendererName() + ".css");
-		appendln(WikiPlugin.getDefault().loadTextContents(path));
+		appendln(WikiPlugin.getDefault().loadTextContentsInPlugin(path));
 		appendln("--></style>");
 	}
 
@@ -290,11 +305,11 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *  
 	 *   
-	 *    replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
 	 *    
-	 *   
+	 *     replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
+	 *     
+	 *    
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {

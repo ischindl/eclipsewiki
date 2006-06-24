@@ -73,7 +73,7 @@ public final class WikiPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	public String loadTextContents(IPath path) throws IOException {
+	public String loadTextContentsInPlugin(IPath path) throws IOException {
 		InputStream stream = FileLocator.openStream(getBundle(), path, false);
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
 		StringBuffer buffer = new StringBuffer();
