@@ -85,7 +85,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	private void appendContentsIfExists(String fileName) throws IOException, CoreException {
 		IResource content = context.getWorkingLocation().findMember(fileName);
 		if (content != null && content.exists() && content.getType() == IResource.FILE) {
-			append(context.loadContents((IFile) content));
+			getBuffer().append(context.loadContents((IFile) content));
 		}
 	}
 
