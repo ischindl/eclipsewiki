@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
@@ -26,14 +23,12 @@ import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.TextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.UndefinedTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
-import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
 
-	public static final String	FOOTER_FILE			= "footer.html";
-	public static final String	HEADER_FILE			= "header.html";
 	public static final String	CLASS_MONO_SPACE	= "monospace";
 	public static final String	CLASS_QUOTE			= "quote";
 	public static final String	TABLE_DELIMITER		= "|";
@@ -68,24 +63,15 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		try {
 			buffer = new StringBuffer();
 			appendHtmlHead();
-			appendContentsIfExists(AbstractContentRenderer.HEADER_FILE);
 			buffer.append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
 			appendNewLine();
 			appendContents();
-			appendContentsIfExists(AbstractContentRenderer.FOOTER_FILE);
 			appendFooter();
 			return buffer.toString();
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log(buffer.toString());
 			WikiPlugin.getDefault().log(e.getLocalizedMessage(), e);
 			return "<html><body><p>" + e.getLocalizedMessage() + "</p></body></html>";
-		}
-	}
-
-	private void appendContentsIfExists(String fileName) throws IOException, CoreException {
-		IResource content = context.getWorkingLocation().findMember(fileName);
-		if (content != null && content.exists() && content.getType() == IResource.FILE) {
-			getBuffer().append(context.loadContents((IFile) content));
 		}
 	}
 
@@ -118,7 +104,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	}
 
 	private void appendContents() {
-		document = context.getDocument();
+		document = context.getDocumentWithHeaderAndFooter();
 		currentLine = 0;
 		while (currentLine < document.length) {
 			appendLine(document[currentLine]);
