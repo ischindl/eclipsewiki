@@ -3,6 +3,7 @@ package com.teaminabox.eclipse.wiki.editors;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -115,6 +116,16 @@ public final class WikiDocumentContext {
 			return null;
 		}
 		return (IFile) resource;
+	}
+	
+	public String loadContents(IFile file) throws CoreException, IOException {
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getContents()));
+		StringBuffer buffer = new StringBuffer();
+		int c;
+		while ((c = bufferedReader.read()) != -1) {
+			buffer.append((char) c);
+		}
+		return buffer.toString();
 	}
 
 	IFile getWikiFile(String word) {

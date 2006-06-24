@@ -10,6 +10,7 @@ Version XXX (don't forget to add the full source in the build)
 	Fixed [ 1490333 ] WikiWord in heading not recognized
 	Fixed [ 1489075 ] non-WIkiWord incorrectly recognized as WikiWord
 	Added support to link to any Java type in the current project
+	Implemented feature [ 1378079 ] Add Headers and Footers
 	
 Version 2.4.2
 	Fixed use of deprecated key binding services.
