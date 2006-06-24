@@ -1,13 +1,12 @@
 package com.teaminabox.eclipse.wiki.editors;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiTest;
 import com.teaminabox.eclipse.wiki.preferences.WikiPreferences;
-import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
 public final class WikiDocumentContextTest extends WikiTest {
 
@@ -18,17 +17,10 @@ public final class WikiDocumentContextTest extends WikiTest {
 		super(name);
 	}
 
-	
 	protected void setUp() throws Exception {
 		super.setUp();
 		WikiBrowserEditor editor = createWikiDocumentAndOpen("", WikiDocumentContextTest.WIKIDOC + WikiConstants.WIKI_FILE_EXTENSION);
 		context = editor.getEditor().getContext();
-	}
-
-	public void testLoadContents() throws Exception {
-		create("some content", "doc.txt");
-		String contents = context.loadContents((IFile) context.getWorkingLocation().findMember("doc.txt"));
-		assertEquals("some content", contents);
 	}
 
 	public void testGetWorkingLocation() {

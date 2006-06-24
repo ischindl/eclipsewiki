@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
  */
 public final class WikiDocumentContext {
 
+	public static final String	FOOTER_FILE		= "footer.wiki";
+	public static final String	HEADER_FILE		= "header.wiki";
 	private static final String	DEFAULT_CHARSET	= "UTF8";
 	private final IFile			wikiDocument;
 	private Properties			localWikispace;
@@ -117,16 +120,6 @@ public final class WikiDocumentContext {
 		}
 		return (IFile) resource;
 	}
-	
-	public String loadContents(IFile file) throws CoreException, IOException {
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getContents()));
-		StringBuffer buffer = new StringBuffer();
-		int c;
-		while ((c = bufferedReader.read()) != -1) {
-			buffer.append((char) c);
-		}
-		return buffer.toString();
-	}
 
 	IFile getWikiFile(String word) {
 		IContainer container = getWorkingLocation();
@@ -169,19 +162,59 @@ public final class WikiDocumentContext {
 		return local;
 	}
 
-	public String[] getDocument() {
+	public String[] getDocumentWithHeaderAndFooter() {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(wikiDocument.getContents()));
-			String line;
 			ArrayList lines = new ArrayList();
-			while ((line = reader.readLine()) != null) {
-				lines.add(line);
+			IFile header = getHeader();
+			if (header != null) {
+				lines.addAll(getContents(header.getContents()));
+			}
+			lines.addAll(getContents(wikiDocument.getContents()));
+			IFile footer = getFooter();
+			if (footer != null) {
+				lines.addAll(getContents(footer.getContents()));
 			}
 			return (String[]) lines.toArray(new String[lines.size()]);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Cannot get Document", e);
 			return new String[] { "Unable to load document - please check the logs." };
 		}
+	}
+
+	private IFile getHeader() {
+		return getFile(HEADER_FILE);
+	}
+
+	private IFile getFooter() {
+		return getFile(FOOTER_FILE);
+	}
+
+	private IFile getFile(String file) {
+		IResource content = getWorkingLocation().findMember(file);
+		if (content != null && content.exists() && content.getType() == IResource.FILE) {
+			return (IFile) content;
+		}
+		return null;
+	}
+	
+	public String[] getDocument() {
+		try {
+			ArrayList lines = getContents(wikiDocument.getContents());
+			return (String[]) lines.toArray(new String[lines.size()]);
+		} catch (Exception e) {
+			WikiPlugin.getDefault().log("Cannot get Document", e);
+			return new String[] { "Unable to load document - please check the logs." };
+		}
+	}
+
+	private ArrayList getContents(InputStream contents) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(contents));
+		String line;
+		ArrayList lines = new ArrayList();
+		while ((line = reader.readLine()) != null) {
+			lines.add(line);
+		}
+		return lines;
 	}
 
 	public boolean isExcluded(String word) {
@@ -196,3 +229,4 @@ public final class WikiDocumentContext {
 		javaContext.dispose();
 	}
 }
+
