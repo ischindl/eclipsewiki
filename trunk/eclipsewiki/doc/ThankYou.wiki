@@ -5,7 +5,7 @@ I would also like to thank the following for help and advice:
  Lance Walton
  Chris King
  Paul Gracie
-
-And the following for writing some code:
  Torsten Juergeleit
  Ronald Steinhau
+ Marcio Marchini
+ Craig Jones
