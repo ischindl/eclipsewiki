@@ -1,4 +1,4 @@
-package com.teaminabox.eclipse.wiki.editors;
+package com.teaminabox.eclipse.wiki.editors.completion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,13 +17,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.PackageDeclarationMatch;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.core.search.TypeDeclarationMatch;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -37,13 +33,7 @@ import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 public final class JavaCompletionProcessor {
 
-	public static final Comparator	IJAVA_ELEMENT_COMPARATOR	= new Comparator() {
-																	public int compare(Object o1, Object o2) {
-																		IJavaElement first = (IJavaElement) o1;
-																		IJavaElement second = (IJavaElement) o2;
-																		return first.getHandleIdentifier().compareTo(second.getHandleIdentifier());
-																	}
-																};
+	public static final Comparator	JAVA_ELEMENT_COMPARATOR	= new JavaElementComparator();
 
 	private IJavaProject			project;
 	private ArrayList				proposals;
@@ -54,27 +44,26 @@ public final class JavaCompletionProcessor {
 		proposals = new ArrayList();
 	}
 
-	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, int documentOffset) throws BadLocationException {
-		includePackages = true;
-		proposals.clear();
-
-		this.project = project;
-		String text = getFullyQualifiedTypePrefix(viewer, documentOffset);
+	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, int documentOffset) throws BadLocationException, CoreException {
+		String text = initialise(project, viewer, documentOffset);
 		if (text == null) {
 			return proposals;
 		}
-		try {
-			IPackageFragment[] packages = getMatchingPackageFragments(text);
-			IType[] types = getMatchingTypes(packages, text);
-			buildProposals(types, text, documentOffset);
-			if (includePackages) {
-				buildProposals(packages, text, documentOffset);
-			}
-			proposals.addAll(new JavaCompletionProcessor2().getProposals(project, viewer, documentOffset));
-		} catch (CoreException e) {
-			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
+		IPackageFragment[] packages = getMatchingPackageFragments(text);
+		IType[] types = getMatchingTypes(packages, text);
+		buildProposals(types, text, documentOffset);
+		if (includePackages) {
+			buildProposals(packages, text, documentOffset);
 		}
+		proposals.addAll(new JavaCompletionProcessor2().getProposals(project, viewer, documentOffset));
 		return proposals;
+	}
+
+	private String initialise(IJavaProject project, ITextViewer viewer, int documentOffset) throws BadLocationException {
+		includePackages = true;
+		proposals.clear();
+		this.project = project;
+		return getFullyQualifiedTypePrefix(viewer, documentOffset);
 	}
 
 	private void buildProposals(IType[] types, String text, int documentOffset) throws JavaModelException {
@@ -115,15 +104,7 @@ public final class JavaCompletionProcessor {
 	}
 
 	private IType[] getMatchingTypes(IPackageFragment[] fragments, String text) throws CoreException {
-		final Set matches = new TreeSet(JavaCompletionProcessor.IJAVA_ELEMENT_COMPARATOR);
-		SearchRequestor requestor = new SearchRequestor() {
-			public void acceptSearchMatch(SearchMatch match) {
-				if (match instanceof TypeDeclarationMatch) {
-					TypeDeclarationMatch tdm = (TypeDeclarationMatch) match;
-					matches.add(tdm.getElement());
-				}
-			}
-		};
+		final Set matches = new TreeSet(JavaCompletionProcessor.JAVA_ELEMENT_COMPARATOR);
 		IJavaElement[] elements;
 		if (fragments.length == 0) {
 			elements = new IJavaElement[] { project };
@@ -138,9 +119,8 @@ public final class JavaCompletionProcessor {
 			return getTypesInPackages(fragments);
 		}
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements, IJavaSearchScope.SOURCES);
-		SearchEngine searchEngine = new SearchEngine();
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
-		searchEngine.search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, requestor, null);
+		new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, new TypeSearchRequestor(matches), null);
 		return (IType[]) matches.toArray(new IType[matches.size()]);
 	}
 
@@ -168,19 +148,10 @@ public final class JavaCompletionProcessor {
 		if (text.endsWith(".")) {
 			prefix = new String(text.substring(0, text.length() - 1));
 		}
-		final Set fragments = new TreeSet(JavaCompletionProcessor.IJAVA_ELEMENT_COMPARATOR);
-		SearchRequestor requestor = new SearchRequestor() {
-			public void acceptSearchMatch(SearchMatch match) {
-				if (match instanceof PackageDeclarationMatch) {
-					PackageDeclarationMatch tdm = (PackageDeclarationMatch) match;
-					fragments.add(tdm.getElement());
-				}
-			}
-		};
+		final Set fragments = new TreeSet(JavaCompletionProcessor.JAVA_ELEMENT_COMPARATOR);
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { project });
-		SearchEngine searchEngine = new SearchEngine();
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.PACKAGE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
-		searchEngine.search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, requestor, null);
+		new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, new PackageSearchRequestor(fragments), null);
 		return (IPackageFragment[]) fragments.toArray(new IPackageFragment[fragments.size()]);
 	}
 
@@ -191,22 +162,33 @@ public final class JavaCompletionProcessor {
 	 */
 	private String getFullyQualifiedTypePrefix(ITextViewer viewer, int documentOffset) throws BadLocationException {
 		IDocument document = viewer.getDocument();
-		int characterIndex = documentOffset - 1;
-		if (characterIndex < 0 || !JavaUtils.isJavaClassNamePart(document.getChar(characterIndex))) {
+		int cursorIndex = documentOffset - 1;
+		if (cursorIndex < 0 || !JavaUtils.isJavaClassNamePart(document.getChar(cursorIndex))) {
 			return null;
 		}
-		int start = characterIndex;
-		while (start > 0 && JavaUtils.isJavaClassNamePart(document.getChar(start))) {
-			start--;
-		}
-		while (start < characterIndex && !Character.isJavaIdentifierPart(document.getChar(start))) {
-			start++;
-		}
-		String prefix = document.get(start, characterIndex - start + 1);
+		int start = findBeginningOfText(document, cursorIndex);
+		start = findEndOfText(document, cursorIndex, start);
+		String prefix = document.get(start, cursorIndex - start + 1);
 		if (".".equals(prefix)) {
 			return null;
 		}
 		return prefix;
+	}
+
+	private int findEndOfText(IDocument document, int cursorIndex, int from) throws BadLocationException {
+		int end = from;
+		while (end < cursorIndex && !Character.isJavaIdentifierPart(document.getChar(end))) {
+			end++;
+		}
+		return end;
+	}
+
+	private int findBeginningOfText(IDocument document, int characterIndex) throws BadLocationException {
+		int start = characterIndex;
+		while (start > 0 && JavaUtils.isJavaClassNamePart(document.getChar(start))) {
+			start--;
+		}
+		return start;
 	}
 
 }

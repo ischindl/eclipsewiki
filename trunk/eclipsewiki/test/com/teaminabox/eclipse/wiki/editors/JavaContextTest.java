@@ -2,7 +2,6 @@ package com.teaminabox.eclipse.wiki.editors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 
 import com.teaminabox.eclipse.wiki.WikiTest;
 
@@ -18,7 +17,7 @@ public class JavaContextTest extends WikiTest {
 		super(name);
 	}
 
-	public void testGetJavaProjectInNonJavaProject() throws CoreException {
+	public void testGetJavaProjectInNonJavaProject() throws Exception {
 		IProject project = createNonJavaProject("simpleProject");
 		IFile file = createFile(project, "test.txt", "Hi");
 		WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);
@@ -27,35 +26,35 @@ public class JavaContextTest extends WikiTest {
 		project.delete(true, true, null);
 	}
 
-	public void testIsInJavaProject() throws CoreException {
+	public void testIsInJavaProject() throws Exception {
 		IFile file = createFile(getJavaProject().getProject(), "test.txt", "Hi");
 		WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);
 		JavaContext javaContext = wikiDocumentContext.getJavaContext();
 		assertTrue(javaContext.isInJavaProject());
 	}
 
-	public void testStartsWithPackageNameForPartialMatch() throws CoreException {
+	public void testStartsWithPackageNameForPartialMatch() throws Exception {
 		create(JavaContextTest.CLASS_SOURCE, JavaContextTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");
 		IFile file = createFile(getJavaProject().getProject(), "test.txt", "Hi");
 		WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);
 		assertTrue(wikiDocumentContext.getJavaContext().startsWithPackageName("com...blah"));
 	}
 
-	public void testStartsWithPackageNameForFullyQualifiedName() throws CoreException {
+	public void testStartsWithPackageNameForFullyQualifiedName() throws Exception {
 		create(JavaContextTest.CLASS_SOURCE, JavaContextTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");
 		IFile file = createFile(getJavaProject().getProject(), "test.txt", "Hi");
 		WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);
 		assertTrue(wikiDocumentContext.getJavaContext().startsWithPackageName(JavaContextTest.CLASS_NAME));
 	}
 
-	public void testStartsWithPackageNameWhenFalse() throws CoreException {
+	public void testStartsWithPackageNameWhenFalse() throws Exception {
 		create(JavaContextTest.CLASS_SOURCE, JavaContextTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");
 		IFile file = createFile(getJavaProject().getProject(), "test.txt", "Hi");
 		WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);
 		assertFalse(wikiDocumentContext.getJavaContext().startsWithPackageName("something else"));
 	}
 
-	public void testStartsWithPackageNameWhenNewPackageAdded() throws CoreException {
+	public void testStartsWithPackageNameWhenNewPackageAdded() throws Exception {
 		create(JavaContextTest.CLASS_SOURCE, JavaContextTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");
 		IFile file = createFile(getJavaProject().getProject(), "test.txt", "Hi");
 		WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);

@@ -1,8 +1,9 @@
-package com.teaminabox.eclipse.wiki.editors;
+package com.teaminabox.eclipse.wiki.editors.completion;
 
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import com.teaminabox.eclipse.wiki.WikiTest;
+import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
 public final class WikiCompletionProcessorTest extends WikiTest {
 

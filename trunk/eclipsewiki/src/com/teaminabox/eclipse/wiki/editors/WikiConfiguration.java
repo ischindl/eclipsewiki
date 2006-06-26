@@ -13,6 +13,8 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
+import com.teaminabox.eclipse.wiki.editors.completion.WikiCompletionProcessor;
+
 public final class WikiConfiguration extends SourceViewerConfiguration {
 	private WikiDoubleClickStrategy	doubleClickStrategy;
 	private WikiScanner				scanner;

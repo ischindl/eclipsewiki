@@ -42,7 +42,7 @@ public final class WikiDocumentContext {
 	private HashSet				excludeList;
 	private JavaContext			javaContext;
 
-	public WikiDocumentContext(IFile wikiDocument) {
+	public WikiDocumentContext(IFile wikiDocument) throws CoreException, IOException {
 		this.wikiDocument = wikiDocument;
 		loadEnvironment();
 		javaContext = new JavaContext(this);
@@ -52,7 +52,7 @@ public final class WikiDocumentContext {
 		return javaContext;
 	}
 
-	public void loadEnvironment() {
+	public void loadEnvironment() throws IOException, CoreException {
 		loadLocalWikiSpace();
 		loadExcludes();
 	}
@@ -71,24 +71,20 @@ public final class WikiDocumentContext {
 		}
 	}
 
-	private void loadExcludes() {
-		try {
-			excludeList = new HashSet();
-			IContainer container = getWorkingLocation();
-			Path path = new Path(WikiConstants.EXCLUDES_FILE);
-			IFile file = container.getFile(path);
-			if (file.exists() && !file.isPhantom()) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents(), getCharset()));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					if (line.trim().length() > 0) {
-						excludeList.add(line.trim());
-					}
+	private void loadExcludes() throws IOException, CoreException {
+		excludeList = new HashSet();
+		IContainer container = getWorkingLocation();
+		Path path = new Path(WikiConstants.EXCLUDES_FILE);
+		IFile file = container.getFile(path);
+		if (file.exists() && !file.isPhantom()) {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents(), getCharset()));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.trim().length() > 0) {
+					excludeList.add(line.trim());
 				}
-				reader.close();
 			}
-		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
+			reader.close();
 		}
 	}
 
@@ -196,7 +192,7 @@ public final class WikiDocumentContext {
 		}
 		return null;
 	}
-	
+
 	public String[] getDocument() {
 		try {
 			ArrayList lines = getContents(wikiDocument.getContents());
@@ -229,4 +225,3 @@ public final class WikiDocumentContext {
 		javaContext.dispose();
 	}
 }
-

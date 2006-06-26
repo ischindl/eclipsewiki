@@ -75,6 +75,10 @@ public final class WikiPlugin extends AbstractUIPlugin {
 
 	public String loadTextContentsInPlugin(IPath path) throws IOException {
 		InputStream stream = FileLocator.openStream(getBundle(), path, false);
+		return loadContents(stream);
+	}
+
+	public String loadContents(InputStream stream) throws IOException {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
 		StringBuffer buffer = new StringBuffer();
 		int c;
@@ -160,7 +164,7 @@ public final class WikiPlugin extends AbstractUIPlugin {
 					editor.redrawTextAsync();
 				}
 			}
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 			log("WikiEditor: Resource Change Error", e);
 		}
 	}

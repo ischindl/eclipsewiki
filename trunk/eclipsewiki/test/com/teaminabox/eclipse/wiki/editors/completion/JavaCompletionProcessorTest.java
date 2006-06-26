@@ -1,4 +1,4 @@
-package com.teaminabox.eclipse.wiki.editors;
+package com.teaminabox.eclipse.wiki.editors.completion;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,7 @@ import org.eclipse.ui.PartInitException;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.WikiTest;
+import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
 public final class JavaCompletionProcessorTest extends WikiTest {
 
@@ -38,10 +39,13 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 		ArrayList proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "f", 1);
 		assertEquals(2, proposals.size());
 		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		
 		assertEquals("foo", proposal.getDisplayString());
 		assertEquals("Image", WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.PACKAGE_ICON), proposal.getImage());
+		
 		proposal = (ICompletionProposal) proposals.get(1);
 		assertEquals("foo.bar", proposal.getDisplayString());
+		
 		assertEquals("Image", WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.PACKAGE_ICON), proposal.getImage());
 	}
 

@@ -1,4 +1,4 @@
-package com.teaminabox.eclipse.wiki.editors;
+package com.teaminabox.eclipse.wiki.editors.completion;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
+import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
+import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
