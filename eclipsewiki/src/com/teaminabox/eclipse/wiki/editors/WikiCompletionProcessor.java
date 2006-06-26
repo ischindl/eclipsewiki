@@ -259,52 +259,62 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 		if (path == null) {
 			path = "";
 		}
-		Set plugIds = new HashSet();
-		if (path.length() == 0) {
+		Set plugIds = gatherPluginIds(path);
+		SortedMap selectedIDs = new TreeMap();
 
-			String[] projects = getProjectList("");
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			for (int i = 0; i < projects.length; i++) {
-				String projName = projects[i];
-				IProject proj = root.getProject(projName);
-				if (proj.getFile("plugin.xml").exists() || proj.getFile("fragment.xml").exists()) {
-					String id = PluginProjectVisitor.extractPlugID(proj);
-					if (id != null) {
-						plugIds.add(id);
+		for (Iterator ids = plugIds.iterator(); ids.hasNext();) {
+			String currPluginID = (String) ids.next();
+			addWikiFromPlugin(path, currPluginID, selectedIDs);
+		}
+		return (String[]) selectedIDs.values().toArray(new String[selectedIDs.size()]);
+	}
+
+	private void addWikiFromPlugin(String path, String currPluginID, SortedMap selectedIDs) {
+		if (path.length() == 0 || currPluginID.startsWith(path)) {
+			IPath plugDirPath = null;
+			IProject proj = PluginProjectVisitor.locateProjectInWorkspace(currPluginID);
+			if (proj != null) {
+				plugDirPath = proj.getRawLocation();
+			} else {
+				plugDirPath = PluginResourceTextRegion.getPluginPath(currPluginID);
+			}
+			if (plugDirPath != null) {
+				File plugDir = plugDirPath.toFile();
+				if (plugDir != null && plugDir.exists()) {
+					if (new File(plugDir, WIKI_FOLDER).exists()) {
+						selectedIDs.put(currPluginID, currPluginID);
 					}
 				}
 			}
 		}
+	}
 
+	private Set gatherPluginIds(String path) {
+		Set plugIds = new HashSet();
+		if (path.length() == 0) {
+			getPluginsFromWorkspace(plugIds);
+		}
 		IExtensionRegistry extensionRegistry = org.eclipse.core.runtime.Platform.getExtensionRegistry();
 		for (int i = 0; i < extensionRegistry.getNamespaces().length; i++) {
 			String id = extensionRegistry.getNamespaces()[i];
 			plugIds.add(id);
 		}
+		return plugIds;
+	}
 
-		SortedMap selectedIDs = new TreeMap();
-
-		for (Iterator ids = plugIds.iterator(); ids.hasNext();) {
-			String currPluginID = (String) ids.next();
-			if (path.length() == 0 || currPluginID.startsWith(path)) {
-				IPath plugDirPath = null;
-				IProject proj = PluginProjectVisitor.locateProjectInWorkspace(currPluginID);
-				if (proj != null) {
-					plugDirPath = proj.getRawLocation();
-				} else {
-					plugDirPath = PluginResourceTextRegion.getPluginPath(currPluginID);
-				}
-				if (plugDirPath != null) {
-					File plugDir = plugDirPath.toFile();
-					if (plugDir != null && plugDir.exists()) {
-						if (new File(plugDir, WIKI_FOLDER).exists()) {
-							selectedIDs.put(currPluginID, currPluginID);
-						}
-					}
+	private void getPluginsFromWorkspace(Set plugIds) {
+		String[] projects = getProjectList("");
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		for (int i = 0; i < projects.length; i++) {
+			String projName = projects[i];
+			IProject proj = root.getProject(projName);
+			if (proj.getFile("plugin.xml").exists() || proj.getFile("fragment.xml").exists()) {
+				String id = PluginProjectVisitor.extractPlugID(proj);
+				if (id != null) {
+					plugIds.add(id);
 				}
 			}
 		}
-		return (String[]) selectedIDs.values().toArray(new String[selectedIDs.size()]);
 	}
 
 	private void addWikiSpaceCompletions(String text, ArrayList list, int documentOffset) {

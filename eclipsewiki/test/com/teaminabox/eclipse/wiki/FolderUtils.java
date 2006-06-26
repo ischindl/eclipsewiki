@@ -87,12 +87,7 @@ public class FolderUtils {
 		    if (!fileOrFolder.exists()) {
 		    	break;
 		    }
-	        try {
-				// wait a bit longer every time
-	        	Thread.sleep(100*deleteAttempt);
-			} catch (InterruptedException e) {
-				// do nothing
-			}
+	        sleepIgnoreInterrupt(deleteAttempt);
 	    	try {
 	    		FolderUtils.deleteFileStructure(fileOrFolder);
 			} catch (Exception e) {
@@ -105,6 +100,16 @@ public class FolderUtils {
 	    	return -1;
 	    }
 	    return deleteAttempt;
+	}
+
+
+	private static void sleepIgnoreInterrupt(int deleteAttempt) {
+		try {
+			// wait a bit longer every time
+			Thread.sleep(100*deleteAttempt);
+		} catch (InterruptedException e) {
+			// do nothing
+		}
 	}
 
 

@@ -12,20 +12,10 @@ import org.eclipse.jface.text.BadLocationException;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
-import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
-import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
-import com.teaminabox.eclipse.wiki.text.ForcedLinkTextRegion;
-import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
-import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
-import com.teaminabox.eclipse.wiki.text.TextRegionVisitor;
-import com.teaminabox.eclipse.wiki.text.UndefinedTextRegion;
-import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
-import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
-import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
 
@@ -34,7 +24,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	public static final String	TABLE_DELIMITER		= "|";
 	public static final String	HR					= "hr";
 	public static final String	NEW_WIKIDOC_HREF	= "?";
-	
+
 	private WikiDocumentContext	context;
 	private StringBuffer		buffer;
 	private int					currentLine;
@@ -44,10 +34,23 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	private String				encoding;
 
 	private LinkMaker			linkMaker;
+	private TextRegionAppender	textRegionAppender;
 
 	public abstract TextRegionMatcher[] getRendererMatchers();
 
 	public abstract TextRegionMatcher[] getScannerMatchers();
+
+	protected abstract void initialise();
+
+	protected abstract char getListType(String line);
+
+	protected abstract boolean isOrderedList(String line);
+
+	protected abstract String getListText(String line);
+
+	protected abstract int getListDepth(String line);
+
+	protected abstract String processTags(String line);
 
 	protected StringBuffer getBuffer() {
 		return buffer;
@@ -58,32 +61,30 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	}
 
 	public final String render(WikiDocumentContext context, LinkMaker linkMaker) {
-		this.linkMaker = linkMaker;
-		initialise(context);
+		initialise(context, linkMaker);
 		try {
-			buffer = new StringBuffer();
 			appendHtmlHead();
 			buffer.append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
 			appendNewLine();
 			appendContents();
-			appendFooter();
+			appendHtmlFooter();
 			return buffer.toString();
 		} catch (Exception e) {
-			WikiPlugin.getDefault().log(buffer.toString());
 			WikiPlugin.getDefault().log(e.getLocalizedMessage(), e);
 			return "<html><body><p>" + e.getLocalizedMessage() + "</p></body></html>";
 		}
 	}
 
-	private void initialise(WikiDocumentContext context) {
+	private void initialise(WikiDocumentContext context, LinkMaker linkMaker) {
 		this.context = context;
+		this.linkMaker = linkMaker;
 		currentListDepth = 0;
 		setInTable(false);
 		encoding = context.getCharset().name();
+		buffer = new StringBuffer();
+		textRegionAppender = new TextRegionAppender(buffer, linkMaker);
 		initialise();
 	}
-
-	protected abstract void initialise();
 
 	private void appendHtmlHead() throws IOException {
 		appendln("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
@@ -145,7 +146,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		return lineNumber < document.length;
 	}
 
-	private void appendFooter() {
+	private void appendHtmlFooter() {
 		appendln("  </body>").append("</html>");
 	}
 
@@ -201,21 +202,11 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		}
 	}
 
-	protected abstract char getListType(String line);
-
-	protected abstract boolean isOrderedList(String line);
-
-	protected abstract String getListText(String line);
-
 	protected void repeatAppend(String item, int n) {
 		for (int i = 0; i < n; i++) {
 			getBuffer().append(item);
 		}
 	}
-
-	protected abstract int getListDepth(String line);
-
-	protected abstract String processTags(String line);
 
 	protected String encode(String line) {
 		return StringEscapeUtils.escapeHtml(line);
@@ -224,61 +215,23 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	protected void append(String line) {
 		TextRegion[] regions = TextRegionBuilder.getTextRegions(line, context);
 		for (int i = 0; i < regions.length; i++) {
-			regions[i].accept(new TextRegionVisitor() {
-				public Object visit(UndefinedTextRegion undefinedTextRegion) {
-					buffer.append(undefinedTextRegion.getText());
-					return null;
-				}
-
-				public Object visit(UrlTextRegion urlTextRegion) {
-					getBuffer().append(getLinkMaker().make(urlTextRegion));
-					return null;
-				}
-
-				public Object visit(WikiWordTextRegion wikiNameTextRegion) {
-					buffer.append(linkMaker.make(wikiNameTextRegion));
-					return null;
-				}
-
-				public Object visit(WikiUrlTextRegion wikiUrlTextRegion) {
-					buffer.append(linkMaker.make(wikiUrlTextRegion));
-					return null;
-				}
-
-				public Object visit(BasicTextRegion basicTextRegion) {
-					buffer.append(basicTextRegion.getDisplayText());
-					return null;
-				}
-
-				public Object visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
-					buffer.append(linkMaker.make(eclipseResourceTextRegion));
-					return null;
-				}
-
-				public Object visit(PluginResourceTextRegion pluginResourceTextRegion) {
-					buffer.append(linkMaker.make(pluginResourceTextRegion));
-					return null;
-				}
-
-				public Object visit(JavaTypeTextRegion region) {
-					buffer.append(linkMaker.make(region));
-					return null;
-				}
-
-				public Object visit(ForcedLinkTextRegion region) {
-					buffer.append(linkMaker.make(region));
-					return null;
-				}
-
-			});
+			regions[i].accept(textRegionAppender);
 		}
 	}
+
+	protected abstract boolean isList(String line);
 
 	protected abstract boolean isHeader(String line);
 
 	protected abstract void appendHeader(String line);
 
-	protected abstract boolean isList(String line);
+	/**
+	 * Get the header from a line with header markup
+	 * 
+	 * @param line
+	 *            guaranteed to be a valid header as defined by b {@link #isHeader(String) isHeader(String)}
+	 */
+	protected abstract String getHeaderText(String line);
 
 	/**
 	 * Gives implementors a chance to do processing on this line.
@@ -291,11 +244,11 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *   
-	 *    
-	 *     replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
-	 *     
-	 *    
+	 *       
+	 *        
+	 *         replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
+	 *         
+	 *        
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {
@@ -403,14 +356,6 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 			}
 		}
 	}
-
-	/**
-	 * Get the header from a line with header markup
-	 * 
-	 * @param line
-	 *            guaranteed to be a valid header as defined by b {@link #isHeader(String) isHeader(String)}
-	 */
-	protected abstract String getHeaderText(String line);
 
 	protected LinkMaker getLinkMaker() {
 		return linkMaker;
