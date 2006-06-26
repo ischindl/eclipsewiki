@@ -59,7 +59,7 @@
       	Link to Wiki documentation in plugins
       </li>
       <li>
-			Link to Java source code in the current project path simply by typing the fully qualified name of a class (classes in the default package are not supported).
+        Link to Java source code in the current project path simply by typing the fully qualified name of a class (classes in the default package are not supported).
       </li>
 	  <li>
         Link to urls &#8212; links starting with http, ftp, mailto and file
@@ -93,6 +93,9 @@
 	  <li>
         An Outline that guesses what the headings in your document are
       </li>
+      <li>
+        Headers and Footers in the browser view and exported documents
+      </li>
     </ul>
     To use the plugin you need <a href="http://www.eclipse.org/">Eclipse</a> 2.1.2 or higher, running under
           <a href="http://java.sun.com/">JDK1.3.1</a> or higher although not all the above features are available for Eclipse 2.x.y. <br/>
@@ -101,14 +104,14 @@
       Using Wiki
     </h1>
     <h3>Installation</h3>
+    <p>You can install the plugin directly from the update site: <a href="http://www.stateofflow.com/UpdateSite">http://www.stateofflow.com/UpdateSite</a>
+    or manually as follows:</p>
     <p>
     <ol>
     <li>download the zip file as appropriate for your Eclipse version</li>
     <li>extract it into your eclipse/plugins/ directory</li>
 	<li>restart Eclipse</li>
 	</ol>
-    </p>
-    <p>If you use Linux, please read <a href="http://dev.eclipse.org/viewcvs/index.cgi/%7Echeckout%7E/platform-swt-home/faq.html#browserlinux">this</a>.
     </p>
     <h3>Wiki Files</h3>
       <p>
@@ -137,7 +140,7 @@
     </p>
     <ul>
       <li>
-        URLs: Any url starting with 'http', 'ftp', 'mailto' or 'file:' will be opened in the default browser/mail tool
+        URLs: Any url starting with 'http', 'ftp', 'mailto', 'file:' etc will be opened in the default browser/mail tool
       </li>
       <li>
         Eclipse Workspace: Links can be made to any eclipse project resource by prefixing the path to the resource with
@@ -147,6 +150,7 @@
       </li>
       <li>Fully qualified Java types in the current project are automatically linked.
       </li>
+      <li>and ...</li>
     </ul>
 	<a name="wikispace"/>
     <h3>WikiSpace</h3>
@@ -162,22 +166,21 @@
         <p>Finally, the global WikiSpace links can be overridden or added to by a local properties file &#8212; <code>wikispace.properties</code> &#8212; in the same directory as your wiki documents.
         This allows a WikiSpace to be built for a Wiki in a project and shared wih other developers.
 		</p>
+    <h3>Exclusions</h3>
+      <p>A word can be excluded from linking by adding to a list of words in a file called <code>wiki.exclude</code>in the same folder as your wiki 
+      documents.</p>
     <h3>Hover and Preview</h3>
     <p>
     The hover text for wiki links is a small preview of the document's content. 
 	A larger preview window can be opened with <code>F2</code>.
 	</p>
-	<h1>
-	  Thanks!
-	</h1>
-	<p>A number of people have helped me with the plugin whom I would like to mention: Lance Walton, Chris King, Paul Gracie</p>
-	<p>In particular, the following helped enormously by writing some code: Torsten Juergeleit, Ronald Steinhau</p>
     <h1>
       Bugs
     </h1>
 	<p>Please report bugs on <a href="http://sourceforge.net/projects/eclipsewiki/">Sourceforge</a>.</p>
 	<h1>Author</h1>
-	See <a href="http://www.stateofflow.com">www.stateofflow.com</a>
+	The lead developer is <a href="http://www.stateofflow.com">Channing Walton</a> but a number of people have contributed to the plugin 
+    at <a href="http://sourceforge.net/projects/eclipsewiki/">Sourceforge</a>..
 	</div>
   </body>
 </html>

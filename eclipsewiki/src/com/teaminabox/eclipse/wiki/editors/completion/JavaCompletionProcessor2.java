@@ -61,10 +61,10 @@ public class JavaCompletionProcessor2 extends CompletionRequestor {
 		proposals.put(SORT_FORMAT.format(proposal.getRelevance()) + displayText, myProposal);
 	}
 
-	private void performCodeComplete(IJavaProject project, final String text) throws JavaModelException {
+	private void performCodeComplete(IJavaProject project, String text) throws JavaModelException {
 		String code = "public class Foo { " + text + "}";
 		ICompilationUnit unit = createCompilationUnit(project, code);
-		unit.codeComplete(code.indexOf(text) + text.length(), this);
+		unit.codeComplete(code.length() - 1, this);
 		unit.discardWorkingCopy();
 	}
 
