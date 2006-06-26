@@ -1,8 +1,7 @@
-package com.teaminabox.eclipse.wiki.editors;
+package com.teaminabox.eclipse.wiki.editors.completion;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.TreeMap;
 
 import org.eclipse.jdt.core.CompletionProposal;
@@ -19,49 +18,53 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.graphics.Image;
 
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 /**
- * This is a replacement for the JavaCompletionProcessor.
- * It will replace the JavaCompletionProcessor when I've figured out how to make it search in source too.
+ * This is a replacement for the JavaCompletionProcessor. It will replace the JavaCompletionProcessor when I've figured
+ * out how to make it search in source too.
  */
-public class JavaCompletionProcessor2 {
-	
+public class JavaCompletionProcessor2 extends CompletionRequestor {
+
 	private static final DecimalFormat	SORT_FORMAT	= new DecimalFormat("0000000000");
+
 	private String						textToComplete;
-	private TreeMap						proposals	= new TreeMap(new Comparator() {
+	private TreeMap						proposals	= new TreeMap();
+	private int							documentOffset;
 
-														public int compare(Object arg0, Object arg1) {
-															String first = (String) arg0;
-															String second = (String) arg1;
-															return second.compareTo(first);
-														}
-
-													});
-
-	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, final int documentOffset) throws BadLocationException {
-		proposals.clear();
-		textToComplete = getTextToComplete(viewer, documentOffset);
-
-		try {
-			if (textToComplete != null) {
-				CompletionRequestor collector = getCompletionRequestor(documentOffset, textToComplete);
-				performCodeComplete(project, textToComplete, collector);
-				ArrayList results = new ArrayList(proposals.values());
-				proposals.clear();
-				return results;
-			}
-		} catch (Exception e) {
-			WikiPlugin.getDefault().log("Completions", e);
+	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, final int documentOffset) throws BadLocationException, JavaModelException {
+		initialise(viewer, documentOffset);
+		if (textToComplete != null) {
+			performCodeComplete(project, textToComplete);
+			ArrayList results = new ArrayList(proposals.values());
+			proposals.clear();
+			return results;
 		}
 		return new ArrayList();
 	}
 
-	private void performCodeComplete(IJavaProject project, final String text, CompletionRequestor collector) throws JavaModelException {
+	private void initialise(ITextViewer viewer, final int documentOffset) throws BadLocationException {
+		proposals.clear();
+		this.documentOffset = documentOffset;
+		textToComplete = getTextToComplete(viewer, documentOffset);
+	}
+
+	public void accept(CompletionProposal proposal) {
+		if (proposal.getKind() != CompletionProposal.TYPE_REF && proposal.getKind() != CompletionProposal.PACKAGE_REF) {
+			return;
+		}
+		CompletionProposalLabelProvider labelProvider = new CompletionProposalLabelProvider();
+		String matchName = getReplacementText(proposal);
+		String displayText = labelProvider.createLabel(proposal);
+		Image image = labelProvider.createImageDescriptor(proposal).createImage();
+		ICompletionProposal myProposal = new org.eclipse.jface.text.contentassist.CompletionProposal(matchName, documentOffset - textToComplete.length(), textToComplete.length(), matchName.length(), image, displayText, null, null);
+		proposals.put(SORT_FORMAT.format(proposal.getRelevance()) + displayText, myProposal);
+	}
+
+	private void performCodeComplete(IJavaProject project, final String text) throws JavaModelException {
 		String code = "public class Foo { " + text + "}";
 		ICompilationUnit unit = createCompilationUnit(project, code);
-		unit.codeComplete(code.indexOf(text) + text.length(), collector);
+		unit.codeComplete(code.indexOf(text) + text.length(), this);
 		unit.discardWorkingCopy();
 	}
 
@@ -97,23 +100,6 @@ public class JavaCompletionProcessor2 {
 			return null;
 		}
 		return prefix;
-	}
-
-	private CompletionRequestor getCompletionRequestor(final int documentOffset, final String text) {
-		CompletionRequestor requestor = new CompletionRequestor() {
-			public void accept(CompletionProposal proposal) {
-				if (proposal.getKind() != CompletionProposal.TYPE_REF && proposal.getKind() != CompletionProposal.PACKAGE_REF) {
-					return;
-				}
-				CompletionProposalLabelProvider labelProvider = new CompletionProposalLabelProvider();
-				String matchName = getReplacementText(proposal);
-				String displayText = labelProvider.createLabel(proposal);
-				Image image = labelProvider.createImageDescriptor(proposal).createImage();
-				ICompletionProposal myProposal = new org.eclipse.jface.text.contentassist.CompletionProposal(matchName, documentOffset - text.length(), text.length(), matchName.length(), image, displayText, null, null);
-				proposals.put(SORT_FORMAT.format(proposal.getRelevance()) + displayText, myProposal);
-			}
-		};
-		return requestor;
 	}
 
 	private String getReplacementText(CompletionProposal proposal) {

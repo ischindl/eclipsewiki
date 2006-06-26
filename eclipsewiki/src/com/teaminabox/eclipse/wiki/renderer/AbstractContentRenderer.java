@@ -52,6 +52,27 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	protected abstract String processTags(String line);
 
+	protected abstract boolean isList(String line);
+
+	protected abstract boolean isHeader(String line);
+
+	protected abstract void appendHeader(String line);
+
+	/**
+	 * Get the header from a line with header markup
+	 * 
+	 * @param line
+	 *            guaranteed to be a valid header as defined by b {@link #isHeader(String) isHeader(String)}
+	 */
+	protected abstract String getHeaderText(String line);
+
+	/**
+	 * Gives implementors a chance to do processing on this line.
+	 * 
+	 * @return if true, the line will not be processed further
+	 */
+	protected abstract boolean process(String line);
+
 	protected StringBuffer getBuffer() {
 		return buffer;
 	}
@@ -219,36 +240,15 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		}
 	}
 
-	protected abstract boolean isList(String line);
-
-	protected abstract boolean isHeader(String line);
-
-	protected abstract void appendHeader(String line);
-
-	/**
-	 * Get the header from a line with header markup
-	 * 
-	 * @param line
-	 *            guaranteed to be a valid header as defined by b {@link #isHeader(String) isHeader(String)}
-	 */
-	protected abstract String getHeaderText(String line);
-
-	/**
-	 * Gives implementors a chance to do processing on this line.
-	 * 
-	 * @return if true, the line will not be processed further
-	 */
-	protected abstract boolean process(String line);
-
 	/**
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *       
 	 *        
-	 *         replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
 	 *         
-	 *        
+	 *          replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
+	 *          
+	 *         
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {

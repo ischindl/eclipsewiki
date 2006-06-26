@@ -7,6 +7,8 @@
  */
 package com.teaminabox.eclipse.wiki.editors;
 
+import java.io.IOException;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
@@ -48,10 +50,9 @@ import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 public final class WikiEditor extends TextEditor {
 
 	public static final String		PART_ID				= WikiEditor.class.getName();
-	public static final String		CONTEXT_MENU_ID		= WikiEditor.class.getName() + ".ContextMenu";
+	public static final String		CONTEXT_MENU_ID		= PART_ID + ".ContextMenu";
 	public static final String		WIKI_TEMP_FOLDER	= "wiki";
-
-	static final String		WIKI_TEMP_PROJECT	= "wiki_temp";
+	public static final String		WIKI_TEMP_PROJECT	= "wiki_temp";
 
 	private ColourManager			colourManager;
 	private Color					backgroundColor;
@@ -151,7 +152,7 @@ public final class WikiEditor extends TextEditor {
 	 * This is unfortunate but I cannot see how else to get the {@link AbstractTextEditor#getSourceViewer() TextViewer}to
 	 * support unit tests.
 	 */
-	ITextViewer getTextViewerForTest() {
+	public ITextViewer getTextViewerForTest() {
 		return getSourceViewer();
 	}
 
@@ -232,7 +233,11 @@ public final class WikiEditor extends TextEditor {
 
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
-		context = new WikiDocumentContext(((IFileEditorInput) input).getFile());
+		try {
+			context = new WikiDocumentContext(((IFileEditorInput) input).getFile());
+		} catch (IOException e) {
+			WikiPlugin.getDefault().log("Error whilst setting editor input", e);
+		}
 	}
 
 	public void redrawTextAsync() {

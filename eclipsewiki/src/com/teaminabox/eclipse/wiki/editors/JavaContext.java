@@ -11,8 +11,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 
-import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public final class JavaContext implements IResourceChangeListener {
@@ -21,7 +21,7 @@ public final class JavaContext implements IResourceChangeListener {
 	private IJavaProject				javaProject;
 	private HashSet						packages;
 
-	public JavaContext(WikiDocumentContext context) {
+	public JavaContext(WikiDocumentContext context) throws CoreException {
 		this.context = context;
 		initialiseJavaProject();
 		listenToResourceChanges();
@@ -33,15 +33,11 @@ public final class JavaContext implements IResourceChangeListener {
 		}
 	}
 
-	private void initialiseJavaProject() {
-		try {
-			IProject project = context.getProject();
-			if (project.hasNature(JavaCore.NATURE_ID)) {
-				javaProject = JavaCore.create(project);
-				loadPackages();
-			}
-		} catch (CoreException e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
+	private void initialiseJavaProject() throws CoreException {
+		IProject project = context.getProject();
+		if (project.hasNature(JavaCore.NATURE_ID)) {
+			javaProject = JavaCore.create(project);
+			loadPackages();
 		}
 	}
 
@@ -49,20 +45,16 @@ public final class JavaContext implements IResourceChangeListener {
 		return javaProject;
 	}
 
-	private synchronized void loadPackages() {
+	private synchronized void loadPackages() throws JavaModelException {
 		if (!isInJavaProject()) {
 			return;
 		}
-		try {
-			packages = new HashSet();
-			IPackageFragment[] packageFragments = javaProject.getPackageFragments();
-			for (int i = 0; i < packageFragments.length; i++) {
-				if (!packageFragments[i].isDefaultPackage()) {
-					packages.add(packageFragments[i].getElementName());
-				}
+		packages = new HashSet();
+		IPackageFragment[] packageFragments = javaProject.getPackageFragments();
+		for (int i = 0; i < packageFragments.length; i++) {
+			if (!packageFragments[i].isDefaultPackage()) {
+				packages.add(packageFragments[i].getElementName());
 			}
-		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
 		}
 	}
 
@@ -88,7 +80,11 @@ public final class JavaContext implements IResourceChangeListener {
 	}
 
 	public void resourceChanged(IResourceChangeEvent event) {
-		loadPackages();
+		try {
+			loadPackages();
+		} catch (JavaModelException e) {
+			WikiPlugin.getDefault().log("JavaContext", e);
+		}
 	}
 
 	public void dispose() {

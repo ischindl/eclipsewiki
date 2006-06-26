@@ -1,8 +1,6 @@
 package com.teaminabox.eclipse.wiki.editors;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -16,13 +14,13 @@ import org.eclipse.jface.text.Region;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
-import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
+import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
 public final class WikiHover implements ITextHover {
 
@@ -120,20 +118,16 @@ public final class WikiHover implements ITextHover {
 	}
 
 	private String getHoverText(IFile file) throws CoreException, IOException {
-		String hoverText = "";
 		if (file.getName().endsWith(".wiki") || file.getName().endsWith(".txt")) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents()));
-			int previewLength = WikiPlugin.getDefault().getPreferenceStore().getInt(WikiConstants.HOVER_PREVIEW_LENGTH);
-			char[] chars = new char[previewLength];
-			int length = reader.read(chars);
-			reader.close();
-			if (length > 0) {
-				hoverText = new String(chars, 0, length);
+			String contents = WikiPlugin.getDefault().loadContents(file.getContents());
+			if (contents.length() > 0) {
+				int length = Math.min(WikiPlugin.getDefault().getPreferenceStore().getInt(WikiConstants.HOVER_PREVIEW_LENGTH), contents.length());
+				return new String(contents.substring(0, length));
 			}
 		} else {
-			hoverText = file.getLocation().toString();
+			return file.getLocation().toString();
 		}
-		return hoverText;
+		return "";
 	}
 
 	public IRegion getHoverRegion(final ITextViewer textViewer, final int offset) {

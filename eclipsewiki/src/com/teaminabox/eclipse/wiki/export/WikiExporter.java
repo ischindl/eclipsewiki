@@ -178,7 +178,7 @@ public final class WikiExporter {
 		return resource instanceof IFile && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
 	}
 
-	private void exportFile(IFile file) throws IOException {
+	private void exportFile(IFile file) throws IOException, CoreException {
 		WikiDocumentContext context = new WikiDocumentContext(file);
 		exportLinkMaker.setContext(context);
 		String content = RendererFactory.createContentRenderer().render(context, exportLinkMaker);
