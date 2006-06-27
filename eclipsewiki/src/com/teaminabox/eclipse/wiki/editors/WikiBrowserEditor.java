@@ -117,7 +117,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 
 	private void setEditorTitle() {
 		if (getEditorInput() != null) {
-			setPartName(((IFileEditorInput) getEditorInput()).getFile().getName());
+			setPartName(getEditorInput().getName());
 		}
 	}
 
@@ -185,10 +185,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 
 	public Object getAdapter(Class key) {
 		if (key.equals(IContentOutlinePage.class)) {
-			IEditorInput input = getEditorInput();
-			if (input instanceof IFileEditorInput) {
-				return new WikiContentOutlinePage(editor);
-			}
+			return new WikiContentOutlinePage(editor);
 		}
 		return super.getAdapter(key);
 	}
