@@ -1,6 +1,5 @@
 package com.teaminabox.eclipse.wiki.outline;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -11,7 +10,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -22,19 +20,11 @@ import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
 public final class WikiContentOutlinePage extends ContentOutlinePage implements IPropertyListener {
 
-	private IFile		input;
 	private WikiEditor	editor;
 
 	public WikiContentOutlinePage(WikiEditor editor) {
 		this.editor = editor;
 		editor.addPropertyListener(this);
-		getInput();
-	}
-
-	private void getInput() {
-		if (editor != null && editor.getEditorInput() != null) {
-			this.input = ((IFileEditorInput) editor.getEditorInput()).getFile();
-		}
 	}
 
 	public void dispose() {
@@ -50,7 +40,7 @@ public final class WikiContentOutlinePage extends ContentOutlinePage implements 
 		final TreeViewer viewer = getTreeViewer();
 		viewer.setContentProvider(new WorkbenchContentProvider());
 		viewer.setLabelProvider(new WorkbenchLabelProvider());
-		viewer.setInput(getContentOutline(input));
+		viewer.setInput(getContentOutline());
 
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -73,12 +63,12 @@ public final class WikiContentOutlinePage extends ContentOutlinePage implements 
 		Menu menu = menuMgr.createContextMenu(viewer.getTree());
 		viewer.getTree().setMenu(menu);
 		// Be sure to register it so that other plug-ins can add actions.
-		getSite().registerContextMenu(getClass().getName(), menuMgr, viewer); 
+		getSite().registerContextMenu(getClass().getName(), menuMgr, viewer);
 
 	}
 
 	private void treeItemSelected(StructuredSelection selection) {
-		MarkElement element = (MarkElement) selection.getFirstElement();
+		OutlineElement element = (OutlineElement) selection.getFirstElement();
 		if (element != null) {
 			editor.selectAndReveal(element.getStart(), element.getLength());
 		}
@@ -88,20 +78,19 @@ public final class WikiContentOutlinePage extends ContentOutlinePage implements 
 	 * Gets the content outline for a given input element. Returns the outline (a list of MarkElements), or null if the
 	 * outline could not be generated.
 	 */
-	private IAdaptable getContentOutline(IAdaptable input) {
+	private IAdaptable getContentOutline() {
 		if (editor.isDirty()) {
 			return null;
 		}
-		return WikiModelFactory.getInstance().getContentOutline(input, editor);
+		return WikiOutlineFactory.getInstance().getContentOutline(editor);
 	}
 
 	private void update() {
-		getInput();
-		if (input == null || getControl().isDisposed()) {
+		if (editor == null || editor.getEditorInput() == null || getControl().isDisposed()) {
 			return;
 		}
 		getControl().setRedraw(false);
-		getTreeViewer().setInput(getContentOutline(input));
+		getTreeViewer().setInput(getContentOutline());
 		getTreeViewer().expandAll();
 		getControl().setRedraw(true);
 	}

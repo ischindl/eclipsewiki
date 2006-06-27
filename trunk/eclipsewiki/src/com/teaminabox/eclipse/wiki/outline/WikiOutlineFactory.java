@@ -1,8 +1,8 @@
 package com.teaminabox.eclipse.wiki.outline;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.model.AdaptableList;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
@@ -12,45 +12,42 @@ import com.teaminabox.eclipse.wiki.renderer.ContentRenderer;
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 import com.teaminabox.eclipse.wiki.renderer.StructureClosure;
 
-public final class WikiModelFactory {
+public final class WikiOutlineFactory {
 
-	private static final WikiModelFactory	INSTANCE	= new WikiModelFactory();
+	private static final WikiOutlineFactory	INSTANCE	= new WikiOutlineFactory();
 
-	private WikiModelFactory() {
-		super();
+	private WikiOutlineFactory() {
 	}
 
 	/**
 	 * Returns the content outline for the given manifest file.
 	 * 
-	 * @param adaptable
-	 *            the element for which to return the content outline
 	 * @return the content outline for the argument
 	 */
-	public AdaptableList getContentOutline(IAdaptable adaptable, WikiEditor editor) {
-		return new AdaptableList(getContents((IFile) adaptable, editor));
+	public AdaptableList getContentOutline(WikiEditor editor) {
+		IFile file = ((IFileEditorInput) editor.getEditorInput()).getFile();
+		return new AdaptableList(getContents(file, editor));
 	}
 
-	private MarkElement[] getContents(final IFile file, final WikiEditor editor) {
+	private OutlineElement[] getContents(final IFile file, final WikiEditor editor) {
 		try {
-			final MarkElement root = new MarkElement(file, editor.getContext().getWikiNameBeingEdited(), 0, 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
+			final OutlineElement root = new OutlineElement(file, editor.getContext().getWikiNameBeingEdited(), 0, 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
 			ContentRenderer renderer = RendererFactory.createContentRenderer();
 			renderer.forEachHeader(editor.getContext(), new StructureClosure() {
 				public void acceptHeader(String header, int line) throws BadLocationException {
 					int offset = editor.getOffset(line);
-					new MarkElement(root, header, offset, 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
+					new OutlineElement(root, header, offset, 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
 				}
 			});
-
-			return new MarkElement[] { root };
+			return new OutlineElement[] { root };
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log(e.getLocalizedMessage(), e);
 		}
-		return new MarkElement[0];
+		return new OutlineElement[0];
 	}
 
-	public static WikiModelFactory getInstance() {
-		return WikiModelFactory.INSTANCE;
+	public static WikiOutlineFactory getInstance() {
+		return WikiOutlineFactory.INSTANCE;
 	}
 
 }
