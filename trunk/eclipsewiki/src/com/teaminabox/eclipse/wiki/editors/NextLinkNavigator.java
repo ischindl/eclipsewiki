@@ -6,35 +6,46 @@ import com.teaminabox.eclipse.wiki.text.TextRegion;
 
 public class NextLinkNavigator extends LinkNavigator {
 
+	private int			pos;
+	private TextRegion	currentTextRegion;
+	private int			endOfCurrentRegion;
+
 	public NextLinkNavigator(WikiEditor editor) {
 		super(editor);
 	}
 
 	public void next() {
 		try {
-			int pos = getSelection().getOffset() + 1;
+			pos = getSelection().getOffset() + 1;
 			if (pos >= getDocument().getLength()) {
 				return;
 			}
-			TextRegion textRegion = getTextRegionAtCursor(pos);
-			int endOfCurrentRegion = pos + textRegion.getLength() - textRegion.getCursorPosition();
-			pos = endOfCurrentRegion + 1;
-
-			while (pos < getDocument().getLength()) {
-				textRegion = getTextRegionAtCursor(pos);
-				int textRegionIndex = pos - textRegion.getCursorPosition();
-
-				if (textRegion.getLength() == 0) {
-					pos++;
-				} else if (textRegion.isLink() && textRegionIndex > endOfCurrentRegion) {
-					getEditor().selectAndReveal(pos - textRegion.getCursorPosition(), 0);
-					return;
-				} else {
-					pos = textRegionIndex + textRegion.getLength() + 1;
-				}
-			}
+			initialise();
+			move();
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
+		}
+	}
+
+	private void initialise() {
+		currentTextRegion = getTextRegionAtCursor(pos);
+		endOfCurrentRegion = pos + currentTextRegion.getLength() - currentTextRegion.getCursorPosition();
+		pos = endOfCurrentRegion + 1;
+	}
+
+	private void move() {
+		while (pos < getDocument().getLength()) {
+			currentTextRegion = getTextRegionAtCursor(pos);
+			int textRegionIndex = pos - currentTextRegion.getCursorPosition();
+
+			if (currentTextRegion.getLength() == 0) {
+				pos++;
+			} else if (currentTextRegion.isLink() && textRegionIndex > endOfCurrentRegion) {
+				getEditor().selectAndReveal(pos - currentTextRegion.getCursorPosition(), 0);
+				return;
+			} else {
+				pos = textRegionIndex + currentTextRegion.getLength() + 1;
+			}
 		}
 	}
 

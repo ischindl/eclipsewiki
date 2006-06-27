@@ -25,7 +25,7 @@ public final class PluginResourceTextRegion extends TextRegion {
 			return null;
 		}
 		IPath relPath = new Path(text);
-		IProject wsProj = PluginProjectVisitor.locateProjectInWorkspace(relPath.segment(0));
+		IProject wsProj = PluginProjectSupport.locateProjectInWorkspace(relPath.segment(0));
 		if (wsProj == null) {
 			Bundle bundle = null;
 			try {
