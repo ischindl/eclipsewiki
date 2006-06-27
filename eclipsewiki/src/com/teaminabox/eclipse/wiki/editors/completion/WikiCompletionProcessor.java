@@ -38,7 +38,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
-import com.teaminabox.eclipse.wiki.text.PluginProjectVisitor;
+import com.teaminabox.eclipse.wiki.text.PluginProjectSupport;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
@@ -274,7 +274,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 	private void addWikiFromPlugin(String path, String currPluginID, SortedMap selectedIDs) {
 		if (path.length() == 0 || currPluginID.startsWith(path)) {
 			IPath plugDirPath = null;
-			IProject proj = PluginProjectVisitor.locateProjectInWorkspace(currPluginID);
+			IProject proj = PluginProjectSupport.locateProjectInWorkspace(currPluginID);
 			if (proj != null) {
 				plugDirPath = proj.getRawLocation();
 			} else {
@@ -311,7 +311,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			String projName = projects[i];
 			IProject proj = root.getProject(projName);
 			if (proj.getFile("plugin.xml").exists() || proj.getFile("fragment.xml").exists()) {
-				String id = PluginProjectVisitor.extractPlugID(proj);
+				String id = PluginProjectSupport.extractPlugID(proj);
 				if (id != null) {
 					plugIds.add(id);
 				}
@@ -349,17 +349,25 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 		}
 		String wikiSpace = new String(word.substring(0, word.indexOf(WikiConstants.WIKISPACE_DELIMITER)));
 		WikiDocumentContext context = wikiEditor.getContext();
-		if (context.getWikiSpace().containsKey(wikiSpace) && context.getWikiSpaceLink(wikiSpace).startsWith(WikiConstants.ECLIPSE_PREFIX)) {
+		if (isEclipseWikispaceLink(wikiSpace, context)) {
 			String locationPrefix = new String(context.getWikiSpaceLink(wikiSpace).substring(WikiConstants.ECLIPSE_PREFIX.length()));
 			// + 1 below to get the WIKISPACE_DELIMITER (:)
 			String location = new String(locationPrefix + word.substring(wikiSpace.length() + 1));
 			list.addAll(getResourceCompletions(word, location, documentOffset));
-		} else if (context.getWikiSpace().containsKey(wikiSpace) && context.getWikiSpaceLink(wikiSpace).startsWith(WikiConstants.PLUGIN_PREFIX)) {
+		} else if (isPluginWikispaceLink(wikiSpace, context)) {
 			String locationPrefix = new String(context.getWikiSpaceLink(wikiSpace).substring(WikiConstants.PLUGIN_PREFIX.length()));
 			// + 1 below to get the WIKISPACE_DELIMITER (:)
 			String location = new String(locationPrefix + word.substring(wikiSpace.length() + 1));
 			list.addAll(getResourceCompletions(word, location, documentOffset));
 		}
+	}
+
+	private boolean isPluginWikispaceLink(String wikiSpace, WikiDocumentContext context) {
+		return context.getWikiSpace().containsKey(wikiSpace) && context.getWikiSpaceLink(wikiSpace).startsWith(WikiConstants.PLUGIN_PREFIX);
+	}
+
+	private boolean isEclipseWikispaceLink(String wikiSpace, WikiDocumentContext context) {
+		return context.getWikiSpace().containsKey(wikiSpace) && context.getWikiSpaceLink(wikiSpace).startsWith(WikiConstants.ECLIPSE_PREFIX);
 	}
 
 	private ArrayList getResourceCompletions(String text, String location, int documentOffset) {
@@ -378,7 +386,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			return buildResourceProposals(children, "", replacementOffset, lengthToBeReplaced);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
-			return new ArrayList(1);
+			return new ArrayList();
 		}
 	}
 
