@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.teaminabox.eclipse.wiki.renderer;
 
 import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
