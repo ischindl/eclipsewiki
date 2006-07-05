@@ -21,6 +21,7 @@ import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class WikiHover implements ITextHover {
 
@@ -119,7 +120,7 @@ public final class WikiHover implements ITextHover {
 
 	private String getHoverText(IFile file) throws CoreException, IOException {
 		if (file.getName().endsWith(".wiki") || file.getName().endsWith(".txt")) {
-			String contents = WikiPlugin.getDefault().loadContents(file.getContents());
+			String contents = Resources.getContents(file.getContents());
 			if (contents.length() > 0) {
 				int length = Math.min(WikiPlugin.getDefault().getPreferenceStore().getInt(WikiConstants.HOVER_PREVIEW_LENGTH), contents.length());
 				return new String(contents.substring(0, length));

@@ -16,6 +16,7 @@ import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
 
@@ -174,7 +175,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	protected void appendStyle() throws IOException {
 		appendln("<style type=\"text/css\"><!--");
 		IPath path = new Path("style").append(RendererFactory.getContentRendererName() + ".css");
-		appendln(WikiPlugin.getDefault().loadTextContentsInPlugin(path));
+		appendln(Resources.getContentsRelativeToPlugin(path));
 		appendln("--></style>");
 	}
 

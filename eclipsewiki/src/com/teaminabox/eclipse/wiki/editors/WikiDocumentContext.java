@@ -4,12 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,6 +25,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.preferences.WikiPreferences;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 /**
  * The local context a Wiki document lives in.
@@ -60,9 +61,7 @@ public final class WikiDocumentContext {
 	private void loadLocalWikiSpace() {
 		try {
 			localWikispace = new Properties();
-			IContainer container = getWorkingLocation();
-			Path path = new Path(WikiConstants.WIKISPACE_FILE);
-			IFile file = container.getFile(path);
+			IFile file = getLocalFile(WikiConstants.WIKISPACE_FILE);
 			if (file.exists() && !file.isPhantom()) {
 				localWikispace.load(new BufferedInputStream(file.getContents()));
 			}
@@ -71,11 +70,15 @@ public final class WikiDocumentContext {
 		}
 	}
 
+	private IFile getLocalFile(String localFileName) {
+		IContainer container = getWorkingLocation();
+		Path path = new Path(localFileName);
+		return container.getFile(path);
+	}
+
 	private void loadExcludes() throws IOException, CoreException {
 		excludeList = new HashSet();
-		IContainer container = getWorkingLocation();
-		Path path = new Path(WikiConstants.EXCLUDES_FILE);
-		IFile file = container.getFile(path);
+		IFile file = getLocalFile(WikiConstants.EXCLUDES_FILE);
 		if (file.exists() && !file.isPhantom()) {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents(), getCharset()));
 			String line;
@@ -92,7 +95,7 @@ public final class WikiDocumentContext {
 		try {
 			return Charset.forName(wikiDocument.getCharset());
 		} catch (CoreException e) {
-			e.printStackTrace();
+			WikiPlugin.getDefault().log("Unable to get charset", e);
 			return Charset.forName(DEFAULT_CHARSET);
 		}
 	}
@@ -107,11 +110,11 @@ public final class WikiDocumentContext {
 
 	public IFile getFileForWikiName(String wikiName) {
 		IContainer container = getWorkingLocation();
-		if (container == null) {
+		if (!Resources.exists(container)) {
 			return null;
 		}
 		IResource resource = container.findMember(wikiName + WikiConstants.WIKI_FILE_EXTENSION);
-		if (resource == null) {
+		if (!Resources.exists(resource)) {
 			return null;
 		}
 		return (IFile) resource;
@@ -160,16 +163,16 @@ public final class WikiDocumentContext {
 
 	public String[] getDocumentWithHeaderAndFooter() {
 		try {
-			ArrayList lines = new ArrayList();
-			IFile header = getHeader();
-			if (header != null) {
-				lines.addAll(getContents(header.getContents()));
-			}
-			lines.addAll(getContents(wikiDocument.getContents()));
-			IFile footer = getFooter();
-			if (footer != null) {
-				lines.addAll(getContents(footer.getContents()));
-			}
+			List lines = new ArrayList();
+			IFile file = getFile(HEADER_FILE);
+			if (file != null) {
+				lines.addAll(Resources.readLines(file));
+			}			
+			lines.addAll(Resources.readLines(wikiDocument));
+			file = getFile(FOOTER_FILE);
+			if (file != null) {
+				lines.addAll(Resources.readLines(file));
+			}			
 			return (String[]) lines.toArray(new String[lines.size()]);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Cannot get Document", e);
@@ -177,17 +180,9 @@ public final class WikiDocumentContext {
 		}
 	}
 
-	private IFile getHeader() {
-		return getFile(HEADER_FILE);
-	}
-
-	private IFile getFooter() {
-		return getFile(FOOTER_FILE);
-	}
-
 	private IFile getFile(String file) {
 		IResource content = getWorkingLocation().findMember(file);
-		if (content != null && content.exists() && content.getType() == IResource.FILE) {
+		if (Resources.exists(content) && content.getType() == IResource.FILE) {
 			return (IFile) content;
 		}
 		return null;
@@ -195,22 +190,12 @@ public final class WikiDocumentContext {
 
 	public String[] getDocument() {
 		try {
-			ArrayList lines = getContents(wikiDocument.getContents());
+			List lines = Resources.readLines(wikiDocument);
 			return (String[]) lines.toArray(new String[lines.size()]);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Cannot get Document", e);
 			return new String[] { "Unable to load document - please check the logs." };
 		}
-	}
-
-	private ArrayList getContents(InputStream contents) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(contents));
-		String line;
-		ArrayList lines = new ArrayList();
-		while ((line = reader.readLine()) != null) {
-			lines.add(line);
-		}
-		return lines;
 	}
 
 	public boolean isExcluded(String word) {
