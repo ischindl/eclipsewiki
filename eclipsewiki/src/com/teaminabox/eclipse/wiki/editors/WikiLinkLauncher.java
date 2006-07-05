@@ -28,10 +28,12 @@ import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
+import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 /**
  * Each visitor method will return {@link Boolean#TRUE Boolean.TRUE} or {@link Boolean#FALSE Boolean.FALSE} depending on
@@ -129,8 +131,8 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 				return;
 			}
 			IResource resource = findPluginResource(path);
-			if (resource != null && resource.exists() && resource.getType() == IResource.FILE) {
-				if (isWikiFile(resource)) {
+			if (Resources.exists(resource) && resource.getType() == IResource.FILE) {
+				if (Resources.isWikiFile(resource)) {
 					IEditorPart part = openFile((IFile) resource);
 					if (pathWithLineNumber.getLine() > 0 && part instanceof AbstractTextEditor) {
 						gotoLine(pathWithLineNumber.getLine(), part);
@@ -146,7 +148,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 	}
 
 	private IEditorPart openFile(IFile file) throws CoreException {
-		if (isWikiFile(file) && WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR) && !editor.isTempWiki(file)) {
+		if (Resources.isWikiFile(file) && WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR) && !editor.isTempWiki(file)) {
 			editor.openWith(file);
 			return editor;
 		} else {
@@ -160,7 +162,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 		IPath relPath;
 		IResource resource = PluginResourceTextRegion.findResource(path);
 		if (resource == null) {
-			relPath = PluginResourceTextRegion.getPluginPath(path);
+			relPath = PluginPathFinder.getPluginPath(path);
 			File xfile = relPath.toFile();
 			if (xfile.exists()) {
 				IProject wikiTemp = ResourcesPlugin.getWorkspace().getRoot().getProject(WikiEditor.WIKI_TEMP_PROJECT);
@@ -194,7 +196,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 				return;
 			}
 			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(pathWithLineNumber.getPath());
-			if (resource != null && resource.exists() && resource.getType() == IResource.FILE) {
+			if (Resources.exists(resource) && resource.getType() == IResource.FILE) {
 				IEditorPart part = openFile((IFile) resource);
 				if (pathWithLineNumber.getLine() > 0 && part instanceof AbstractTextEditor) {
 					gotoLine(pathWithLineNumber.getLine(), part);
@@ -205,10 +207,6 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), "Unable to open " + path, e);
 		}
-	}
-
-	private boolean isWikiFile(IResource resource) {
-		return resource.getFileExtension() != null && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
 	}
 
 	private void gotoLine(int line, IEditorPart part) throws BadLocationException {

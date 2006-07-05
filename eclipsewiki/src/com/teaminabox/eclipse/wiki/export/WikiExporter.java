@@ -19,10 +19,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 import de.java2html.converter.JavaSource2HTMLConverter;
 import de.java2html.javasource.JavaSource;
@@ -51,7 +51,7 @@ public final class WikiExporter {
 		IResource[] resources = folder.members(IResource.FILE);
 		monitor.beginTask(WikiPlugin.getResourceString("Export.wikiPages"), resources.length + 1);
 		for (int i = 0; i < resources.length; i++) {
-			if (isWikiFile(resources[i])) {
+			if (Resources.isWikiFile(resources[i])) {
 				exportFile((IFile) resources[i]);
 			}
 			monitor.worked(1);
@@ -172,10 +172,6 @@ public final class WikiExporter {
 		if (channel != null) {
 			channel.close();
 		}
-	}
-
-	private boolean isWikiFile(IResource resource) {
-		return resource instanceof IFile && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
 	}
 
 	private void exportFile(IFile file) throws IOException, CoreException {

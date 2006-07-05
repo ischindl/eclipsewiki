@@ -28,7 +28,7 @@ public final class PluginResourceMatcher extends ResourceMatcher {
 	protected File findResourceFromPath(String section) {
 		IResource res = PluginResourceTextRegion.findResource(section);
 		if (res == null) {
-			IPath resPath = PluginResourceTextRegion.getPluginPath(section);
+			IPath resPath = PluginPathFinder.getPluginPath(section);
 			if (resPath != null) {
 				File resFile = resPath.toFile();
 				return resFile;

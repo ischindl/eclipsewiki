@@ -38,14 +38,9 @@ public final class EclipseResourceTextRegion extends TextRegion {
 		return true;
 	}
 
-	public boolean resourceExists() {
-		IResource resource = getResource();
-		return resource != null && resource.exists();
-	}
-
 	public IResource getResource() {
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(new String(getText().substring(WikiConstants.ECLIPSE_PREFIX.length())));
-		return resource;
+		String file = new String(getText().substring(WikiConstants.ECLIPSE_PREFIX.length()));
+		return ResourcesPlugin.getWorkspace().getRoot().findMember(file);
 	}
 
 }
