@@ -1,20 +1,8 @@
 package com.teaminabox.eclipse.wiki;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.Set;
 
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -23,13 +11,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.preferences.WikiPreferences;
 
 public final class WikiPlugin extends AbstractUIPlugin {
 
 	public static final String	RESOURCE_BUNDLE	= "com.teaminabox.eclipse.wiki.WikiPluginResources";
-	private Set					editors;
 
 	private static WikiPlugin	plugin;
 	private ResourceBundle		resourceBundle;
@@ -46,8 +32,6 @@ public final class WikiPlugin extends AbstractUIPlugin {
 		initialiseResourceBundle();
 		initialiseImageRegistry();
 		WikiPreferences.init(getPreferenceStore());
-		editors = new HashSet();
-		addResourceChangeListener();
 	}
 
 	/**
@@ -71,21 +55,6 @@ public final class WikiPlugin extends AbstractUIPlugin {
 		} catch (MissingResourceException e) {
 			logAndReport("Error", "The Resource Bundle is missing!!", e);
 		}
-	}
-
-	public String loadTextContentsInPlugin(IPath path) throws IOException {
-		InputStream stream = FileLocator.openStream(getBundle(), path, false);
-		return loadContents(stream);
-	}
-
-	public String loadContents(InputStream stream) throws IOException {
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
-		StringBuffer buffer = new StringBuffer();
-		int c;
-		while ((c = bufferedReader.read()) != -1) {
-			buffer.append((char) c);
-		}
-		return buffer.toString();
 	}
 
 	public static WikiPlugin getDefault() {
@@ -130,42 +99,4 @@ public final class WikiPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	public void registerEditor(WikiEditor editor) {
-		editors.add(editor);
-	}
-
-	public void unregisterEditor(WikiEditor editor) {
-		editors.remove(editor);
-	}
-
-	public WikiEditor[] getEditors() {
-		return (WikiEditor[]) editors.toArray(new WikiEditor[editors.size()]);
-	}
-
-	private void addResourceChangeListener() {
-		IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
-			public void resourceChanged(IResourceChangeEvent event) {
-				WikiPlugin.this.processResourceChange(event);
-			}
-		};
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
-	}
-
-	private void processResourceChange(IResourceChangeEvent event) {
-		try {
-			if (event.getType() != IResourceChangeEvent.POST_CHANGE) {
-				return;
-			}
-			Iterator iterator = editors.iterator();
-			while (iterator.hasNext()) {
-				WikiEditor editor = (WikiEditor) iterator.next();
-				if (editor.getContext() != null) {
-					editor.getContext().loadEnvironment();
-					editor.redrawTextAsync();
-				}
-			}
-		} catch (Exception e) {
-			log("WikiEditor: Resource Change Error", e);
-		}
-	}
 }

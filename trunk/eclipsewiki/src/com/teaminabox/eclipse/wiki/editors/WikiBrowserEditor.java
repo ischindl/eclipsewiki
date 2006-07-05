@@ -31,6 +31,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.outline.WikiContentOutlinePage;
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, IPropertyChangeListener {
 
@@ -176,7 +177,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		String renderer = RendererFactory.getContentRendererName();
 		IPath path = new Path(WikiConstants.HELP_PATH).append(renderer + ".html");
 		try {
-			syntaxBrowser.setText(WikiPlugin.getDefault().loadTextContentsInPlugin(path));
+			syntaxBrowser.setText(Resources.getContentsRelativeToPlugin(path));
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Unable to load syntax", e);
 			syntaxBrowser.setText(e.getLocalizedMessage());

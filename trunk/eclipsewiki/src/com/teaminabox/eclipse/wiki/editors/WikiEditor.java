@@ -67,7 +67,7 @@ public final class WikiEditor extends TextEditor {
 		setDocumentProvider(new FileDocumentProvider());
 		setEditorContextMenuId(WikiEditor.CONTEXT_MENU_ID);
 		addPropertyChangeListener();
-		WikiPlugin.getDefault().registerEditor(this);
+		Editors.registerEditor(this);
 		reusableEditor = this;
 		((IContextService) WikiPlugin.getDefault().getWorkbench().getAdapter(IContextService.class)).activateContext(WikiConstants.KEYBINDING_CONTEXT);
 	}
@@ -86,7 +86,7 @@ public final class WikiEditor extends TextEditor {
 	}
 
 	public void dispose() {
-		WikiPlugin.getDefault().unregisterEditor(this);
+		Editors.unregisterEditor(this);
 		WikiPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
 		colourManager.dispose();
 		context.dispose();

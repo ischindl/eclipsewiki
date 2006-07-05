@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 
-import com.teaminabox.eclipse.wiki.WikiPlugin;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class PluginProjectSupport {
 	}
 
 	private static void findPluginId(IProject pluginProject, IResource pluginDescriptor, String type) throws CoreException, IOException {
-		String content = WikiPlugin.getDefault().loadContents(((IFile) pluginDescriptor).getContents());
+		String content = Resources.getContents(((IFile) pluginDescriptor).getContents());
 		int startPos = content.indexOf("<" + type);
 		if (startPos > 0) {
 			int endPos = content.indexOf(">", startPos);
