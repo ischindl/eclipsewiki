@@ -13,6 +13,7 @@ import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class ExportLinkMaker extends LinkMaker {
 
@@ -42,7 +43,7 @@ public final class ExportLinkMaker extends LinkMaker {
 	}
 
 	public String make(EclipseResourceTextRegion eclipseResourceTextRegion) {
-		if (eclipseResourceTextRegion.resourceExists() && eclipseResourceTextRegion.getResource().getType() == IResource.FILE) {
+		if (Resources.exists(eclipseResourceTextRegion.getResource()) && eclipseResourceTextRegion.getResource().getType() == IResource.FILE) {
 			String href = getHref(eclipseResourceTextRegion);
 			String link = getLink(href, eclipseResourceTextRegion.getText());
 			linkedResources.put(eclipseResourceTextRegion.getResource(), href);
@@ -52,7 +53,7 @@ public final class ExportLinkMaker extends LinkMaker {
 	}
 
 	public String make(PluginResourceTextRegion pluginResourceTextRegion) {
-		if (pluginResourceTextRegion.resourceExists() && pluginResourceTextRegion.getResource().getType() == IResource.FILE) {
+		if (Resources.exists(pluginResourceTextRegion.getResource()) && pluginResourceTextRegion.getResource().getType() == IResource.FILE) {
 			String href = getHref(pluginResourceTextRegion);
 			String link = getLink(href, pluginResourceTextRegion.getText());
 			linkedResources.put(pluginResourceTextRegion.getResource(), href);

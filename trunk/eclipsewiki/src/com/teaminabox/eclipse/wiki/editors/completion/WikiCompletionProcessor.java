@@ -38,6 +38,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
+import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginProjectSupport;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
@@ -194,7 +195,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			public Object visit(PluginResourceTextRegion pluginResourceTextRegion) {
 				int colon = textRegion.getTextToCursor().indexOf(WikiConstants.WIKISPACE_DELIMITER) + 1;
 				String location = new String(textRegion.getTextToCursor().substring(colon));
-				IPath path = PluginResourceTextRegion.getPluginPath(location);
+				IPath path = PluginPathFinder.getPluginPath(location);
 				int slashPos = location.indexOf('/');
 				if (slashPos < 0 || slashPos == location.lastIndexOf('/') && slashPos - 1 == location.length()) {
 					return getPluginCompletions(textRegion.getTextToCursor(), location, documentOffset);
@@ -222,7 +223,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			if (path == null) {
 				int slashPos = location.lastIndexOf('/');
 				String base = new String(location.substring(0, slashPos));
-				path = PluginResourceTextRegion.getPluginPath(base);
+				path = PluginPathFinder.getPluginPath(base);
 				rest = new String(location.substring(slashPos + 1));
 			}
 			String[] children = getChildren(path.toString() + rest);
@@ -278,7 +279,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			if (proj != null) {
 				plugDirPath = proj.getRawLocation();
 			} else {
-				plugDirPath = PluginResourceTextRegion.getPluginPath(currPluginID);
+				plugDirPath = PluginPathFinder.getPluginPath(currPluginID);
 			}
 			if (plugDirPath != null) {
 				File plugDir = plugDirPath.toFile();

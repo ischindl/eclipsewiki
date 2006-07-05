@@ -1,8 +1,6 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.resources.IFile;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
@@ -13,6 +11,7 @@ import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 public abstract class LinkMaker {
 
@@ -63,11 +62,11 @@ public abstract class LinkMaker {
 		if (url.startsWith(WikiConstants.ECLIPSE_PREFIX)) {
 			url = new String(url.substring(WikiConstants.ECLIPSE_PREFIX.length()));
 		}
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(url));
-		if (resource == null) {
+		IFile file = Resources.findFileInWorkspace(url);
+		if (file == null) {
 			return null;
 		}
-		return "file://" + resource.getLocation().toOSString();
+		return "file://" + file.getLocation().toOSString();
 	}
 
 	public String make(UrlTextRegion urlTextRegion) {

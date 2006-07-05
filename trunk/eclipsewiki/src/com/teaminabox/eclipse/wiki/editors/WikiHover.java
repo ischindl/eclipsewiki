@@ -3,10 +3,7 @@ package com.teaminabox.eclipse.wiki.editors;
 import java.io.IOException;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
@@ -16,6 +13,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
+import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
@@ -87,9 +85,9 @@ public final class WikiHover implements ITextHover {
 		}
 		try {
 			if (relPath.length() > 0) {
-				IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(relPath);
-				if (resource != null && resource.exists() && resource.getType() == IResource.FILE) {
-					return getHoverText((IFile) resource);
+				IFile file = Resources.findFileInWorkspace(relPath);
+				if (file != null) {
+					return getHoverText(file);
 				}
 			}
 		} catch (Exception e) {
@@ -100,15 +98,15 @@ public final class WikiHover implements ITextHover {
 
 	private String getPluginResourceHover(PluginResourceTextRegion textRegion) {
 		String resourceLink = new String(textRegion.getText().substring(WikiConstants.PLUGIN_PREFIX.length()));
-		String relPath = PluginResourceTextRegion.getPluginPath(resourceLink).toString();
+		String relPath = PluginPathFinder.getPluginPath(resourceLink).toString();
 		if (relPath.lastIndexOf(WikiConstants.LINE_NUMBER_SEPARATOR) > 3) {
 			relPath = new String(relPath.substring(0, relPath.lastIndexOf(WikiConstants.LINE_NUMBER_SEPARATOR)));
 		}
 		try {
 			if (relPath.length() > 0) {
-				IResource resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(relPath));
-				if (resource != null && resource.exists() && resource.getType() == IResource.FILE) {
-					return getHoverText((IFile) resource);
+				IFile file = Resources.findFileInWorkspace(relPath);
+				if (file != null) {
+					return getHoverText(file);
 				}
 				return relPath.toString();
 			}
@@ -119,7 +117,7 @@ public final class WikiHover implements ITextHover {
 	}
 
 	private String getHoverText(IFile file) throws CoreException, IOException {
-		if (file.getName().endsWith(".wiki") || file.getName().endsWith(".txt")) {
+		if (Resources.isWikiFile(file) || file.getName().endsWith(".txt")) {
 			String contents = Resources.getContents(file.getContents());
 			if (contents.length() > 0) {
 				int length = Math.min(WikiPlugin.getDefault().getPreferenceStore().getInt(WikiConstants.HOVER_PREVIEW_LENGTH), contents.length());

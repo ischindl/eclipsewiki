@@ -1,7 +1,6 @@
 package com.teaminabox.eclipse.wiki.export;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -169,7 +168,7 @@ public final class WikiExportWizardPage extends WizardPage implements IPropertyC
 			Object[] result = dialog.getResult();
 			if (result != null && result.length == 1) {
 				IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember((IPath) result[0]);
-				if (resource instanceof IFile) {
+				if (resource.getType() == IResource.FILE) {
 					return;
 				}
 				initialiseFolder(resource);

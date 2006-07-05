@@ -9,10 +9,12 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 
+import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public class Resources {
@@ -44,5 +46,21 @@ public class Resources {
 	
 	public static boolean exists(IResource resource) {
 		return resource != null && resource.exists();
+	}
+	
+	public static IFile findFileInWorkspace(String workspaceRelativePath) {
+		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath);
+		if (exists(resource) && resource.getType() == IResource.FILE) {
+			return (IFile) resource;
+		}
+		return null;
+	}
+	
+	public static boolean isWikiFile(IResource resource) {
+		return exists(resource) && resource.getFileExtension() != null && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
+	}
+	
+	public static boolean isWikiFile(IFile file) {
+		return file.getName().endsWith(WikiConstants.WIKI_FILE_EXTENSION);
 	}
 }
