@@ -2,7 +2,6 @@ package com.teaminabox.eclipse.wiki.export;
 
 import java.util.HashMap;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
@@ -43,7 +42,7 @@ public final class ExportLinkMaker extends LinkMaker {
 	}
 
 	public String make(EclipseResourceTextRegion eclipseResourceTextRegion) {
-		if (Resources.exists(eclipseResourceTextRegion.getResource()) && eclipseResourceTextRegion.getResource().getType() == IResource.FILE) {
+		if (Resources.existsAsFile(eclipseResourceTextRegion.getResource())) {
 			String href = getHref(eclipseResourceTextRegion);
 			String link = getLink(href, eclipseResourceTextRegion.getText());
 			linkedResources.put(eclipseResourceTextRegion.getResource(), href);
@@ -53,7 +52,7 @@ public final class ExportLinkMaker extends LinkMaker {
 	}
 
 	public String make(PluginResourceTextRegion pluginResourceTextRegion) {
-		if (Resources.exists(pluginResourceTextRegion.getResource()) && pluginResourceTextRegion.getResource().getType() == IResource.FILE) {
+		if (Resources.existsAsFile(pluginResourceTextRegion.getResource())) {
 			String href = getHref(pluginResourceTextRegion);
 			String link = getLink(href, pluginResourceTextRegion.getText());
 			linkedResources.put(pluginResourceTextRegion.getResource(), href);

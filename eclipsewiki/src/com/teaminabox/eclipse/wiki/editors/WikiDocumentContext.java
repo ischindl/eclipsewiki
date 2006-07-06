@@ -1,10 +1,8 @@
 package com.teaminabox.eclipse.wiki.editors;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,15 +77,8 @@ public final class WikiDocumentContext {
 	private void loadExcludes() throws IOException, CoreException {
 		excludeList = new HashSet();
 		IFile file = getLocalFile(WikiConstants.EXCLUDES_FILE);
-		if (file.exists() && !file.isPhantom()) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents(), getCharset()));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.trim().length() > 0) {
-					excludeList.add(line.trim());
-				}
-			}
-			reader.close();
+		if (Resources.exists(file)) {
+			excludeList.addAll(Resources.readLines(file));
 		}
 	}
 
@@ -114,7 +105,7 @@ public final class WikiDocumentContext {
 			return null;
 		}
 		IResource resource = container.findMember(wikiName + WikiConstants.WIKI_FILE_EXTENSION);
-		if (!Resources.exists(resource)) {
+		if (!Resources.existsAsFile(resource)) {
 			return null;
 		}
 		return (IFile) resource;
@@ -147,7 +138,7 @@ public final class WikiDocumentContext {
 
 	public boolean hasWikiSibling(WikiLinkTextRegion wikiNameTextRegion) {
 		IFile file = getWikiFile(wikiNameTextRegion.getWikiDocumentName());
-		return file.exists();
+		return Resources.exists(file);
 	}
 
 	public String getWikiSpaceLink(String name) {
@@ -167,12 +158,12 @@ public final class WikiDocumentContext {
 			IFile file = getFile(HEADER_FILE);
 			if (file != null) {
 				lines.addAll(Resources.readLines(file));
-			}			
+			}
 			lines.addAll(Resources.readLines(wikiDocument));
 			file = getFile(FOOTER_FILE);
 			if (file != null) {
 				lines.addAll(Resources.readLines(file));
-			}			
+			}
 			return (String[]) lines.toArray(new String[lines.size()]);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Cannot get Document", e);
@@ -182,7 +173,7 @@ public final class WikiDocumentContext {
 
 	private IFile getFile(String file) {
 		IResource content = getWorkingLocation().findMember(file);
-		if (Resources.exists(content) && content.getType() == IResource.FILE) {
+		if (Resources.existsAsFile(content)) {
 			return (IFile) content;
 		}
 		return null;

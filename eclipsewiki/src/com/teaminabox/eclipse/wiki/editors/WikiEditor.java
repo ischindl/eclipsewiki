@@ -1,9 +1,6 @@
 /*
- * Contributors: 
- * Channing Walton
- * Torsten Juergeleit helped me with making the content assist and open wiki link use
- * the same accelerators as the Java editor
- * Ronald Steinhau for the Plugin protocol support
+ * Contributors: Channing Walton Torsten Juergeleit helped me with making the content assist and open wiki link use the
+ * same accelerators as the Java editor Ronald Steinhau for the Plugin protocol support
  */
 package com.teaminabox.eclipse.wiki.editors;
 
@@ -43,6 +40,7 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
+import com.teaminabox.eclipse.wiki.renderer.SelectionRenderer;
 import com.teaminabox.eclipse.wiki.text.ColourManager;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
@@ -211,20 +209,16 @@ public final class WikiEditor extends TextEditor {
 	}
 
 	public void openPreview() {
-		// wiki hover has what we need - nasty but I'll sort it out later
-		final ITextSelection SELECTION = (ITextSelection) getSelectionProvider().getSelection();
-		WikiHover hover = new WikiHover(this);
-		String info = hover.getHoverInfo(getSourceViewer(), new IRegion() {
-
+		final ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();
+		SelectionRenderer renderer = new SelectionRenderer(this, getSourceViewer(), new IRegion() {
 			public int getLength() {
-				return SELECTION.getLength();
+				return selection.getLength();
 			}
-
 			public int getOffset() {
-				return SELECTION.getOffset();
+				return selection.getOffset();
 			}
 		});
-
+		String info = renderer.render();
 		if (info == null) {
 			return;
 		}
