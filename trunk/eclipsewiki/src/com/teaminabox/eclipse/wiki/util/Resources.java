@@ -48,9 +48,13 @@ public class Resources {
 		return resource != null && resource.exists();
 	}
 	
+	public static boolean existsAsFile(IResource resource) {
+		return exists(resource) && resource.getType() == IResource.FILE;
+	}
+	
 	public static IFile findFileInWorkspace(String workspaceRelativePath) {
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath);
-		if (exists(resource) && resource.getType() == IResource.FILE) {
+		if (existsAsFile(resource)) {
 			return (IFile) resource;
 		}
 		return null;

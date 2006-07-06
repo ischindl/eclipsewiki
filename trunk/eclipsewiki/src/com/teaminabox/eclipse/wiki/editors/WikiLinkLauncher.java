@@ -112,11 +112,11 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 	void openEclipseLocation(String location) {
 		String resource = new String(location.substring(WikiConstants.ECLIPSE_PREFIX.length()));
 		if (resource.length() > 0) {
-			openProjectResource(resource);
+			openEclipseResource(resource);
 		}
 	}
 
-	public void openPluginLocation(String location) {
+	void openPluginLocation(String location) {
 		String resource = new String(location.substring(WikiConstants.PLUGIN_PREFIX.length()));
 		if (resource.length() > 0) {
 			openPluginResource(resource);
@@ -131,7 +131,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 				return;
 			}
 			IResource resource = findPluginResource(path);
-			if (Resources.exists(resource) && resource.getType() == IResource.FILE) {
+			if (Resources.existsAsFile(resource)) {
 				if (Resources.isWikiFile(resource)) {
 					IEditorPart part = openFile((IFile) resource);
 					if (pathWithLineNumber.getLine() > 0 && part instanceof AbstractTextEditor) {
@@ -159,36 +159,40 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 	}
 
 	private IResource findPluginResource(String path) throws CoreException, FileNotFoundException {
-		IPath relPath;
 		IResource resource = PluginResourceTextRegion.findResource(path);
 		if (resource == null) {
-			relPath = PluginPathFinder.getPluginPath(path);
-			File xfile = relPath.toFile();
-			if (xfile.exists()) {
-				IProject wikiTemp = ResourcesPlugin.getWorkspace().getRoot().getProject(WikiEditor.WIKI_TEMP_PROJECT);
-				if (!wikiTemp.exists()) {
-					wikiTemp.create(null);
-				}
-				if (!wikiTemp.isOpen()) {
-					wikiTemp.open(null);
-				}
-				IFolder wikiDir = wikiTemp.getFolder(WikiEditor.WIKI_TEMP_FOLDER);
-				if (!wikiDir.exists()) {
-					wikiDir.create(true, true, null);
-				}
-				FileInputStream fis = new FileInputStream(xfile);
-				IFile wikiFile = wikiDir.getFile(xfile.getName());
-				if (wikiFile.exists()) {
-					wikiFile.delete(true, false, null);
-				}
-				wikiFile.create(fis, true, null);
-				resource = wikiFile;
-			}
+			resource = createTemporaryPluginResource(path, resource);
 		}
 		return resource;
 	}
 
-	private void openProjectResource(String path) {
+	private IResource createTemporaryPluginResource(String path, IResource resource) throws CoreException, FileNotFoundException {
+		IPath relPath = PluginPathFinder.getPluginPath(path);
+		File xfile = relPath.toFile();
+		if (xfile.exists()) {
+			IProject wikiTemp = ResourcesPlugin.getWorkspace().getRoot().getProject(WikiEditor.WIKI_TEMP_PROJECT);
+			if (!wikiTemp.exists()) {
+				wikiTemp.create(null);
+			}
+			if (!wikiTemp.isOpen()) {
+				wikiTemp.open(null);
+			}
+			IFolder wikiDir = wikiTemp.getFolder(WikiEditor.WIKI_TEMP_FOLDER);
+			if (!wikiDir.exists()) {
+				wikiDir.create(true, true, null);
+			}
+			FileInputStream fis = new FileInputStream(xfile);
+			IFile wikiFile = wikiDir.getFile(xfile.getName());
+			if (wikiFile.exists()) {
+				wikiFile.delete(true, false, null);
+			}
+			wikiFile.create(fis, true, null);
+			resource = wikiFile;
+		}
+		return resource;
+	}
+
+	private void openEclipseResource(String path) {
 		try {
 			PathWithLineNumber pathWithLineNumber = new PathWithLineNumber(path);
 			if (pathWithLineNumber.segmentCount() < 2) {
@@ -196,7 +200,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 				return;
 			}
 			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(pathWithLineNumber.getPath());
-			if (Resources.exists(resource) && resource.getType() == IResource.FILE) {
+			if (Resources.existsAsFile(resource)) {
 				IEditorPart part = openFile((IFile) resource);
 				if (pathWithLineNumber.getLine() > 0 && part instanceof AbstractTextEditor) {
 					gotoLine(pathWithLineNumber.getLine(), part);

@@ -69,6 +69,10 @@ public final class JavaContext implements IResourceChangeListener {
 		if (packages.contains(text)) {
 			return true;
 		}
+		return hasPackageWithNameStartingWith(text);
+	}
+
+	private boolean hasPackageWithNameStartingWith(String text) {
 		Iterator iterator = packages.iterator();
 		while (iterator.hasNext()) {
 			String packageName = (String) iterator.next();

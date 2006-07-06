@@ -105,16 +105,8 @@ public final class JavaCompletionProcessor {
 
 	private IType[] getMatchingTypes(IPackageFragment[] fragments, String text) throws CoreException {
 		final Set matches = new TreeSet(JavaCompletionProcessor.JAVA_ELEMENT_COMPARATOR);
-		IJavaElement[] elements;
-		if (fragments.length == 0) {
-			elements = new IJavaElement[] { project };
-		} else {
-			elements = fragments;
-		}
-		String prefix = text;
-		if (text.indexOf('.') > 0) {
-			prefix = new String(text.substring(text.lastIndexOf('.') + 1));
-		}
+		IJavaElement[] elements = getJavaElementsToSearchForTypes(fragments);
+		String prefix = getPackagePrefix(text);
 		if (prefix.length() == 0) {
 			return getTypesInPackages(fragments);
 		}
@@ -122,6 +114,23 @@ public final class JavaCompletionProcessor {
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
 		new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, new TypeSearchRequestor(matches), null);
 		return (IType[]) matches.toArray(new IType[matches.size()]);
+	}
+
+	private String getPackagePrefix(String fullyQualifiedTypeName) {
+		if (fullyQualifiedTypeName.indexOf('.') > 0) {
+			return new String(fullyQualifiedTypeName.substring(fullyQualifiedTypeName.lastIndexOf('.') + 1));
+		}
+		return fullyQualifiedTypeName;
+	}
+
+	private IJavaElement[] getJavaElementsToSearchForTypes(IPackageFragment[] fragments) {
+		IJavaElement[] elements;
+		if (fragments.length == 0) {
+			elements = new IJavaElement[] { project };
+		} else {
+			elements = fragments;
+		}
+		return elements;
 	}
 
 	private IType[] getTypesInPackages(IPackageFragment[] fragments) throws JavaModelException {
