@@ -114,7 +114,7 @@ a line with <a href="http://--wiki/WardsBrowserContentRendererTest">WardsBrowser
 <a href="http://--wiki/WardsBrowserContentRendererTest">WardsBrowserContentRendererTest</a>'s plural</p>
 <p>
 </p>
-<table><tr><th>A</th><th>Big</th><th>Table</th></tr>
+<table ><tr><th>A</th><th>Big</th><th>Table</th></tr>
 <tr><td>very</td><td>cool</td><td>indeed</td></tr>
 <tr><td><a href="http://--wiki/WardsBrowserContentRendererTest">WardsBrowserContentRendererTest</a></td><td>SnipSnapContentRendererTest<a href="http://--wiki/SnipSnapContentRendererTest">?</a></td><td>TwikiContentRendererTest<a href="http://--wiki/TwikiContentRendererTest">?</a></td></tr>
 <tr><td><a href="http://www.acronymfinder.com/af-query.asp?Acronym=WTF">Acronym:WTF</a> </td><td><a href="http://www.google.com">http://www.google.com</a> </td><td><a href="http://eclipsewiki.free.fr/index.php?page=license.html">EclipseWiki:license.html</a> </td></tr>

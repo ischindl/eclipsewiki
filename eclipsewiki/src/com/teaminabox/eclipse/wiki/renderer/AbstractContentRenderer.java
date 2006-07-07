@@ -245,11 +245,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *        
-	 *         
 	 *          replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
-	 *          
-	 *         
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {
@@ -340,11 +336,15 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		return (String[]) bits.toArray(new String[bits.size()]);
 	}
 
+	protected final String getTableTag() {
+		return "<table " + getTableAttributes() + ">";
+	}
+
 	/**
 	 * @return the tag for table (can be overridden to add style)
 	 */
-	protected String getTableTag() {
-		return "<table>";
+	protected String getTableAttributes() {
+		return "";
 	}
 
 	public void forEachHeader(WikiDocumentContext context, StructureClosure closure) throws BadLocationException {

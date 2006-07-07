@@ -3,13 +3,10 @@ package com.teaminabox.eclipse.wiki.export;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
@@ -40,13 +37,10 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		persistExportProperties();
 
-		final IContainer folder = page.getFolder();
-		final String exportDirectory = page.getExportDirectoryPath();
-
-		return runOperationForContainer(new IRunnableWithProgress() {
+		return runOperationInContainer(new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					startExport(monitor, folder, exportDirectory);
+					new WikiExporter().export(page.getFolder(), page.getExportDirectoryPath(), monitor);
 				} catch (Exception e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -56,9 +50,9 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 		});
 	}
 
-	private boolean runOperationForContainer(IRunnableWithProgress op) {
+	private boolean runOperationInContainer(IRunnableWithProgress runnable) {
 		try {
-			getContainer().run(true, true, op);
+			getContainer().run(true, true, runnable);
 		} catch (InterruptedException e) {
 			return false;
 		} catch (InvocationTargetException e) {
@@ -68,14 +62,6 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 		}
 
 		return true;
-	}
-
-	private void startExport(IProgressMonitor monitor, IContainer folder, String exportDirectory) throws CoreException {
-		try {
-			new WikiExporter().export(folder, exportDirectory, monitor);
-		} catch (Exception ioex) {
-			throw new CoreException(new Status(IStatus.ERROR, "Failed to write Wiki Documents", IStatus.OK, ioex.getMessage(), ioex));
-		}
 	}
 
 	private void persistExportProperties() {
