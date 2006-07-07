@@ -105,16 +105,20 @@ public final class WikiExporter {
 		if (!exportLinkMaker.hasLinkedDocuments()) {
 			return;
 		}
-		File workspaceExport = new File(exportDirectory, WikiExporter.WORKSPACE);
-		if (!workspaceExport.exists()) {
-			workspaceExport.mkdir();
-		}
+		createWorkspaceFolder();
 		HashMap map = exportLinkMaker.getLinkedResources();
 		Iterator iterator = map.keySet().iterator();
 		while (iterator.hasNext()) {
 			IResource resource = (IResource) iterator.next();
 			String location = (String) map.get(resource);
 			export(resource, location);
+		}
+	}
+
+	private void createWorkspaceFolder() {
+		File workspaceExport = new File(exportDirectory, WikiExporter.WORKSPACE);
+		if (!workspaceExport.exists()) {
+			workspaceExport.mkdir();
 		}
 	}
 

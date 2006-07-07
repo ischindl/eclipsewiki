@@ -136,8 +136,8 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 		return line.replaceAll("\\{.*?\\}", "");
 	}
 
-	protected String getTableTag() {
-		return "<table class=\"wiki-table\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">";
+	protected String getTableAttributes() {
+		return "class=\"wiki-table\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
 	}
 
 	protected String getListText(String line) {

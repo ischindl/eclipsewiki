@@ -151,11 +151,10 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor {
 		if (Resources.isWikiFile(file) && WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR) && !editor.isTempWiki(file)) {
 			editor.openWith(file);
 			return editor;
-		} else {
-			IEditorPart part = IDE.openEditor(getActivePage(), file, true);
-			editor.redrawTextAsync(); // so that links are redrawn if necessary
-			return part;
 		}
+		IEditorPart part = IDE.openEditor(getActivePage(), file, true);
+		editor.redrawTextAsync(); // so that links are redrawn if necessary
+		return part;
 	}
 
 	private IResource findPluginResource(String path) throws CoreException, FileNotFoundException {

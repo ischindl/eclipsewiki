@@ -81,7 +81,7 @@ td {
 <ol type="I"><li>roman upper case list item</li>
 </ol></ol></ol></ol></ol></ol><p>
 </p>
-<table><tr><th>A</th><th>Big</th><th>Table</th></tr>
+<table ><tr><th>A</th><th>Big</th><th>Table</th></tr>
 <tr><td>very</td><td>cool</td><td>indeed</td></tr>
 <tr><td>WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></td><td>SnipSnapContentRendererTest<a href="http://--wiki/SnipSnapContentRendererTest">?</a></td><td><a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></td></tr>
 <tr><td><a href="http://www.acronymfinder.com/af-query.asp?Acronym=WTF">Acronym:WTF</a> </td><td><a href="http://www.google.com">http://www.google.com</a> </td><td><a href="http://eclipsewiki.free.fr/index.php?page=license.html">EclipseWiki:license.html</a> </td></tr>
