@@ -18,4 +18,6 @@ public interface TextRegionVisitor {
 	Object visit(JavaTypeTextRegion region);
 
 	Object visit(ForcedLinkTextRegion region);
+
+	Object visit(EmbeddedWikiWordTextRegion region);
 }

@@ -2,10 +2,6 @@ package com.teaminabox.eclipse.wiki.renderer;
 
 public final class SnipSnapContentRendererTest extends AbstractContentRendererTest {
 
-	public SnipSnapContentRendererTest(String name) {
-		super(name);
-	}
-
 	public void testIsHeader() {
 		assertTrue(getRenderer().isHeader("1 Heading"));
 	}

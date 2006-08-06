@@ -15,10 +15,6 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	private static final String	TYPE_PATH		= "foo/bar/Test.java";
 	private static final String	TYPE_CONTENTS	= "package foo.bar;\npublic interface Test {\n}";
 
-	public JavaCompletionProcessorTest(String name) {
-		super(name);
-	}
-
 	public void testGetProposalsNoContent() throws Exception {
 		WikiEditor editor = createWikiDocumentAndOpen("").getEditor();
 		JavaCompletionProcessor processor = new JavaCompletionProcessor();

@@ -15,10 +15,6 @@ public final class EscapedWikiWordMatcherTest extends AbstractTextRegionMatcherT
 
 	private static final String[]				UNACCEPTABLE_TEXT	= new String[] { "WikiWord" };
 
-	public EscapedWikiWordMatcherTest(String name) {
-		super(name);
-	}
-
 	protected TextRegionMatcher getMatcher() {
 		return new EscapedWikiWordMatcher(WIKI_WORD_PATTERN, '!', new String[] {"\\!"});
 	}

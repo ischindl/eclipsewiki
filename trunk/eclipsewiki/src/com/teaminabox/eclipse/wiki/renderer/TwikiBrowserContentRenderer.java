@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.EscapedWikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
@@ -19,9 +20,9 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	private static final String					ESCAPED_TWIKI_WORD_PATTERN	= "!(\\[\\[)?" + TWIKI_WORD_PATTERN + "(\\]\\])?";
 	private static final String[]				TEXT_TO_REMOVE_FOR_ESCAPED	= { "\\!", "\\[\\[", "\\]\\]" };
 
-	private static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new EscapedWikiWordMatcher(ESCAPED_TWIKI_WORD_PATTERN, '!', TEXT_TO_REMOVE_FOR_ESCAPED), new WikiWordMatcher(TWIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
+	private static final TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new EscapedWikiWordMatcher(ESCAPED_TWIKI_WORD_PATTERN, '!', TEXT_TO_REMOVE_FOR_ESCAPED), new EmbeddedWikiWordMatcher(new WikiWordMatcher(TWIKI_WORD_PATTERN)),new WikiWordMatcher(TWIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
 
-	private static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new EscapedWikiWordMatcher(ESCAPED_TWIKI_WORD_PATTERN, '!', TEXT_TO_REMOVE_FOR_ESCAPED), new WikiWordMatcher(TWIKI_WORD_PATTERN), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
+	private static final TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(2), new WikiSpaceMatcher(), new EscapedWikiWordMatcher(ESCAPED_TWIKI_WORD_PATTERN, '!', TEXT_TO_REMOVE_FOR_ESCAPED), new EmbeddedWikiWordMatcher(new WikiWordMatcher(TWIKI_WORD_PATTERN)), new WikiWordMatcher(TWIKI_WORD_PATTERN), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher() };
 
 	private static final char					ORDERED_LIST_END_MARKER		= '.';
 
@@ -43,9 +44,9 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
 	protected void appendHeader(String line) {
 		int headerSize = getHeaderSize(line);
-		getBuffer().append("<h").append(headerSize).append(">");
-		append(getHeaderText(line));
-		getBuffer().append("</h").append(headerSize).append(">");
+		append("<h").append(headerSize).append(">");
+		parseAndAppend(getHeaderText(line));
+		append("</h").append(headerSize).append(">");
 		appendNewLine();
 	}
 
@@ -113,18 +114,18 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	}
 
 	private void processVerbatim() {
-		getBuffer().append("<pre>");
+		append("<pre>");
 		while (hasNextLine()) {
 			String line = getNextLine();
 			if (isEndVerbatim(line)) {
 				break;
 			}
-			getBuffer().append(encode(line));
+			append(encode(line));
 			if (!isEndVerbatim(peekNextLine())) {
 				appendNewLine();
 			}
 		}
-		getBuffer().append("</pre>");
+		append("</pre>");
 	}
 
 	private boolean isEndVerbatim(String line) {

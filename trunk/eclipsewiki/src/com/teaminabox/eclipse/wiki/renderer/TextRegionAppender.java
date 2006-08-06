@@ -2,6 +2,7 @@ package com.teaminabox.eclipse.wiki.renderer;
 
 import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
+import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
@@ -13,12 +14,14 @@ import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
 public class TextRegionAppender implements TextRegionVisitor {
 
-	private final LinkMaker		linkMaker;
-	private final StringBuffer	buffer;
+	private final LinkMaker			linkMaker;
+	private final StringBuffer		buffer;
+	private final AbstractContentRenderer	contentRenderer;
 
-	public TextRegionAppender(StringBuffer buffer, LinkMaker linkMaker) {
+	public TextRegionAppender(StringBuffer buffer, LinkMaker linkMaker, AbstractContentRenderer contentRenderer) {
 		this.buffer = buffer;
 		this.linkMaker = linkMaker;
+		this.contentRenderer = contentRenderer;
 	}
 
 	public Object visit(UndefinedTextRegion undefinedTextRegion) {
@@ -63,6 +66,11 @@ public class TextRegionAppender implements TextRegionVisitor {
 
 	public Object visit(ForcedLinkTextRegion region) {
 		buffer.append(linkMaker.make(region));
+		return null;
+	}
+
+	public Object visit(EmbeddedWikiWordTextRegion region) {
+		contentRenderer.embed(region);
 		return null;
 	}
 }

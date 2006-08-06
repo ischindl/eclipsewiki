@@ -11,10 +11,6 @@ public final class UrlMatcherTest extends AbstractTextRegionMatcherTest {
 		new TextRegionTestBean("mailto:steve@apple.com blah", new UrlTextRegion("mailto:steve@apple.com")), 
 		new TextRegionTestBean("ftp://a.b.c blah", new UrlTextRegion("ftp://a.b.c")), };
 
-	public UrlMatcherTest(String name) {
-		super(name);
-	}
-
 	protected TextRegionMatcher getMatcher() {
 		return new UrlMatcher();
 	}

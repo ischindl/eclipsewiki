@@ -15,10 +15,6 @@ public abstract class AbstractTextRegionMatcherTest extends WikiTest {
 
 	private WikiDocumentContext		context;
 
-	public AbstractTextRegionMatcherTest(String name) {
-		super(name);
-	}
-
 	public WikiDocumentContext getContext() {
 		return context;
 	}
@@ -35,7 +31,9 @@ public abstract class AbstractTextRegionMatcherTest extends WikiTest {
 	public void testAcceptsWhenTrue() {
 		TextRegionTestBean[] cases = getAcceptableCases();
 		for (int i = 0; i < cases.length; i++) {
-			Assert.assertNotNull(cases[i].getText(), matcher.createTextRegion(cases[i].getText(), context));
+			TextRegion textRegion = matcher.createTextRegion(cases[i].getText(), context);
+			Assert.assertNotNull(cases[i].getText(), textRegion);
+			Assert.assertEquals(textRegion, cases[i].getTextRegion());
 		}
 	}
 

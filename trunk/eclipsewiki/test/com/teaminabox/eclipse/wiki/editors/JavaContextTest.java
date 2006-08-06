@@ -13,10 +13,6 @@ public class JavaContextTest extends WikiTest {
 	private static final String	ANOTHER_CLASS_SOURCE	= "package net.sourceforge;\npublic class Project { class InnerClass {} }";
 	private static final String	ANOTHER_CLASS_NAME		= "net.sourceforge.Project";
 
-	public JavaContextTest(String name) {
-		super(name);
-	}
-
 	public void testGetJavaProjectInNonJavaProject() throws Exception {
 		IProject project = createNonJavaProject("simpleProject");
 		IFile file = createFile(project, "test.txt", "Hi");

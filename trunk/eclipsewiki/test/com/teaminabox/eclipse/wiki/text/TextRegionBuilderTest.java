@@ -10,10 +10,6 @@ public final class TextRegionBuilderTest extends WikiTest {
 	private WikiEditor			editor;
 	private WikiDocumentContext	context;
 
-	public TextRegionBuilderTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		editor = createWikiDocumentAndOpen("").getEditor();

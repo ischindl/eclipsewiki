@@ -28,6 +28,7 @@ public interface WikiConstants {
 	String[]	URL_PREFIXES												= new String[] { "http:", "https:", "ftp:", "sftp:", "mailto:", "file:", "news:", "gopher:", "telnet:", "afp:", "nfs:", "smb:" };
 	String		ECLIPSE_PREFIX												= "Eclipse:";
 	String		PLUGIN_PREFIX												= "Plugin:";
+	String		EMBEDDED_PREFIX												= "Embed:";
 	String		JAVA_LINK_PREFIX											= "Java:";
 	char		LINE_NUMBER_SEPARATOR										= ':';
 

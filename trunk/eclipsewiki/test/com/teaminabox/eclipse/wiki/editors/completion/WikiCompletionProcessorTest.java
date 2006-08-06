@@ -9,10 +9,6 @@ public final class WikiCompletionProcessorTest extends WikiTest {
 
 	private WikiEditor	editor;
 
-	public WikiCompletionProcessorTest(String name) {
-		super(name);
-	}
-
 	public void testEclipsePathOverridesJavaType() {
         String projectName = project.getName(); // WikiTest.TEST_PROJECT;
         assertTrue(projectName.matches(WikiTest.TEST_PROJECT+"\\d+"));
