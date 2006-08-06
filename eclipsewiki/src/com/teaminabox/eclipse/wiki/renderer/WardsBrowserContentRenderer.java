@@ -1,6 +1,7 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
+import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.IgnoredTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.JavaTypeMatcher;
 import com.teaminabox.eclipse.wiki.text.LetterOrDigitMatcher;
@@ -15,8 +16,8 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 
 	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
 
-	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
-	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new WikiWordMatcher(WIKI_WORD_PATTERN) };
+	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)),new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
+	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN) };
 
 	private static final String			BULLET_MARKUP				= "*";
 	private static final String			QUOTE_MARKUP_REGEX			= "^\t :\t.*";
@@ -44,8 +45,8 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 	 * There aren't true headers in Ward's Wiki, just text in a <code>strong</code> element.
 	 */
 	protected void appendHeader(String line) {
-		getBuffer().append("<p><strong>");
-		getBuffer().append(encode(getHeaderText(line)));
+		append("<p><strong>");
+		append(encode(getHeaderText(line)));
 		appendln("</strong></p>");
 	}
 
@@ -85,20 +86,20 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 	}
 
 	private void appendQuote(String line) {
-		getBuffer().append("<p class=\"").append(AbstractContentRenderer.CLASS_QUOTE).append("\">");
-		append(processTags(encode(line.substring(4))));
-		getBuffer().append("</p>");
+		append("<p class=\"").append(AbstractContentRenderer.CLASS_QUOTE).append("\">");
+		parseAndAppend(processTags(encode(line.substring(4))));
+		append("</p>");
 	}
 
 	private void appendMonoSpacedLine(String line) {
-		getBuffer().append("<pre class=\"").append(AbstractContentRenderer.CLASS_MONO_SPACE).append("\">");
+		append("<pre class=\"").append(AbstractContentRenderer.CLASS_MONO_SPACE).append("\">");
 		appendNewLine();
-		getBuffer().append(encode(line));
+		append(encode(line));
 		while (hasNextLine() && peekNextLine().startsWith(" ")) {
 			appendNewLine();
-			getBuffer().append(encode(getNextLine()));
+			append(encode(getNextLine()));
 		}
-		getBuffer().append("</pre>");
+		append("</pre>");
 	}
 
 	protected String processTags(String line) {

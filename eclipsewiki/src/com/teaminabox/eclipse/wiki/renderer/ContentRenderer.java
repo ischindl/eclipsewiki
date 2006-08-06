@@ -7,7 +7,7 @@ import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 
 public interface ContentRenderer {
 
-	String render(WikiDocumentContext context, LinkMaker linkMaker);
+	String render(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded);
 
 	void forEachHeader(WikiDocumentContext context, StructureClosure closure) throws BadLocationException;
 
@@ -23,4 +23,5 @@ public interface ContentRenderer {
 	 * The ordered set of matches for rendering. 'Ordered' because the first matcher accepting text is the one used.
 	 */
 	TextRegionMatcher[] getRendererMatchers();
+
 }

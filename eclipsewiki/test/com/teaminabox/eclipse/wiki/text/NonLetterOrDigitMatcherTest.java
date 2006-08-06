@@ -4,10 +4,6 @@ public final class NonLetterOrDigitMatcherTest extends AbstractTextRegionMatcher
 
 	private static final TextRegionTestBean[]	ACCEPTABLE_CASES	= new TextRegionTestBean[] { new TextRegionTestBean(".", new BasicTextRegion(".")), new TextRegionTestBean(". abc", new BasicTextRegion(".")), new TextRegionTestBean(".abc", new BasicTextRegion(".")), };
 
-	public NonLetterOrDigitMatcherTest(String name) {
-		super(name);
-	}
-
 	protected TextRegionMatcher getMatcher() {
 		return new NonLetterOrDigitMatcher();
 	}

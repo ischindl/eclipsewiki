@@ -12,10 +12,6 @@ public final class WikiHoverTest extends WikiTest {
 	private WikiEditor			editor;
 	private WikiHover			hover;
 
-	public WikiHoverTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		create(WikiHoverTest.WIKI_HOVER_CONTENT, "WikiHover.wiki");

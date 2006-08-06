@@ -1,10 +1,7 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
-public final class WardsBrowserContentRendererTest extends AbstractContentRendererTest {
 
-	public WardsBrowserContentRendererTest(String name) {
-		super(name);
-	}
+public final class WardsBrowserContentRendererTest extends AbstractContentRendererTest {
 
 	protected AbstractContentRenderer getRenderer() {
 		return new WardsBrowserContentRenderer();
@@ -36,5 +33,5 @@ public final class WardsBrowserContentRendererTest extends AbstractContentRender
 		String expected = "<pre class=\"monospace\"> foo bar  </pre>";
 		assertRenderedContains(markup, expected);
 	}
-
+	
 }

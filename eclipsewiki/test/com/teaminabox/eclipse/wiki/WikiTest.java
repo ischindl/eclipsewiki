@@ -46,10 +46,6 @@ public abstract class WikiTest extends TestCase {
 
     protected IProject project;
 
-	public WikiTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		project = createProject();
 	}

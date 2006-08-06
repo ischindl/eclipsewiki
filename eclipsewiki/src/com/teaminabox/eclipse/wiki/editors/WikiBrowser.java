@@ -276,7 +276,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 	void redrawWebView() {
 		browser.setCursor(waiter);
-		String text = browserContentRenderer.render(editor.getContext(), new IdeLinkMaker(editor.getContext()));
+		String text = browserContentRenderer.render(editor.getContext(), new IdeLinkMaker(editor.getContext()), false);
 		browser.setText(text);
 		enableButtons(false);
 		browser.setCursor(null);

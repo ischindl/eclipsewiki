@@ -131,5 +131,11 @@ Text with Java types <a href="http://--wiki/Java:com.teaminabox.foo.BigClass">co
 </p>
 <p>
 Bug: [ 1490342 ] URL in brackets detected incorrectly: I am sure you have heard of Google (<a href="http://www.google.com">http://www.google.com</a>).</p>
+<p>
+</p>
+<p>
+<p>
+Embedded content with a link to <a href="http://--wiki/WardsBrowserContentRendererTest">WardsBrowserContentRendererTest</a></p>
+ here</p>
   </body>
 </html>

@@ -13,10 +13,6 @@ public final class WikiDocumentContextTest extends WikiTest {
 	private static final String	WIKIDOC	= "WikiDoc";
 	private WikiDocumentContext	context;
 
-	public WikiDocumentContextTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		WikiBrowserEditor editor = createWikiDocumentAndOpen("", WikiDocumentContextTest.WIKIDOC + WikiConstants.WIKI_FILE_EXTENSION);

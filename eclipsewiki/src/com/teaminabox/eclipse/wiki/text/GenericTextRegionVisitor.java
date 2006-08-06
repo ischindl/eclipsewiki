@@ -46,4 +46,8 @@ public class GenericTextRegionVisitor implements TextRegionVisitor {
 	public Object visit(ForcedLinkTextRegion region) {
 		return defaultReturnValue;
 	}
+
+	public Object visit(EmbeddedWikiWordTextRegion region) {
+		return defaultReturnValue;
+	}
 }

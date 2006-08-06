@@ -40,3 +40,5 @@ Bug: [ 1487063 ] Some !WikiWords not recognized: TipsJ2ME EclipseME MyVPN Meetin
 Bug: [ 1181020 ] Escape !WikiWords such as !WardsBrowserContentRendererTest !TipsJ2ME !MeetingNotes2006x03x25 ![[TwikiBrowserContentRendererTest]]
 
 ---+++ Bug: [ 1490333 ] !WikiWord in heading not recognized - TwikiBrowserContentRendererTest
+
+Embed:EmbeddedContent here

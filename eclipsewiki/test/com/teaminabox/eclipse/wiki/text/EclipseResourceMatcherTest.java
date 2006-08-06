@@ -9,10 +9,6 @@ public final class EclipseResourceMatcherTest extends AbstractTextRegionMatcherT
 
 	private String	acceptableText;
 
-	public EclipseResourceMatcherTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		acceptableText = "Eclipse:/" + project.getName() + "/" + WikiTest.WIKI_FILE;

@@ -7,10 +7,6 @@ public final class IgnoredTextRegionMatcherTest extends AbstractTextRegionMatche
 	private static final String					ACCEPTABLE_TEXT		= "IgnoreMe";
 	private static final TextRegionTestBean[]	ACCEPTABLE_CASES	= new TextRegionTestBean[] { new TextRegionTestBean(ACCEPTABLE_TEXT + " stuff", new BasicTextRegion(ACCEPTABLE_TEXT)), new TextRegionTestBean(ACCEPTABLE_TEXT + " stuff", new BasicTextRegion(ACCEPTABLE_TEXT)), };
 
-	public IgnoredTextRegionMatcherTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		create(IgnoredTextRegionMatcherTest.ACCEPTABLE_TEXT, WikiConstants.EXCLUDES_FILE);

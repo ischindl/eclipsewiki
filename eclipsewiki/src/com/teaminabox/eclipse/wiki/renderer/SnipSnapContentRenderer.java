@@ -3,6 +3,7 @@
  */
 package com.teaminabox.eclipse.wiki.renderer;
 
+import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkMatcher;
@@ -19,9 +20,9 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 	
 	private static final String	WIKI_WORD_PATTERN	= "([A-Z][a-z]+){2,}[0-9]*";
 
-	private static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
+	private static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
 
-	private static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new WikiWordMatcher(WIKI_WORD_PATTERN), };
+	private static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new ForcedLinkMatcher(1), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN), };
 
 	private static final String			UNORDERED_LIST_MARKUP		= "*";
 	private static final String			ALT_UNORDERED_LIST_MARKUP	= "-";
@@ -45,9 +46,9 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 	protected void appendHeader(String line) {
 		String header = encode(getHeaderText(line));
 		String headerStartTag = "<h1 " + getHeaderCss(getHeaderSize(line)) + ">";
-		getBuffer().append(headerStartTag);
-		getBuffer().append(header);
-		getBuffer().append("</h1>");
+		append(headerStartTag);
+		append(header);
+		append("</h1>");
 		appendNewLine();
 	}
 
@@ -104,13 +105,13 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 	}
 
 	private void appendTableRow(String line) {
-		getBuffer().append("<tr>");
+		append("<tr>");
 		String[] cells = split(line, AbstractContentRenderer.TABLE_DELIMITER);
 		for (int i = 0; i < cells.length; i++) {
 			String element = tableHeader ? "th" : "td";
-			getBuffer().append("<").append(element).append(">");
-			append(processTags(encode(cells[i])));
-			getBuffer().append("</").append(element).append(">");
+			append("<").append(element).append(">");
+			parseAndAppend(processTags(encode(cells[i])));
+			append("</").append(element).append(">");
 		}
 		appendln("</tr>");
 	}

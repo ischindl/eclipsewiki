@@ -17,10 +17,6 @@ public final class WikiEditorTest extends WikiTest {
 
 	private WikiEditor			editor;
 
-	public WikiEditorTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		editor = createWikiDocumentAndOpen(WikiEditorTest.WIKI_CONTENT).getEditor();

@@ -11,10 +11,6 @@ import com.teaminabox.eclipse.wiki.WikiTest;
 
 public class WikiExporterTest extends WikiTest {
 
-	public WikiExporterTest(String name) {
-		super(name);
-	}
-
 	// This is just a sanity test
 	public void testExportsWithoutError() throws Exception {
 		create("This is a link to AnotherPage", "HomePage.wiki");

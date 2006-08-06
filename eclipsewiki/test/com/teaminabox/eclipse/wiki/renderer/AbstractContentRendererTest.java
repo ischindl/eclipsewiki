@@ -14,10 +14,6 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 	private static final String	CLASS_SOURCE	= "package com.teaminabox.foo;\npublic class BigClass { class InnerClass {} }";
 	private static final String	CLASS_NAME		= "com.teaminabox.foo.BigClass";
 
-	public AbstractContentRendererTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		create(AbstractContentRendererTest.CLASS_SOURCE, AbstractContentRendererTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");
@@ -41,13 +37,19 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 
 	public void testFunctional() throws IOException {
 		String functionalTest = getFunctionalTestFileName();
-		String content = load(functionalTest + ".wiki");
+		String wikiDocument = functionalTest + ".wiki";
+		String content = load(wikiDocument);
+		WikiBrowserEditor editor = createWikiDocumentAndOpen(content, wikiDocument);
+		
 		String expected = load(functionalTest + ".expected");
 		expected = expected.replaceAll("TEST_PROJECT_NAME", getJavaProject().getElementName());
+		
+		create(load("EmbeddedContent.wiki"), "EmbeddedContent.wiki");
+		
 		WikiPlugin.getDefault().getPluginPreferences().setValue(WikiConstants.BROWSER_RENDERER, getRenderer().getClass().getName());
-		WikiBrowserEditor editor = createWikiDocumentAndOpen(content, functionalTest + ".wiki");
 		WikiDocumentContext context = editor.getEditor().getContext();
-		String html = getRenderer().render(context, new IdeLinkMaker(context));
+		
+		String html = getRenderer().render(context, new IdeLinkMaker(context), false);
         assertEquals(expected, convertWindowsHtmlToMac(html));
 	}
 
@@ -77,7 +79,7 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 	protected String getHtml(String text) {
 		WikiBrowserEditor editor = createWikiDocumentAndOpen(text);
 		WikiDocumentContext context = editor.getEditor().getContext();
-		String html = getRenderer().render(context, new IdeLinkMaker(context));
+		String html = getRenderer().render(context, new IdeLinkMaker(context), false);
         // \n doesn't work on HTML rendered in Windows, so we need to filter out CR & LF chars separately
         return html.replaceAll("[\\x0A|\\x0D|\\n]", "");
 	}

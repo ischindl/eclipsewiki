@@ -43,6 +43,7 @@ public final class WikiDocumentContext {
 
 	public WikiDocumentContext(IFile wikiDocument) throws CoreException, IOException {
 		this.wikiDocument = wikiDocument;
+		assert wikiDocument != null;
 		loadEnvironment();
 		javaContext = new JavaContext(this);
 	}
@@ -152,23 +153,18 @@ public final class WikiDocumentContext {
 		return local;
 	}
 
-	public String[] getDocumentWithHeaderAndFooter() {
-		try {
-			List lines = new ArrayList();
-			IFile file = getFile(HEADER_FILE);
-			if (file != null) {
-				lines.addAll(Resources.readLines(file));
-			}
-			lines.addAll(Resources.readLines(wikiDocument));
-			file = getFile(FOOTER_FILE);
-			if (file != null) {
-				lines.addAll(Resources.readLines(file));
-			}
-			return (String[]) lines.toArray(new String[lines.size()]);
-		} catch (Exception e) {
-			WikiPlugin.getDefault().log("Cannot get Document", e);
-			return new String[] { "Unable to load document - please check the logs." };
+	public String[] getDocumentWithHeaderAndFooter() throws IOException, CoreException {
+		List lines = new ArrayList();
+		IFile file = getFile(HEADER_FILE);
+		if (file != null) {
+			lines.addAll(Resources.readLines(file));
 		}
+		lines.addAll(Resources.readLines(wikiDocument));
+		file = getFile(FOOTER_FILE);
+		if (file != null) {
+			lines.addAll(Resources.readLines(file));
+		}
+		return (String[]) lines.toArray(new String[lines.size()]);
 	}
 
 	private IFile getFile(String file) {

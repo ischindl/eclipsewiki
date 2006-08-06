@@ -181,7 +181,7 @@ public final class WikiExporter {
 	private void exportFile(IFile file) throws IOException, CoreException {
 		WikiDocumentContext context = new WikiDocumentContext(file);
 		exportLinkMaker.setContext(context);
-		String content = RendererFactory.createContentRenderer().render(context, exportLinkMaker);
+		String content = RendererFactory.createContentRenderer().render(context, exportLinkMaker, false);
 		FileWriter writer = new FileWriter(createHtmlFile(context.getWikiNameBeingEdited()));
 		writer.write(content);
 		writer.flush();

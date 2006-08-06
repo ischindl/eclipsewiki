@@ -8,10 +8,6 @@ public final class JavaTypeMatcherTest extends AbstractTextRegionMatcherTest {
 
 	private static final TextRegionTestBean[]	ACCEPTABLE_CASES	= new TextRegionTestBean[] { new TextRegionTestBean(CLASS_NAME, new JavaTypeTextRegion(CLASS_NAME, null)), new TextRegionTestBean(CLASS_NAME + ".InnerClass", new JavaTypeTextRegion(CLASS_NAME + ".InnerClass", null)), new TextRegionTestBean(CLASS_NAME + ". etc.", new JavaTypeTextRegion(CLASS_NAME, null)), };
 
-	public JavaTypeMatcherTest(String name) {
-		super(name);
-	}
-
 	protected void setUp() throws Exception {
 		super.setUp();
 		create(JavaTypeMatcherTest.CLASS_SOURCE, JavaTypeMatcherTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");

@@ -106,5 +106,11 @@ Bug: [ 1181020 ] Escape WikiWords such as WardsBrowserContentRendererTest TipsJ2
 <p>
 </p>
 <h3>Bug: [ 1490333 ] WikiWord in heading not recognized - <a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></h3>
+<p>
+</p>
+<p>
+<p>
+Embedded content with a link to WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></p>
+ here</p>
   </body>
 </html>

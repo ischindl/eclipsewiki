@@ -2,10 +2,6 @@ package com.teaminabox.eclipse.wiki.renderer;
 
 public final class TwikiBrowserContentRendererTest extends AbstractContentRendererTest {
 
-	public TwikiBrowserContentRendererTest(String name) {
-		super(name);
-	}
-
 	public void testNumberedOrderedList() {
 		String markup = "   1. first\n   1. second\n      1. second, first\n   1. third";
 		String expected = "<ol type=\"1\"><li>first</li><li>second</li><ol type=\"1\"><li>second, first</li></ol><li>third</li></ol>";

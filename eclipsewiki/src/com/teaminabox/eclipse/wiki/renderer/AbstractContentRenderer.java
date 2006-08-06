@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
@@ -12,6 +14,7 @@ import org.eclipse.jface.text.BadLocationException;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
+import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
@@ -36,12 +39,15 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	private LinkMaker			linkMaker;
 	private TextRegionAppender	textRegionAppender;
+	private boolean	isEmbedded;
 
 	public abstract TextRegionMatcher[] getRendererMatchers();
 
 	public abstract TextRegionMatcher[] getScannerMatchers();
 
 	protected abstract void initialise();
+
+	protected abstract boolean isList(String line);
 
 	protected abstract char getListType(String line);
 
@@ -52,8 +58,6 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	protected abstract int getListDepth(String line);
 
 	protected abstract String processTags(String line);
-
-	protected abstract boolean isList(String line);
 
 	protected abstract boolean isHeader(String line);
 
@@ -74,21 +78,27 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 */
 	protected abstract boolean process(String line);
 
-	protected StringBuffer getBuffer() {
-		return buffer;
-	}
-
 	public WikiDocumentContext getContext() {
 		return context;
 	}
+	
+	private void initialise(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded) {
+		this.context = context;
+		this.linkMaker = linkMaker;
+		this.isEmbedded = isEmbedded;
+		currentListDepth = 0;
+		setInTable(false);
+		encoding = context.getCharset().name();
+		buffer = new StringBuffer();
+		textRegionAppender = new TextRegionAppender(buffer, linkMaker, this);
+		initialise();
+	}
 
-	public final String render(WikiDocumentContext context, LinkMaker linkMaker) {
-		initialise(context, linkMaker);
+	public final String render(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded) {
+		initialise(context, linkMaker, isEmbedded);
 		try {
-			appendHtmlHead();
-			buffer.append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
-			appendNewLine();
-			appendContents();
+			appendHeadAndTitle(context);
+			appendContents(context);
 			appendHtmlFooter();
 			return buffer.toString();
 		} catch (Exception e) {
@@ -96,19 +106,28 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 			return "<html><body><p>" + e.getLocalizedMessage() + "</p></body></html>";
 		}
 	}
-
-	private void initialise(WikiDocumentContext context, LinkMaker linkMaker) {
-		this.context = context;
-		this.linkMaker = linkMaker;
-		currentListDepth = 0;
-		setInTable(false);
-		encoding = context.getCharset().name();
-		buffer = new StringBuffer();
-		textRegionAppender = new TextRegionAppender(buffer, linkMaker);
-		initialise();
+	
+	void embed(EmbeddedWikiWordTextRegion region) {
+		TextRegion embeddedTextRegion = region.getEmbeddedTextRegion();
+		try {
+			IFile file = getContext().getFileForWikiName(embeddedTextRegion.getText());
+			if (file == null) {
+				buffer.append(embeddedTextRegion.getText());
+			} else {
+				WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);
+				buffer.append(RendererFactory.createContentRenderer().render(wikiDocumentContext, getLinkMaker(), true));
+			}
+		} catch (Exception e) {
+			parseAndAppend(embeddedTextRegion.getText());
+			parseAndAppend(" (error embedding contents, please see logs)");
+			WikiPlugin.getDefault().log("Could not append contents", e);
+		}
 	}
 
-	private void appendHtmlHead() throws IOException {
+	private void appendHeadAndTitle(WikiDocumentContext context) throws IOException {
+		if (isEmbedded) {
+			return;
+		}
 		appendln("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
 		appendln("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 		appendln("<html>");
@@ -124,10 +143,26 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		}
 		appendln("  </head>");
 		appendln("  <body>");
+		buffer.append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
+		appendNewLine();
 	}
 
-	private void appendContents() {
-		document = context.getDocumentWithHeaderAndFooter();
+	private void appendHtmlFooter() {
+		if (isEmbedded) {
+			return;
+		}
+		appendln("  </body>").append("</html>");
+	}
+
+	protected void appendStyle() throws IOException {
+		appendln("<style type=\"text/css\"><!--");
+		IPath path = new Path("style").append(RendererFactory.getContentRendererName() + ".css");
+		appendln(Resources.getContentsRelativeToPlugin(path));
+		appendln("--></style>");
+	}
+
+	void appendContents(WikiDocumentContext wikiDocumentContext) throws IOException, CoreException {
+		document = wikiDocumentContext.getDocumentWithHeaderAndFooter();
 		currentLine = 0;
 		while (currentLine < document.length) {
 			appendLine(document[currentLine]);
@@ -135,14 +170,21 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		}
 	}
 
-	protected void appendNewLine() {
-		getBuffer().append(System.getProperty("line.separator"));
-	}
-
-	protected StringBuffer appendln(String text) {
-		buffer.append(text);
-		appendNewLine();
-		return buffer;
+	private void appendLine(String line) {
+		if (isTableLine(line)) {
+			processTable(line);
+		} else if (isHeader(line)) {
+			appendHeader(line);
+		} else if (isList(line)) {
+			appendListItem(line);
+		} else if (process(line)) {
+			return;
+		} else {
+			// TODO should the line be wrapped in <p> if its embedded?
+			appendln("<p>");
+			parseAndAppend(processTags(encode(line)));
+			appendln("</p>");
+		}
 	}
 
 	protected String getNextLine() {
@@ -168,33 +210,6 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		return lineNumber < document.length;
 	}
 
-	private void appendHtmlFooter() {
-		appendln("  </body>").append("</html>");
-	}
-
-	protected void appendStyle() throws IOException {
-		appendln("<style type=\"text/css\"><!--");
-		IPath path = new Path("style").append(RendererFactory.getContentRendererName() + ".css");
-		appendln(Resources.getContentsRelativeToPlugin(path));
-		appendln("--></style>");
-	}
-
-	private void appendLine(String line) {
-		if (isTableLine(line)) {
-			processTable(line);
-		} else if (isHeader(line)) {
-			appendHeader(line);
-		} else if (isList(line)) {
-			appendListItem(line);
-		} else if (process(line)) {
-			return;
-		} else {
-			appendln("<p>");
-			append(processTags(encode(line)));
-			appendln("</p>");
-		}
-	}
-
 	private final void appendListItem(String line) {
 		boolean ordered = isOrderedList(line);
 		char type = '1';
@@ -211,12 +226,12 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 			repeatAppend(close, currentListDepth - bullet);
 			currentListDepth = bullet;
 		}
-		getBuffer().append("<li>");
+		append("<li>");
 		String content = "";
 		if (bullet < line.length() - 1) {
 			content = getListText(line);
 		}
-		append(processTags(encode(content)));
+		parseAndAppend(processTags(encode(content)));
 		appendln("</li>");
 		if (!isList(peekNextLine())) {
 			repeatAppend(close, currentListDepth);
@@ -226,7 +241,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	protected void repeatAppend(String item, int n) {
 		for (int i = 0; i < n; i++) {
-			getBuffer().append(item);
+			append(item);
 		}
 	}
 
@@ -234,7 +249,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		return StringEscapeUtils.escapeHtml(line);
 	}
 
-	protected void append(String line) {
+	protected void parseAndAppend(String line) {
 		TextRegion[] regions = TextRegionBuilder.getTextRegions(line, context);
 		for (int i = 0; i < regions.length; i++) {
 			regions[i].accept(textRegionAppender);
@@ -245,7 +260,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *          replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
+	 *            replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {
@@ -290,27 +305,30 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	protected void processTable(String line) {
 		if (!isInTable()) {
 			setInTable(true);
-			getBuffer().append(getTableTag());
+			append(getTableTag());
 		}
-		getBuffer().append("<tr>");
+		append("<tr>");
 
 		String[] cells = split(line, AbstractContentRenderer.TABLE_DELIMITER);
 		for (int i = 0; i < cells.length; i++) {
-			String cell = cells[i];
-			String element = "td";
-			if (cell.trim().startsWith("*")) {
-				element = "th";
-				cell = cell.replaceAll("\\*", "");
-			}
-			getBuffer().append("<").append(element).append(">");
-			append(processTags(encode(cell)));
-			getBuffer().append("</").append(element).append(">");
+			appendTableCell(cells[i]);
 		}
 		appendln("</tr>");
 		if (!isTableLine(peekNextLine())) {
 			appendln("</table>");
 			setInTable(false);
 		}
+	}
+
+	private void appendTableCell(String cell) {
+		String element = "td";
+		if (cell.trim().startsWith("*")) {
+			element = "th";
+			cell = cell.replaceAll("\\*", "");
+		}
+		append("<").append(element).append(">");
+		parseAndAppend(processTags(encode(cell)));
+		append("</").append(element).append(">");
 	}
 
 	protected String[] split(String line, String delimiter) {
@@ -368,6 +386,20 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	protected boolean isInTable() {
 		return inTable;
+	}
+
+	protected void appendNewLine() {
+		append(System.getProperty("line.separator"));
+	}
+	
+	protected StringBuffer append(String content) {
+		return buffer.append(content);
+	}
+
+	protected StringBuffer appendln(String text) {
+		buffer.append(text);
+		appendNewLine();
+		return buffer;
 	}
 
 }
