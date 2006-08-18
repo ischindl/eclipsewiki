@@ -37,10 +37,6 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 		return DEFAULT_SCANNER_MATCHERS;
 	}
 
-	protected void initialise() {
-
-	}
-
 	/**
 	 * There aren't true headers in Ward's Wiki, just text in a <code>strong</code> element.
 	 */
@@ -109,10 +105,6 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 		line = replacePair(line, WardsBrowserContentRenderer.BOLD_MARKUP, "<b>", "</b>");
 		line = replacePair(line, WardsBrowserContentRenderer.ITALIC_MARKUP, "<i>", "</i>");
 		return line;
-	}
-
-	protected boolean hasPreferredStyle() {
-		return false;
 	}
 
 	protected String getListText(String line) {

@@ -39,9 +39,6 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return TwikiBrowserContentRenderer.SCANNER_MATCHERS;
 	}
 
-	protected void initialise() {
-	}
-
 	protected void appendHeader(String line) {
 		int headerSize = getHeaderSize(line);
 		append("<h").append(headerSize).append(">");
