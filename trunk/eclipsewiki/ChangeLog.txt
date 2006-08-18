@@ -1,3 +1,6 @@
+Version XXX
+	Added support for embedding WikiDocs
+
 Version 2.5.0
 	Added Kim Tiedemanm's patch for forced links in the SnipSnap renderer.
 	Lots of refactoring to clean up the mess of the editor code.

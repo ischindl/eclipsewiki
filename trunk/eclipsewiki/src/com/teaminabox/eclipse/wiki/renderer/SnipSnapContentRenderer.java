@@ -39,10 +39,6 @@ public final class SnipSnapContentRenderer extends AbstractContentRenderer {
 		return SnipSnapContentRenderer.SCANNER_MATCHERS;
 	}
 
-	protected void initialise() {
-
-	}
-
 	protected void appendHeader(String line) {
 		String header = encode(getHeaderText(line));
 		String headerStartTag = "<h1 " + getHeaderCss(getHeaderSize(line)) + ">";

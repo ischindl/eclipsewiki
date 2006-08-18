@@ -45,8 +45,6 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	public abstract TextRegionMatcher[] getScannerMatchers();
 
-	protected abstract void initialise();
-
 	protected abstract boolean isList(String line);
 
 	protected abstract char getListType(String line);
@@ -91,7 +89,6 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		encoding = context.getCharset().name();
 		buffer = new StringBuffer();
 		textRegionAppender = new TextRegionAppender(buffer, linkMaker, this);
-		initialise();
 	}
 
 	public final String render(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded) {
@@ -118,9 +115,9 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 				buffer.append(RendererFactory.createContentRenderer().render(wikiDocumentContext, getLinkMaker(), true));
 			}
 		} catch (Exception e) {
+			WikiPlugin.getDefault().log("Could not append contents", e);
 			parseAndAppend(embeddedTextRegion.getText());
 			parseAndAppend(" (error embedding contents, please see logs)");
-			WikiPlugin.getDefault().log("Could not append contents", e);
 		}
 	}
 
@@ -132,8 +129,16 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		appendln("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 		appendln("<html>");
 		appendln("  <head>");
-		buffer.append("    <title>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited()));
+		append("    <title>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited()));
 		appendln("</title>");
+		appendStyleSheetLink();
+		appendln("  </head>");
+		appendln("  <body>");
+		append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
+		appendNewLine();
+	}
+
+	private void appendStyleSheetLink() throws IOException {
 		if (WikiPlugin.getDefault().getPluginPreferences().contains(WikiConstants.BROWSER_CSS_URL) && WikiPlugin.getDefault().getPluginPreferences().getString(WikiConstants.BROWSER_CSS_URL).trim().length() > 0) {
 			buffer.append("      <link href=\"");
 			buffer.append(WikiPlugin.getDefault().getPluginPreferences().getString(WikiConstants.BROWSER_CSS_URL));
@@ -141,10 +146,6 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		} else {
 			appendStyle();
 		}
-		appendln("  </head>");
-		appendln("  <body>");
-		buffer.append("<h1>").append(WikiLinkTextRegion.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
-		appendNewLine();
 	}
 
 	private void appendHtmlFooter() {
