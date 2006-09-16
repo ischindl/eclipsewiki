@@ -90,7 +90,7 @@ public interface WikiConstants {
 	String		INTERFACE_ICON												= "icons/int_obj.gif";
 	String[]	ICONS														= { WikiConstants.WIKI_HR_ICON, WikiConstants.WIKI_ICON, WikiConstants.WIKI_RESOURCE_ICON, WikiConstants.WIKI_SPACE_ICON, WikiConstants.PACKAGE_ICON, WikiConstants.CLASS_ICON, WikiConstants.INTERFACE_ICON };
 
-	String[]	BROWSER_RENDERERS											= new String[] { WardsBrowserContentRenderer.class.getName(), TwikiBrowserContentRenderer.class.getName(), SnipSnapContentRenderer.class.getName() };
+	String[]	BROWSER_RENDERERS											= { WardsBrowserContentRenderer.class.getName(), TwikiBrowserContentRenderer.class.getName(), SnipSnapContentRenderer.class.getName() };
 	String		DEFAULT_BROWSER_RENDERER									= WardsBrowserContentRenderer.class.getName();
 	String		BROWSER_RENDERER											= "BrowserRenderer";
 

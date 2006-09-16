@@ -62,7 +62,9 @@ public final class WikiDocumentContext {
 			localWikispace = new Properties();
 			IFile file = getLocalFile(WikiConstants.WIKISPACE_FILE);
 			if (file.exists() && !file.isPhantom()) {
-				localWikispace.load(new BufferedInputStream(file.getContents()));
+				BufferedInputStream stream = new BufferedInputStream(file.getContents());
+				localWikispace.load(stream);
+				stream.close();
 			}
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
