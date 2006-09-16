@@ -11,7 +11,9 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -107,10 +109,11 @@ public final class WikiExporter {
 		}
 		createWorkspaceFolder();
 		HashMap map = exportLinkMaker.getLinkedResources();
-		Iterator iterator = map.keySet().iterator();
+		Iterator iterator = map.entrySet().iterator();
 		while (iterator.hasNext()) {
-			IResource resource = (IResource) iterator.next();
-			String location = (String) map.get(resource);
+			Map.Entry entry = (Entry) iterator.next();
+			IResource resource = (IResource) entry.getKey();
+			String location = (String) entry.getValue();
 			export(resource, location);
 		}
 	}
