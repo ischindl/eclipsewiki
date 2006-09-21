@@ -148,6 +148,17 @@
             commandId="com.teaminabox.eclipse.wiki.actions.OpenWikiLinkWorkbenchAction"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
+   
+   <extension
+        
+point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation 
+targetID="com.teaminabox.eclipse.wiki.actionSet">
+         <part 
+id="com.teaminabox.eclipse.wiki.editors.WikiEditor"/>
+      </actionSetPartAssociation>
+   </extension>
+   
    <extension
          point="org.eclipse.help.toc">
       <toc
