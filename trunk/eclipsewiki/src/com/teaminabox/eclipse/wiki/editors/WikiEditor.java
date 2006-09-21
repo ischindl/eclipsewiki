@@ -30,7 +30,6 @@ import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.FileEditorInput;
@@ -67,7 +66,10 @@ public final class WikiEditor extends TextEditor {
 		addPropertyChangeListener();
 		Editors.registerEditor(this);
 		reusableEditor = this;
-		((IContextService) WikiPlugin.getDefault().getWorkbench().getAdapter(IContextService.class)).activateContext(WikiConstants.KEYBINDING_CONTEXT);
+	}
+
+	protected void initializeKeyBindingScopes() {
+		setKeyBindingScopes(new String[] { "org.eclipse.ui.textEditorScope", WikiConstants.KEYBINDING_CONTEXT });
 	}
 
 	private void addPropertyChangeListener() {
@@ -214,6 +216,7 @@ public final class WikiEditor extends TextEditor {
 			public int getLength() {
 				return selection.getLength();
 			}
+
 			public int getOffset() {
 				return selection.getOffset();
 			}
