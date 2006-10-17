@@ -124,7 +124,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 		buttonComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		buttonComposite.setLayout(new GridLayout(6, false));
 
-		Button homeButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.wikiHome"), WikiPlugin.getResourceString("WikiBrowser.wikiHomeTooltip")); //$NON-NLS-1$ //$NON-NLS-2$
+		Button homeButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.wikiHome"), WikiPlugin.getResourceString("WikiBrowser.wikiHomeTooltip"), true, null); //$NON-NLS-1$ //$NON-NLS-2$
 		homeButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				history.add(WikiConstants.WIKI_HREF + editor.getContext().getWikiNameBeingEdited());
@@ -133,35 +133,28 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 			}
 		});
 
-		backButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.back"), WikiPlugin.getResourceString("WikiBrowser.backTooltip")); //$NON-NLS-1$ //$NON-NLS-2$
-		backButton.setEnabled(false);
+		backButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.back"), WikiPlugin.getResourceString("WikiBrowser.backTooltip"), false, ISharedImages.IMG_TOOL_BACK); //$NON-NLS-1$ //$NON-NLS-2$
 		backButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.goBack();
 			}
 		});
-		backButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_BACK));
 
-		forwardButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.forward"), WikiPlugin.getResourceString("WikiBrowser.forwardTooltip")); //$NON-NLS-1$ //$NON-NLS-2$
-		forwardButton.setEnabled(false);
+		forwardButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.forward"), WikiPlugin.getResourceString("WikiBrowser.forwardTooltip"), false, ISharedImages.IMG_TOOL_FORWARD); //$NON-NLS-1$ //$NON-NLS-2$
 		forwardButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.goForward();
 			}
 		});
-		forwardButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_FORWARD));
 
-		refreshButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.refresh"), WikiPlugin.getResourceString("WikiBrowser.refreshTooltip")); //$NON-NLS-1$ //$NON-NLS-2$
-		refreshButton.setEnabled(false);
+		refreshButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.refresh"), WikiPlugin.getResourceString("WikiBrowser.refreshTooltip"), false, ISharedImages.IMG_TOOL_REDO); //$NON-NLS-1$ //$NON-NLS-2$
 		refreshButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.refresh();
 			}
 		});
-		refreshButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_REDO));
 
-		stopButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.stop"), WikiPlugin.getResourceString("WikiBrowser.stopTooltip")); //$NON-NLS-1$ //$NON-NLS-2$
-		stopButton.setEnabled(false);
+		stopButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.stop"), WikiPlugin.getResourceString("WikiBrowser.stopTooltip"), false, ISharedImages.IMG_TOOL_DELETE); //$NON-NLS-1$ //$NON-NLS-2$
 		stopButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.browser.stop();
@@ -169,8 +162,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 			}
 		});
 
-		launchButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.launch"), WikiPlugin.getResourceString("WikiBrowser.launchTooltip")); //$NON-NLS-1$ //$NON-NLS-2$
-		launchButton.setEnabled(false);
+		launchButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.launch"), WikiPlugin.getResourceString("WikiBrowser.launchTooltip"), false, ISharedImages.IMG_TOOL_UP); //$NON-NLS-1$ //$NON-NLS-2$
 		launchButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				Program.launch(browser.getUrl());
@@ -178,10 +170,12 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 		});
 	}
 
-	private Button createButton(Composite buttonComposite, String label, String toolTip) {
+	private Button createButton(Composite buttonComposite, String label, String toolTip, boolean enabled, String sharedImagesConstant) {
 		Button button = toolkit.createButton(buttonComposite, label, SWT.PUSH);
 		button.setLayoutData(new GridData(GridData.BEGINNING));
 		button.setToolTipText(toolTip);
+		button.setEnabled(enabled);
+		button.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(sharedImagesConstant));
 		return button;
 	}
 
