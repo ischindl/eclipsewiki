@@ -69,12 +69,24 @@ public class JavaCompletionProcessor2 extends CompletionRequestor {
 	}
 
 	private ICompilationUnit createCompilationUnit(IJavaProject project, String code) throws JavaModelException {
-		IClasspathEntry[] classpath = project.getRawClasspath();
+		IClasspathEntry[] classpath = getClasspathToSearch(project);
 		WorkingCopyOwner owner = new WorkingCopyOwner() {
 		};
 		ICompilationUnit unit = owner.newWorkingCopy("Foo", classpath, new NullProblemRequestor(), null);
 		unit.getBuffer().append(code);
 		return unit;
+	}
+
+	private IClasspathEntry[] getClasspathToSearch(IJavaProject javaProject) throws JavaModelException {
+		IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
+		ArrayList sourceFolders = new ArrayList();
+		for (int i = 0; i < entries.length; i++) {
+			IClasspathEntry entry = entries[i];
+			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+				sourceFolders.add(entry);
+			}
+		}
+		return (IClasspathEntry[]) sourceFolders.toArray(new IClasspathEntry[sourceFolders.size()]);
 	}
 
 	/**
