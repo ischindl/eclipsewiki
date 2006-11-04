@@ -36,9 +36,9 @@ import com.teaminabox.eclipse.wiki.util.Resources;
 public final class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, IPropertyChangeListener {
 
 	private WikiEditor	editor;
+	private WikiBrowser	wikiBrowser;
 	private int			browserIndex;
 	private int			sourceIndex;
-	private WikiBrowser	wikiBrowser;
 	private Browser		syntaxBrowser;
 	private int			syntaxIndex;
 
