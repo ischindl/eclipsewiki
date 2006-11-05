@@ -1,0 +1,5 @@
+HomePage
+
+* Document Embedded wiki link
+* Fix the com.teaminabox.eclipse.wiki.editors.completion.JavaCompletionProcessor2 and use it
+* Fix the URL matcher
