@@ -27,7 +27,7 @@ If you do this then the references to source code will work.
 |Image:4.png HoverSupport|
 |Image:5.png RunningUnitTests|
 
-See also FeatureOverview and CodingGuidelines
+See also FeatureOverview, CodingGuidelines and ToDo
 
 Please submit feedback to http://sourceforge.net/projects/eclipsewiki/
 
