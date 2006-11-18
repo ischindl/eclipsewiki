@@ -1,24 +1,29 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
+import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
+import org.eclipse.ui.texteditor.spelling.SpellingReconcileStrategy;
 
 import com.teaminabox.eclipse.wiki.editors.completion.WikiCompletionProcessor;
 
-public final class WikiConfiguration extends SourceViewerConfiguration {
-	private WikiDoubleClickStrategy	doubleClickStrategy;
-	private WikiScanner				scanner;
-	private WikiEditor				wikiEditor;
+public final class WikiConfiguration extends TextSourceViewerConfiguration {
+
+	private WikiScanner	scanner;
+	private WikiEditor	wikiEditor;
 
 	public WikiConfiguration(WikiEditor wikiEditor) {
 		this.wikiEditor = wikiEditor;
@@ -26,13 +31,6 @@ public final class WikiConfiguration extends SourceViewerConfiguration {
 
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return new String[] { IDocument.DEFAULT_CONTENT_TYPE };
-	}
-
-	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType) {
-		if (doubleClickStrategy == null) {
-			doubleClickStrategy = new WikiDoubleClickStrategy();
-		}
-		return doubleClickStrategy;
 	}
 
 	private WikiScanner getWikiScanner() {
@@ -44,11 +42,21 @@ public final class WikiConfiguration extends SourceViewerConfiguration {
 
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
+		reconciler.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 
 		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getWikiScanner());
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
+		return reconciler;
+	}
+
+	public IReconciler getReconciler(ISourceViewer sourceViewer) {
+		IReconcilingStrategy strategy = new SpellingReconcileStrategy(sourceViewer, EditorsUI.getSpellingService(), "org.eclipse.ui.workbench.texteditor.spelling"); //$NON-NLS-1$
+		MonoReconciler reconciler = new MonoReconciler(strategy, false);
+		reconciler.setIsIncrementalReconciler(false);
+		reconciler.setProgressMonitor(new NullProgressMonitor());
+		reconciler.setDelay(500);
 		return reconciler;
 	}
 
@@ -66,10 +74,6 @@ public final class WikiConfiguration extends SourceViewerConfiguration {
 		return assistant;
 	}
 
-	/**
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getTextHover(org.eclipse.jface.text.source.ISourceViewer,
-	 *      java.lang.String)
-	 */
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		return new WikiHover(wikiEditor);
 	}
