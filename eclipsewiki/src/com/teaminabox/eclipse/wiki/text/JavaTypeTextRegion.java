@@ -14,7 +14,7 @@ public final class JavaTypeTextRegion extends TextRegion {
 		this.javaType = javaType;
 	}
 
-	public Object accept(TextRegionVisitor textRegionVisitor) {
+	public <T> T accept(TextRegionVisitor<T> textRegionVisitor) {
 		return textRegionVisitor.visit(this);
 	}
 

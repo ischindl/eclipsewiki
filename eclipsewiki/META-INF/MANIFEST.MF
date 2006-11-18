@@ -4,7 +4,7 @@ Bundle-SymbolicName: com.teaminabox.eclipse.wiki;singleton=true
 Bundle-Version: 2.5.0
 Bundle-ClassPath: wiki.jar,
  lib/java2html_4.1.jar,
- lib/commons-lang-2.1.jar
+ lib/commons-lang-2.2.jar
 Bundle-Activator: com.teaminabox.eclipse.wiki.WikiPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,

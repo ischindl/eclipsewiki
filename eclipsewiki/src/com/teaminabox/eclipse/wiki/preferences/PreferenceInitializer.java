@@ -56,7 +56,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 			properties.load(FileLocator.openStream(WikiPlugin.getDefault().getBundle(), new Path(WikiConstants.WIKISPACE_FILE), false));
 			StringBuffer names = new StringBuffer();
 			StringBuffer urls = new StringBuffer();
-			Iterator iterator = properties.keySet().iterator();
+			Iterator<Object> iterator = properties.keySet().iterator();
 			while (iterator.hasNext()) {
 				String name = (String) iterator.next();
 				String url = properties.getProperty(name);

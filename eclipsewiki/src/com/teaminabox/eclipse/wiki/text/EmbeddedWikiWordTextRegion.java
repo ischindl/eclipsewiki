@@ -11,7 +11,7 @@ public class EmbeddedWikiWordTextRegion extends TextRegion {
 		this.embeddedTextRegion = region;
 	}
 
-	public Object accept(TextRegionVisitor textRegionVisitor) {
+	public <T> T accept(TextRegionVisitor<T> textRegionVisitor) {
 		return textRegionVisitor.visit(this);
 	}
 
@@ -22,7 +22,7 @@ public class EmbeddedWikiWordTextRegion extends TextRegion {
 	public boolean isLink() {
 		return embeddedTextRegion.isLink();
 	}
-	
+
 	public TextRegion getEmbeddedTextRegion() {
 		return embeddedTextRegion;
 	}

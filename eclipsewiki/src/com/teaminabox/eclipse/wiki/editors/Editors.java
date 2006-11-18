@@ -3,7 +3,6 @@ package com.teaminabox.eclipse.wiki.editors;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -15,7 +14,7 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public final class Editors {
 
-	private static Set	editors	= Collections.synchronizedSet(new HashSet());
+	private static Set<WikiEditor>	editors	= Collections.synchronizedSet(new HashSet<WikiEditor>());
 
 	static {
 		addResourceChangeListener();
@@ -45,9 +44,7 @@ public final class Editors {
 	}
 
 	private static void refreshEditors() throws IOException, CoreException {
-		Iterator iterator = editors.iterator();
-		while (iterator.hasNext()) {
-			WikiEditor editor = (WikiEditor) iterator.next();
+		for (WikiEditor editor : editors) {
 			if (editor.getContext() != null) {
 				editor.getContext().loadEnvironment();
 				editor.redrawTextAsync();
@@ -63,7 +60,4 @@ public final class Editors {
 		editors.remove(editor);
 	}
 
-	public static WikiEditor[] getEditors() {
-		return (WikiEditor[]) editors.toArray(new WikiEditor[editors.size()]);
-	}
 }

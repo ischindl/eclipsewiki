@@ -172,7 +172,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 	public void propertyChange(PropertyChangeEvent event) {
 		initialiseSyntaxBrowser();
 	}
-	
+
 	private void initialiseSyntaxBrowser() {
 		String renderer = RendererFactory.getContentRendererName();
 		IPath path = new Path(WikiConstants.HELP_PATH).append(renderer + ".html");
@@ -184,6 +184,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class key) {
 		if (key.equals(IContentOutlinePage.class)) {
 			return new WikiContentOutlinePage(editor);

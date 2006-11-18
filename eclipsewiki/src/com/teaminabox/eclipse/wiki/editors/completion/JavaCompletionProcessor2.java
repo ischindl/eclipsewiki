@@ -26,21 +26,21 @@ import com.teaminabox.eclipse.wiki.util.JavaUtils;
  */
 public class JavaCompletionProcessor2 extends CompletionRequestor {
 
-	private static final DecimalFormat	SORT_FORMAT	= new DecimalFormat("0000000000");
+	private static final DecimalFormat				SORT_FORMAT	= new DecimalFormat("0000000000");
 
-	private String						textToComplete;
-	private TreeMap						proposals	= new TreeMap();
-	private int							documentOffset;
+	private String									textToComplete;
+	private TreeMap<String, ICompletionProposal>	proposals	= new TreeMap<String, ICompletionProposal>();
+	private int										documentOffset;
 
-	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, final int documentOffset) throws BadLocationException, JavaModelException {
+	public ArrayList<ICompletionProposal> getProposals(IJavaProject project, ITextViewer viewer, final int documentOffset) throws BadLocationException, JavaModelException {
 		initialise(viewer, documentOffset);
 		if (textToComplete != null) {
 			performCodeComplete(project, textToComplete);
-			ArrayList results = new ArrayList(proposals.values());
+			ArrayList<ICompletionProposal> results = new ArrayList<ICompletionProposal>(proposals.values());
 			proposals.clear();
 			return results;
 		}
-		return new ArrayList();
+		return new ArrayList<ICompletionProposal>();
 	}
 
 	private void initialise(ITextViewer viewer, final int documentOffset) throws BadLocationException {
@@ -79,7 +79,7 @@ public class JavaCompletionProcessor2 extends CompletionRequestor {
 
 	private IClasspathEntry[] getClasspathToSearch(IJavaProject javaProject) throws JavaModelException {
 		IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
-		ArrayList sourceFolders = new ArrayList();
+		ArrayList<IClasspathEntry> sourceFolders = new ArrayList<IClasspathEntry>();
 		for (int i = 0; i < entries.length; i++) {
 			IClasspathEntry entry = entries[i];
 			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {

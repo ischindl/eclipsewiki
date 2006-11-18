@@ -1,7 +1,6 @@
 package com.teaminabox.eclipse.wiki.preferences;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -35,7 +34,7 @@ public class EditorColours {
 	private ColorEditor				fgColorEditor;
 	private Button					fgBold;
 	private RGB[]					currentColours	= new RGB[COLOUR_LIST.length];
-	private HashMap					currentBold		= new HashMap();
+	private HashMap<String, String>	currentBold		= new HashMap<String, String>();
 
 	private final IPreferenceStore	preferenceStore;
 
@@ -120,18 +119,18 @@ public class EditorColours {
 		});
 
 		colors.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                handleSyntaxColorListSelection();
-            }
-        });
-		
+			public void widgetSelected(SelectionEvent e) {
+				handleSyntaxColorListSelection();
+			}
+		});
+
 	}
-	
+
 	private void handleSyntaxColorListSelection() {
-        int i = colors.getSelectionIndex();
-        fgColorEditor.setColorValue(currentColours[i]);
-        fgBold.setSelection(getPreferenceStore().getString(COLOUR_LIST[i][1] + WikiConstants.SUFFIX_STYLE).indexOf(WikiConstants.STYLE_BOLD) >= 0);
-    }
+		int i = colors.getSelectionIndex();
+		fgColorEditor.setColorValue(currentColours[i]);
+		fgBold.setSelection(getPreferenceStore().getString(COLOUR_LIST[i][1] + WikiConstants.SUFFIX_STYLE).indexOf(WikiConstants.STYLE_BOLD) >= 0);
+	}
 
 	private void load() {
 		colors.removeAll();
@@ -158,8 +157,7 @@ public class EditorColours {
 			String key = COLOUR_LIST[i][1] + WikiConstants.SUFFIX_FOREGROUND;
 			PreferenceConverter.setValue(getPreferenceStore(), key, currentColours[i]);
 		}
-		for (Iterator iter = currentBold.keySet().iterator(); iter.hasNext();) {
-			String key = (String) iter.next();
+		for (String key : currentBold.keySet()) {
 			getPreferenceStore().setValue(key, (String) currentBold.get(key));
 		}
 	}

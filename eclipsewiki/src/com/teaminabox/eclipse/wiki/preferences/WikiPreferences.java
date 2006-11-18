@@ -24,10 +24,10 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public final class WikiPreferences extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	private static Map				wikispace;
-	private WikiSpacePreferencePage	wikiSpacePreferencePage;
-	private BackgroundColourEditor	backgroundColourEditor;
-	private EditorColours			editorColours;
+	private static Map<String, String>	wikispace;
+	private WikiSpacePreferencePage		wikiSpacePreferencePage;
+	private BackgroundColourEditor		backgroundColourEditor;
+	private EditorColours				editorColours;
 
 	public WikiPreferences() {
 		super(FieldEditorPreferencePage.GRID);
@@ -114,8 +114,8 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 		wikispace = WikiPreferences.reloadWikiSpaceMap(store);
 	}
 
-	public static Map reloadWikiSpaceMap(IPreferenceStore store) {
-		TreeMap wikiSpace = new TreeMap();
+	public static Map<String, String> reloadWikiSpaceMap(IPreferenceStore store) {
+		TreeMap<String, String> wikiSpace = new TreeMap<String, String>();
 		String names = store.getDefaultString(WikiConstants.WIKISPACE_NAMES);
 		String urls = store.getDefaultString(WikiConstants.WIKISPACE_URLS);
 		StringTokenizer nameTokenizer = new StringTokenizer(names, WikiConstants.WIKISPACE_SEPARATOR);
@@ -128,11 +128,11 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 		return wikiSpace;
 	}
 
-	public static Map getWikiSpace() {
+	public static Map<String, String> getWikiSpace() {
 		return wikispace;
 	}
 
-	static void setWikiSpace(Map wikis) {
+	static void setWikiSpace(Map<String, String> wikis) {
 		wikispace = wikis;
 	}
 }

@@ -9,11 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -41,11 +38,11 @@ public final class WikiExporter {
 	private File				exportDirectory;
 
 	private ExportLinkMaker		exportLinkMaker;
-	private TreeSet				index;
+	private TreeSet<String>		index;
 
 	public WikiExporter() {
 		exportLinkMaker = new ExportLinkMaker();
-		index = new TreeSet(String.CASE_INSENSITIVE_ORDER);
+		index = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	public void export(IContainer folder, String exportDirectoryName, IProgressMonitor monitor) throws IOException, CoreException {
@@ -79,9 +76,7 @@ public final class WikiExporter {
 	}
 
 	private void writeContent(PrintWriter writer) {
-		Iterator iterator = index.iterator();
-		while (iterator.hasNext()) {
-			String name = (String) iterator.next();
+		for (String name : index) {
 			writer.print("    <br/>");
 			writer.println("<a href=\"" + name + ".html\">" + name + "</a>");
 		}
@@ -108,13 +103,9 @@ public final class WikiExporter {
 			return;
 		}
 		createWorkspaceFolder();
-		HashMap map = exportLinkMaker.getLinkedResources();
-		Iterator iterator = map.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Map.Entry entry = (Entry) iterator.next();
-			IResource resource = (IResource) entry.getKey();
-			String location = (String) entry.getValue();
-			export(resource, location);
+		Map<IResource, String> map = exportLinkMaker.getLinkedResources();
+		for (Map.Entry<IResource, String> entry : map.entrySet()) {
+			export(entry.getKey(), entry.getValue());
 		}
 	}
 

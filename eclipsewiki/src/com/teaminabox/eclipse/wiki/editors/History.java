@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public final class History {
 
-	private ArrayList	items;
+	private ArrayList<Object>	items;
 
-	private int			location;
+	private int					location;
 
 	public History() {
-		items = new ArrayList();
+		items = new ArrayList<Object>();
 		location = -1;
 	}
 

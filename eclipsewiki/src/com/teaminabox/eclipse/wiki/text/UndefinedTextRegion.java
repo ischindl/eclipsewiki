@@ -16,7 +16,7 @@ public final class UndefinedTextRegion extends TextRegion {
 		return Token.UNDEFINED;
 	}
 
-	public Object accept(TextRegionVisitor textRegionVisitor) {
+	public <T> T accept(TextRegionVisitor<T> textRegionVisitor) {
 		return textRegionVisitor.visit(this);
 	}
 

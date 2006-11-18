@@ -1,7 +1,6 @@
 package com.teaminabox.eclipse.wiki.preferences;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -29,15 +28,15 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public final class WikiSpacePreferencePage {
 
-	private TableColumn		prefixColumn;
-	private TableColumn		urlColumn;
-	private Button			addButton;
-	private Button			editButton;
-	private Button			removeButton;
-	private Table			table;
-	private Map				wikis;
-	private StringBuffer	names;
-	private StringBuffer	urls;
+	private TableColumn				prefixColumn;
+	private TableColumn				urlColumn;
+	private Button					addButton;
+	private Button					editButton;
+	private Button					removeButton;
+	private Table					table;
+	private Map<String, String>		wikis;
+	private StringBuffer			names;
+	private StringBuffer			urls;
 	private final IPreferenceStore	preferenceStore;
 
 	public WikiSpacePreferencePage(Composite parent, IPreferenceStore store) {
@@ -46,12 +45,12 @@ public final class WikiSpacePreferencePage {
 	}
 
 	private void load() {
-		wikis = new HashMap(WikiPreferences.getWikiSpace());
+		wikis = new HashMap<String, String>(WikiPreferences.getWikiSpace());
 		populateTable();
 	}
 
 	public void loadDefault() {
-		wikis = new HashMap(WikiPreferences.reloadWikiSpaceMap(preferenceStore));
+		wikis = new HashMap<String, String>(WikiPreferences.reloadWikiSpaceMap(preferenceStore));
 		populateTable();
 	}
 
@@ -65,9 +64,7 @@ public final class WikiSpacePreferencePage {
 	private void updatePreferences() {
 		names = new StringBuffer();
 		urls = new StringBuffer();
-		Iterator wikiNames = wikis.keySet().iterator();
-		while (wikiNames.hasNext()) {
-			String wikiName = wikiNames.next().toString();
+		for (String wikiName : wikis.keySet()) {
 			names.append(wikiName).append(WikiConstants.WIKISPACE_SEPARATOR);
 			urls.append(wikis.get(wikiName).toString()).append(WikiConstants.WIKISPACE_SEPARATOR);
 		}
@@ -150,21 +147,19 @@ public final class WikiSpacePreferencePage {
 	}
 
 	private int convertHorizontalDLUsToPixels(Control control, int dlus) {
-        GC gc = new GC(control);
-        gc.setFont(control.getFont());
-        int averageWidth = gc.getFontMetrics().getAverageCharWidth();
-        gc.dispose();
+		GC gc = new GC(control);
+		gc.setFont(control.getFont());
+		int averageWidth = gc.getFontMetrics().getAverageCharWidth();
+		gc.dispose();
 
-        double horizontalDialogUnitSize = averageWidth * 0.25;
+		double horizontalDialogUnitSize = averageWidth * 0.25;
 
-        return (int) Math.round(dlus * horizontalDialogUnitSize);
-    }
-	
+		return (int) Math.round(dlus * horizontalDialogUnitSize);
+	}
+
 	private void populateTable() {
 		table.removeAll();
-		Iterator wikiNames = wikis.keySet().iterator();
-		while (wikiNames.hasNext()) {
-			String wiki = wikiNames.next().toString();
+		for (String wiki : wikis.keySet()) {
 			String urlPrefix = wikis.get(wiki).toString();
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { wiki, urlPrefix });

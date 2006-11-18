@@ -33,18 +33,18 @@ import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 public final class JavaCompletionProcessor {
 
-	public static final Comparator	JAVA_ELEMENT_COMPARATOR	= new JavaElementComparator();
+	public static final Comparator<IJavaElement>	JAVA_ELEMENT_COMPARATOR	= new JavaElementComparator();
 
-	private IJavaProject			project;
-	private ArrayList				proposals;
+	private IJavaProject							project;
+	private ArrayList<ICompletionProposal>			proposals;
 
-	private boolean					includePackages;
+	private boolean									includePackages;
 
 	public JavaCompletionProcessor() {
-		proposals = new ArrayList();
+		proposals = new ArrayList<ICompletionProposal>();
 	}
 
-	public ArrayList getProposals(IJavaProject project, ITextViewer viewer, int documentOffset) throws BadLocationException, CoreException {
+	public ArrayList<ICompletionProposal> getProposals(IJavaProject project, ITextViewer viewer, int documentOffset) throws BadLocationException, CoreException {
 		String text = initialise(project, viewer, documentOffset);
 		if (text == null) {
 			return proposals;
@@ -67,7 +67,7 @@ public final class JavaCompletionProcessor {
 	}
 
 	private void buildProposals(IType[] types, String text, int documentOffset) throws JavaModelException {
-		TreeMap sortedProposals = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+		TreeMap<String, ICompletionProposal> sortedProposals = new TreeMap<String, ICompletionProposal>(String.CASE_INSENSITIVE_ORDER);
 		for (int i = 0; i < types.length; i++) {
 			String matchName = types[i].getFullyQualifiedName();
 			String display = getDisplayString(types[i]);
@@ -94,7 +94,7 @@ public final class JavaCompletionProcessor {
 	}
 
 	private void buildProposals(IPackageFragment[] packages, String text, int documentOffset) {
-		TreeMap sortedProposals = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+		TreeMap<String, ICompletionProposal> sortedProposals = new TreeMap<String, ICompletionProposal>(String.CASE_INSENSITIVE_ORDER);
 		for (int i = 0; i < packages.length; i++) {
 			String matchName = packages[i].getElementName();
 			ICompletionProposal proposal = new CompletionProposal(matchName, documentOffset - text.length(), text.length(), matchName.length(), WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.PACKAGE_ICON), null, null, null);
@@ -104,7 +104,7 @@ public final class JavaCompletionProcessor {
 	}
 
 	private IType[] getMatchingTypes(IPackageFragment[] fragments, String text) throws CoreException {
-		final Set matches = new TreeSet(JavaCompletionProcessor.JAVA_ELEMENT_COMPARATOR);
+		final Set<IJavaElement> matches = new TreeSet<IJavaElement>(JavaCompletionProcessor.JAVA_ELEMENT_COMPARATOR);
 		IJavaElement[] elements = getJavaElementsToSearchForTypes(fragments);
 		String prefix = getPackagePrefix(text);
 		if (prefix.length() == 0) {
@@ -135,14 +135,14 @@ public final class JavaCompletionProcessor {
 
 	private IType[] getTypesInPackages(IPackageFragment[] fragments) throws JavaModelException {
 		includePackages = false;
-		HashSet types = new HashSet();
+		HashSet<IType> types = new HashSet<IType>();
 		for (int i = 0; i < fragments.length; i++) {
 			addTypesInPackage(fragments[i], types);
 		}
 		return (IType[]) types.toArray(new IType[types.size()]);
 	}
 
-	private void addTypesInPackage(IPackageFragment fragment, HashSet types) throws JavaModelException {
+	private void addTypesInPackage(IPackageFragment fragment, HashSet<IType> types) throws JavaModelException {
 		IJavaElement[] children = fragment.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			if (children[i].getElementType() == IJavaElement.COMPILATION_UNIT) {
@@ -157,7 +157,7 @@ public final class JavaCompletionProcessor {
 		if (text.endsWith(".")) {
 			prefix = new String(text.substring(0, text.length() - 1));
 		}
-		final Set fragments = new TreeSet(JavaCompletionProcessor.JAVA_ELEMENT_COMPARATOR);
+		final Set<IJavaElement> fragments = new TreeSet<IJavaElement>(JavaCompletionProcessor.JAVA_ELEMENT_COMPARATOR);
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { project });
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.PACKAGE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
 		new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, new PackageSearchRequestor(fragments), null);

@@ -2,6 +2,7 @@ package com.teaminabox.eclipse.wiki.export;
 
 import java.util.HashMap;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
@@ -19,10 +20,10 @@ public final class ExportLinkMaker extends LinkMaker {
 	/**
 	 * The set of documents linked to from wiki pages to the Eclipse workspace. Key = IResource, Value = link location
 	 */
-	private HashMap	linkedResources;
+	private HashMap<IResource, String>	linkedResources;
 
 	public ExportLinkMaker() {
-		linkedResources = new HashMap();
+		linkedResources = new HashMap<IResource, String>();
 	}
 
 	public String make(WikiLinkTextRegion wikiNameTextRegion) {
@@ -93,7 +94,7 @@ public final class ExportLinkMaker extends LinkMaker {
 		return WikiExporter.WORKSPACE + pluginResourceTextRegion.getResource().getFullPath().toString();
 	}
 
-	public HashMap getLinkedResources() {
+	public HashMap<IResource, String> getLinkedResources() {
 		return linkedResources;
 	}
 

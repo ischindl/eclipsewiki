@@ -38,7 +38,7 @@ public final class TextRegionBuilder {
 	}
 
 	public static TextRegion[] getTextRegions(String text, WikiDocumentContext context) {
-		ArrayList list = new ArrayList();
+		ArrayList<TextRegion> list = new ArrayList<TextRegion>();
 		int start = 0;
 		while (start < text.length()) {
 			TextRegion region = TextRegionBuilder.getFirstTextRegion(new String(text.substring(start)), context);
@@ -49,7 +49,7 @@ public final class TextRegionBuilder {
 	}
 
 	private static TextRegion[] getCandidates(String text, WikiDocumentContext context) {
-		ArrayList candidates = new ArrayList();
+		ArrayList<TextRegion> candidates = new ArrayList<TextRegion>();
 		TextRegionMatcher[] matchers = RendererFactory.createContentRenderer().getRendererMatchers();
 		for (int i = 0; i < matchers.length; i++) {
 			TextRegion textRegion = matchers[i].createTextRegion(text, context);

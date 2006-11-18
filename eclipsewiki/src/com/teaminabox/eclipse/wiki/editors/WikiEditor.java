@@ -144,8 +144,7 @@ public final class WikiEditor extends TextEditor {
 		if (textRegion == null || textRegion.getLength() == 0) {
 			return false;
 		}
-		Object openedLink = textRegion.accept(new WikiLinkLauncher(this));
-		return openedLink.equals(Boolean.TRUE);
+		return textRegion.accept(new WikiLinkLauncher(this));
 	}
 
 	/**

@@ -31,7 +31,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 
 	public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, int documentOffset) {
 		try {
-			ArrayList proposals = new ArrayList();
+			ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 			IProject project = wikiEditor.getContext().getWorkingLocation().getProject();
 
 			boolean tryJava = resourceCompletions.addCompletions(viewer, documentOffset, proposals);

@@ -1,23 +1,23 @@
 package com.teaminabox.eclipse.wiki.text;
 
-public interface TextRegionVisitor {
-	Object visit(UndefinedTextRegion undefinedTextRegion);
+public interface TextRegionVisitor<T> {
+	T visit(UndefinedTextRegion undefinedTextRegion);
 
-	Object visit(UrlTextRegion urlTextRegion);
+	T visit(UrlTextRegion urlTextRegion);
 
-	Object visit(WikiWordTextRegion wikiNameTextRegion);
+	T visit(WikiWordTextRegion wikiNameTextRegion);
 
-	Object visit(WikiUrlTextRegion wikiUrlTextRegion);
+	T visit(WikiUrlTextRegion wikiUrlTextRegion);
 
-	Object visit(BasicTextRegion basicTextRegion);
+	T visit(BasicTextRegion basicTextRegion);
 
-	Object visit(EclipseResourceTextRegion eclipseResourceTextRegion);
+	T visit(EclipseResourceTextRegion eclipseResourceTextRegion);
 
-	Object visit(PluginResourceTextRegion pluginResourceTextRegion);
+	T visit(PluginResourceTextRegion pluginResourceTextRegion);
 
-	Object visit(JavaTypeTextRegion region);
+	T visit(JavaTypeTextRegion region);
 
-	Object visit(ForcedLinkTextRegion region);
+	T visit(ForcedLinkTextRegion region);
 
-	Object visit(EmbeddedWikiWordTextRegion region);
+	T visit(EmbeddedWikiWordTextRegion region);
 }
