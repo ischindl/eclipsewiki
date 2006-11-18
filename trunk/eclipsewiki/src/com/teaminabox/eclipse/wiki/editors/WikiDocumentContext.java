@@ -43,7 +43,6 @@ public final class WikiDocumentContext {
 
 	public WikiDocumentContext(IFile wikiDocument) throws CoreException, IOException {
 		this.wikiDocument = wikiDocument;
-		assert wikiDocument != null;
 		loadEnvironment();
 		javaContext = new JavaContext(this);
 	}
