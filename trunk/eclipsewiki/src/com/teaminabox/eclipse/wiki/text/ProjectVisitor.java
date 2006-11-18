@@ -1,6 +1,6 @@
 /*
  * Created on 12.11.2004
- *
+ * 
  */
 package com.teaminabox.eclipse.wiki.text;
 
@@ -17,18 +17,18 @@ import org.eclipse.core.runtime.CoreException;
  * @author Ronald Steinhau
  */
 public class ProjectVisitor implements IResourceVisitor {
-	private ArrayList	fProjects;
+	private ArrayList<IProject>	fProjects;
 
 	public ProjectVisitor() {
-		fProjects = new ArrayList();
+		fProjects = new ArrayList<IProject>();
 	}
 
-	public List getProjectsFound(IResource res) throws CoreException {
+	public List<IProject> getProjectsFound(IResource res) throws CoreException {
 		doVisit(res);
 		return fProjects;
 	}
 
-	public List getProjectsFound() throws CoreException {
+	public List<IProject> getProjectsFound() throws CoreException {
 		doVisit();
 		return fProjects;
 	}

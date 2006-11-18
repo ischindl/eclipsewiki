@@ -12,10 +12,10 @@ import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
-public class TextRegionAppender implements TextRegionVisitor {
+public class TextRegionAppender implements TextRegionVisitor<Object> {
 
-	private final LinkMaker			linkMaker;
-	private final StringBuffer		buffer;
+	private final LinkMaker					linkMaker;
+	private final StringBuffer				buffer;
 	private final AbstractContentRenderer	contentRenderer;
 
 	public TextRegionAppender(StringBuffer buffer, LinkMaker linkMaker, AbstractContentRenderer contentRenderer) {

@@ -1,7 +1,6 @@
 package com.teaminabox.eclipse.wiki.editors;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -19,7 +18,7 @@ public final class JavaContext implements IResourceChangeListener {
 
 	private final WikiDocumentContext	context;
 	private IJavaProject				javaProject;
-	private HashSet						packages;
+	private HashSet<String>				packages;
 
 	public JavaContext(WikiDocumentContext context) throws CoreException {
 		this.context = context;
@@ -49,7 +48,7 @@ public final class JavaContext implements IResourceChangeListener {
 		if (!isInJavaProject()) {
 			return;
 		}
-		packages = new HashSet();
+		packages = new HashSet<String>();
 		IPackageFragment[] packageFragments = javaProject.getPackageFragments();
 		for (int i = 0; i < packageFragments.length; i++) {
 			if (!packageFragments[i].isDefaultPackage()) {
@@ -73,9 +72,7 @@ public final class JavaContext implements IResourceChangeListener {
 	}
 
 	private boolean hasPackageWithNameStartingWith(String text) {
-		Iterator iterator = packages.iterator();
-		while (iterator.hasNext()) {
-			String packageName = (String) iterator.next();
+		for (String packageName : packages) {
 			if (text.startsWith(packageName)) {
 				return true;
 			}

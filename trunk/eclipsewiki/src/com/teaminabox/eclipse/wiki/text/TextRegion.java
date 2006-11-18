@@ -26,7 +26,6 @@ public abstract class TextRegion {
 	private boolean	cursorPositionSet;
 	private int		locationInDocument;
 
-
 	public TextRegion(String text) {
 		setText(text);
 		setDisplayText(text);
@@ -36,7 +35,7 @@ public abstract class TextRegion {
 		text = "";
 	}
 
-	public abstract Object accept(TextRegionVisitor textRegionVisitor);
+	public abstract <T> T accept(TextRegionVisitor<T> textRegionVisitor);
 
 	public abstract boolean isLink();
 
@@ -47,11 +46,11 @@ public abstract class TextRegion {
 	public String getText() {
 		return text;
 	}
-	
+
 	public String getDisplayText() {
 		return displayText;
 	}
-	
+
 	public void setDisplayText(String displayText) {
 		this.displayText = displayText;
 	}

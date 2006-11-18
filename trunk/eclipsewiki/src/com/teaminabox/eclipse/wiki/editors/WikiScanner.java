@@ -13,6 +13,7 @@ import com.teaminabox.eclipse.wiki.util.WikiWhitespaceDetector;
 
 public final class WikiScanner extends RuleBasedScanner {
 
+	@SuppressWarnings("unchecked")
 	public WikiScanner(WikiEditor wikiEditor) {
 		ArrayList rules = new ArrayList();
 		rules.add(new WhitespaceRule(new WikiWhitespaceDetector()));

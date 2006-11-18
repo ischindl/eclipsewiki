@@ -13,7 +13,7 @@ public final class WikiWordTextRegion extends WikiLinkTextRegion {
 		return getText();
 	}
 
-	public Object accept(TextRegionVisitor textRegionVisitor) {
+	public <T> T accept(TextRegionVisitor<T> textRegionVisitor) {
 		return textRegionVisitor.visit(this);
 	}
 

@@ -36,61 +36,61 @@ import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
 /**
- * Each visitor method will return {@link Boolean#TRUE Boolean.TRUE} or {@link Boolean#FALSE Boolean.FALSE} depending on
- * whether the link was opened or not.
+ * Each visitor method will return {@link Boolean#TRUE true} or {@link Boolean#FALSE false} depending on whether the
+ * link was opened or not.
  */
-final class WikiLinkLauncher extends GenericTextRegionVisitor {
+final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 
 	private final WikiEditor	editor;
 
 	public WikiLinkLauncher(WikiEditor editor) {
-		super(Boolean.FALSE);
+		super(false);
 		this.editor = editor;
 	}
 
-	public Object visit(UrlTextRegion urlTextRegion) {
+	public Boolean visit(UrlTextRegion urlTextRegion) {
 		Program.launch(urlTextRegion.getText());
-		return Boolean.TRUE;
+		return true;
 	}
 
-	public Object visit(WikiWordTextRegion wikiNameTextRegion) {
+	public Boolean visit(WikiWordTextRegion wikiNameTextRegion) {
 		try {
 			openWikiDocument(wikiNameTextRegion.getText());
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
 		}
-		return Boolean.TRUE;
+		return true;
 	}
 
-	public Object visit(ForcedLinkTextRegion region) {
+	public Boolean visit(ForcedLinkTextRegion region) {
 		try {
 			openWikiDocument(region.getWikiDocumentName());
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
 		}
-		return Boolean.TRUE;
+		return true;
 	}
 
-	public Object visit(WikiUrlTextRegion wikiUrlTextRegion) {
+	public Boolean visit(WikiUrlTextRegion wikiUrlTextRegion) {
 		openWikiUrl(wikiUrlTextRegion);
-		return Boolean.TRUE;
+		return true;
 	}
 
-	public Object visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
+	public Boolean visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		String location = eclipseResourceTextRegion.getText();
 		openEclipseLocation(location);
-		return Boolean.TRUE;
+		return true;
 	}
 
-	public Object visit(PluginResourceTextRegion pluginResourceTextRegion) {
+	public Boolean visit(PluginResourceTextRegion pluginResourceTextRegion) {
 		String location = pluginResourceTextRegion.getText();
 		openPluginLocation(location);
-		return Boolean.TRUE;
+		return true;
 	}
 
-	public Object visit(JavaTypeTextRegion javaTypeTextRegion) {
+	public Boolean visit(JavaTypeTextRegion javaTypeTextRegion) {
 		openType(javaTypeTextRegion);
-		return Boolean.TRUE;
+		return true;
 	}
 
 	void openWikiDocument(String wikiWord) throws CoreException {

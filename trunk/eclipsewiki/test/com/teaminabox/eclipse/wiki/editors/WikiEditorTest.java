@@ -1,6 +1,5 @@
 package com.teaminabox.eclipse.wiki.editors;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -38,12 +37,10 @@ public final class WikiEditorTest extends WikiTest {
 	}
 
 	public void testGetWikiSpaceNoLocalSpace() {
-		Map received = editor.getContext().getWikiSpace();
-		Map expected = WikiPreferences.getWikiSpace();
+		Map<String, String> received = editor.getContext().getWikiSpace();
+		Map<String, String> expected = WikiPreferences.getWikiSpace();
 		Assert.assertEquals("size", expected.size(), received.size());
-		Iterator iterator = expected.keySet().iterator();
-		while (iterator.hasNext()) {
-			String key = (String) iterator.next();
+		for (String key : expected.keySet()) {
 			Assert.assertTrue(key, received.containsKey(key));
 			Assert.assertEquals("value", expected.get(key), received.get(key));
 		}
@@ -51,7 +48,7 @@ public final class WikiEditorTest extends WikiTest {
 
 	public void testGetWikiSpaceLocalSpace() {
 		create("TestSpace=foo", "wikispace.properties");
-		Map space = editor.getContext().getWikiSpace();
+		Map<String, String> space = editor.getContext().getWikiSpace();
 		Assert.assertTrue("key", space.containsKey("TestSpace"));
 		Assert.assertEquals("value", "foo", space.get("TestSpace"));
 	}
@@ -60,13 +57,13 @@ public final class WikiEditorTest extends WikiTest {
 		create("TestSpace=foo", "wikispace.properties");
 		/* give event thread time to run so that the editor wakes up */
 		Thread.sleep(200);
-		Map space = editor.getContext().getWikiSpace();
+		Map<String, String> space = editor.getContext().getWikiSpace();
 		Assert.assertTrue("key", space.containsKey("TestSpace"));
 
 		try {
 			delete("wikispace.properties");
-	        space = editor.getContext().getWikiSpace();
-	        Assert.assertFalse("key", space.containsKey("TestSpace"));
+			space = editor.getContext().getWikiSpace();
+			Assert.assertFalse("key", space.containsKey("TestSpace"));
 		} catch (RuntimeException e) {
 			// Do nothing - Windows can't delete properties file;
 		}
@@ -79,7 +76,7 @@ public final class WikiEditorTest extends WikiTest {
 
 	public void testGetWorkingLocation() {
 		IContainer container = editor.getContext().getWorkingLocation();
-        Assert.assertTrue(container.getName().matches(TEST_PROJECT+"\\d*"));
+		Assert.assertTrue(container.getName().matches(TEST_PROJECT + "\\d*"));
 	}
 
 	public void testNavigateToNextLink() {

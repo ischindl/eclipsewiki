@@ -21,11 +21,11 @@ import com.teaminabox.eclipse.wiki.util.Resources;
  */
 public class PluginProjectSupport {
 
-	private static Map	projects	= new HashMap();
+	private static Map<String, String>	projects	= new HashMap<String, String>();
 
 	public static IProject locateProjectInWorkspace(String pluginID) {
 		IWorkspaceRoot rootFolder = ResourcesPlugin.getWorkspace().getRoot();
-		List projectList = new ArrayList(1);
+		List<IProject> projectList = new ArrayList<IProject>(1);
 		try {
 			PluginProjectVisitor ppVisitor = new PluginProjectVisitor(pluginID);
 			rootFolder.accept(ppVisitor);

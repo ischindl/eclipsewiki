@@ -23,10 +23,10 @@ public class WikiExporterTest extends WikiTest {
 		assertTrue("create export directory", exportDirectory.mkdir());
 		exporter.export(getJavaProject().getProject(), exportDirectory.getPath(), new NullProgressMonitor());
 
-		Set actual = new HashSet();
+		Set<String> actual = new HashSet<String>();
 		actual.addAll(Arrays.asList(exportDirectory.list()));
 
-		Set expected = new HashSet();
+		Set<String> expected = new HashSet<String>();
 		expected.addAll(Arrays.asList(new String[] { "index.html", "AnotherPage.html", "HomePage.html" }));
 
 		assertEquals(expected, actual);

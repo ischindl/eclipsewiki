@@ -25,7 +25,7 @@ public final class EclipseResourceTextRegion extends TextRegion {
 	/**
 	 * @see com.teaminabox.eclipse.wiki.text.TextRegion#accept(com.teaminabox.eclipse.wiki.text.TextRegionVisitor)
 	 */
-	public Object accept(TextRegionVisitor textRegionVisitor) {
+	public <T> T accept(TextRegionVisitor<T> textRegionVisitor) {
 		return textRegionVisitor.visit(this);
 	}
 

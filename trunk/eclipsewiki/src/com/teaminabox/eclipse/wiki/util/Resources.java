@@ -33,25 +33,25 @@ public class Resources {
 		}
 		return buffer.toString();
 	}
-	
-	public static List readLines(IFile file) throws IOException, CoreException {
+
+	public static List<String> readLines(IFile file) throws IOException, CoreException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents()));
 		String line;
-		ArrayList lines = new ArrayList();
+		ArrayList<String> lines = new ArrayList<String>();
 		while ((line = reader.readLine()) != null) {
 			lines.add(line);
 		}
 		return lines;
 	}
-	
+
 	public static boolean exists(IResource resource) {
 		return resource != null && resource.exists();
 	}
-	
+
 	public static boolean existsAsFile(IResource resource) {
 		return exists(resource) && resource.getType() == IResource.FILE;
 	}
-	
+
 	public static IFile findFileInWorkspace(String workspaceRelativePath) {
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath);
 		if (existsAsFile(resource)) {
@@ -59,11 +59,11 @@ public class Resources {
 		}
 		return null;
 	}
-	
+
 	public static boolean isWikiFile(IResource resource) {
 		return exists(resource) && resource.getFileExtension() != null && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
 	}
-	
+
 	public static boolean isWikiFile(IFile file) {
 		return file.getName().endsWith(WikiConstants.WIKI_FILE_EXTENSION);
 	}

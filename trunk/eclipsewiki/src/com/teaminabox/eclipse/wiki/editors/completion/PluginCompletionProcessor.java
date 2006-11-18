@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -16,6 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
@@ -34,13 +36,13 @@ public class PluginCompletionProcessor {
 		this.resourceCompletionProcessor = processor;
 	}
 
-	public ArrayList computePluginResourceCompletionProposals(final ITextViewer viewer, final int documentOffset) throws BadLocationException {
+	public List<ICompletionProposal> computePluginResourceCompletionProposals(final ITextViewer viewer, final int documentOffset) throws BadLocationException {
 		IRegion region = viewer.getDocument().getLineInformationOfOffset(documentOffset);
 		String line = viewer.getDocument().get(region.getOffset(), region.getLength());
 		int pluginLinkIndex = line.indexOf(WikiConstants.PLUGIN_PREFIX);
 		int cursorPositionInLine = documentOffset - region.getOffset();
 		if (pluginLinkIndex < 0 || pluginLinkIndex > cursorPositionInLine) {
-			return new ArrayList();
+			return new ArrayList<ICompletionProposal>();
 		}
 
 		// Get the link around the cursor position
@@ -56,7 +58,7 @@ public class PluginCompletionProcessor {
 		return resourceCompletionProcessor.computeWikiProposals(documentOffset, pluginResourceTextRegion);
 	}
 
-	public Object getPluginCompletions(String text, String location, int documentOffset, IPath path) {
+	public List<ICompletionProposal> getPluginCompletions(String text, String location, int documentOffset, IPath path) {
 		try {
 			int lengthToBeReplaced = 0;
 			int replacementOffset = documentOffset;
@@ -78,11 +80,11 @@ public class PluginCompletionProcessor {
 			return resourceCompletionProcessor.buildResourceProposals(children, "", replacementOffset, lengthToBeReplaced);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
-			return new ArrayList(1);
+			return new ArrayList<ICompletionProposal>(1);
 		}
 	}
 
-	ArrayList getPluginCompletions(String text, String location, int documentOffset) {
+	ArrayList<ICompletionProposal> getPluginCompletions(String text, String location, int documentOffset) {
 		try {
 			int lengthToBeReplaced = 0;
 			int replacementOffset = documentOffset;
@@ -98,7 +100,7 @@ public class PluginCompletionProcessor {
 			return resourceCompletionProcessor.buildResourceProposals(children, "", replacementOffset, lengthToBeReplaced);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
-			return new ArrayList(1);
+			return new ArrayList<ICompletionProposal>(1);
 		}
 	}
 
@@ -110,17 +112,17 @@ public class PluginCompletionProcessor {
 		if (path == null) {
 			path = "";
 		}
-		Set plugIds = gatherPluginIds(path);
-		SortedMap selectedIDs = new TreeMap();
+		Set<String> plugIds = gatherPluginIds(path);
+		SortedMap<String, String> selectedIDs = new TreeMap<String, String>();
 
-		for (Iterator ids = plugIds.iterator(); ids.hasNext();) {
-			String currPluginID = (String) ids.next();
+		for (Iterator<String> ids = plugIds.iterator(); ids.hasNext();) {
+			String currPluginID = ids.next();
 			addWikiFromPlugin(path, currPluginID, selectedIDs);
 		}
-		return (String[]) selectedIDs.values().toArray(new String[selectedIDs.size()]);
+		return selectedIDs.values().toArray(new String[selectedIDs.size()]);
 	}
 
-	private void addWikiFromPlugin(String path, String currPluginID, SortedMap selectedIDs) {
+	private void addWikiFromPlugin(String path, String currPluginID, SortedMap<String, String> selectedIDs) {
 		if (path.length() == 0 || currPluginID.startsWith(path)) {
 			IPath plugDirPath = null;
 			IProject proj = PluginProjectSupport.locateProjectInWorkspace(currPluginID);
@@ -140,8 +142,8 @@ public class PluginCompletionProcessor {
 		}
 	}
 
-	private Set gatherPluginIds(String path) {
-		Set plugIds = new HashSet();
+	private Set<String> gatherPluginIds(String path) {
+		Set<String> plugIds = new HashSet<String>();
 		if (path.length() == 0) {
 			getPluginsFromWorkspace(plugIds);
 		}
@@ -153,7 +155,7 @@ public class PluginCompletionProcessor {
 		return plugIds;
 	}
 
-	private void getPluginsFromWorkspace(Set plugIds) {
+	private void getPluginsFromWorkspace(Set<String> plugIds) {
 		String[] projects = resourceCompletionProcessor.getProjectList("");
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		for (int i = 0; i < projects.length; i++) {
@@ -167,7 +169,7 @@ public class PluginCompletionProcessor {
 			}
 		}
 	}
-	
+
 	public boolean isPluginWikispaceLink(String wikiSpace, WikiDocumentContext context) {
 		return context.getWikiSpace().containsKey(wikiSpace) && context.getWikiSpaceLink(wikiSpace).startsWith(WikiConstants.PLUGIN_PREFIX);
 	}

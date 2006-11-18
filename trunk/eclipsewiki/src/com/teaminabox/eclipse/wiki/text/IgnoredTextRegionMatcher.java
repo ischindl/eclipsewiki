@@ -1,15 +1,11 @@
 package com.teaminabox.eclipse.wiki.text;
 
-import java.util.Iterator;
-
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
 public final class IgnoredTextRegionMatcher extends AbstractTextRegionMatcher {
 
 	private int matchLength(String text, WikiDocumentContext context) {
-		Iterator iterator = context.getExcludeSet().iterator();
-		while (iterator.hasNext()) {
-			String excluded = (String) iterator.next();
+		for (String excluded : context.getExcludeSet()) {
 			if (text.startsWith(excluded)) {
 				return excluded.length();
 			}

@@ -4,10 +4,8 @@ import java.util.Comparator;
 
 import org.eclipse.jdt.core.IJavaElement;
 
-public class JavaElementComparator implements Comparator {
-	public int compare(Object o1, Object o2) {
-		IJavaElement first = (IJavaElement) o1;
-		IJavaElement second = (IJavaElement) o2;
-		return first.getHandleIdentifier().compareTo(second.getHandleIdentifier());
+public class JavaElementComparator implements Comparator<IJavaElement> {
+	public int compare(IJavaElement o1, IJavaElement o2) {
+		return o1.getHandleIdentifier().compareTo(o2.getHandleIdentifier());
 	}
 }

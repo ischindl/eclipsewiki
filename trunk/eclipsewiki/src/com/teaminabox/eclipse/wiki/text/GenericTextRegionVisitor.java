@@ -3,51 +3,51 @@ package com.teaminabox.eclipse.wiki.text;
 /**
  * A TextRegionVisitor that returns a default value for each TextRegionVisitor method.
  */
-public class GenericTextRegionVisitor implements TextRegionVisitor {
+public class GenericTextRegionVisitor<T> implements TextRegionVisitor<T> {
 
-	private Object	defaultReturnValue;
+	private T	defaultReturnValue;
 
-	public GenericTextRegionVisitor(Object defaultReturnValue) {
+	public GenericTextRegionVisitor(T defaultReturnValue) {
 		this.defaultReturnValue = defaultReturnValue;
 	}
 
-	public Object visit(UndefinedTextRegion undefinedTextRegion) {
+	public T visit(UndefinedTextRegion undefinedTextRegion) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(UrlTextRegion urlTextRegion) {
+	public T visit(UrlTextRegion urlTextRegion) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(WikiWordTextRegion wikiNameTextRegion) {
+	public T visit(WikiWordTextRegion wikiNameTextRegion) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(WikiUrlTextRegion wikiUrlTextRegion) {
+	public T visit(WikiUrlTextRegion wikiUrlTextRegion) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(BasicTextRegion basicTextRegion) {
+	public T visit(BasicTextRegion basicTextRegion) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
+	public T visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(PluginResourceTextRegion eclipseResourceTextRegion) {
+	public T visit(PluginResourceTextRegion eclipseResourceTextRegion) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(JavaTypeTextRegion region) {
+	public T visit(JavaTypeTextRegion region) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(ForcedLinkTextRegion region) {
+	public T visit(ForcedLinkTextRegion region) {
 		return defaultReturnValue;
 	}
 
-	public Object visit(EmbeddedWikiWordTextRegion region) {
+	public T visit(EmbeddedWikiWordTextRegion region) {
 		return defaultReturnValue;
 	}
 }

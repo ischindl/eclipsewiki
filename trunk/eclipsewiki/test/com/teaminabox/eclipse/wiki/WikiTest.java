@@ -1,7 +1,5 @@
 /**
- * Contributions:
- *  Channing Walton
- *  Quality Eclipse Plugins, chapter 2.8.3 test example
+ * Contributions: Channing Walton Quality Eclipse Plugins, chapter 2.8.3 test example
  */
 package com.teaminabox.eclipse.wiki;
 
@@ -25,7 +23,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.text.ITextSelection;
@@ -44,7 +42,7 @@ public abstract class WikiTest extends TestCase {
 	public static final String	TEST_PROJECT	= "wikitest";
 	public static final String	WIKI_FILE		= "HomePage.wiki";
 
-    protected IProject project;
+	protected IProject			project;
 
 	protected void setUp() throws Exception {
 		project = createProject();
@@ -52,7 +50,7 @@ public abstract class WikiTest extends TestCase {
 
 	protected void tearDown() throws Exception {
 		closeAllEditors();
-        try {
+		try {
 			project.delete(true, true, null);
 		} catch (CoreException e) {
 			// do nothing (Windows hack)
@@ -95,7 +93,7 @@ public abstract class WikiTest extends TestCase {
 	 * Wait until all background tasks are complete.
 	 */
 	public void waitForJobs() {
-		while (Platform.getJobManager().currentJob() != null) {
+		while (Job.getJobManager().currentJob() != null) {
 			delay(1000);
 		}
 	}
@@ -164,18 +162,18 @@ public abstract class WikiTest extends TestCase {
 		return project;
 	}
 
-    public IProject createNonJavaProject(final String namePrefix) throws CoreException {
+	public IProject createNonJavaProject(final String namePrefix) throws CoreException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-    	File projRoot = new File(root.getLocation().toOSString());
-    	String name = namePrefix;
+		File projRoot = new File(root.getLocation().toOSString());
+		String name = namePrefix;
 		try {
-	    	File projFile = FolderUtils.createTempFolder(namePrefix,projRoot);
-	    	FolderUtils.deleteFileStructureOnExit(projFile);
-	    	name = projFile.getName();
+			File projFile = FolderUtils.createTempFolder(namePrefix, projRoot);
+			FolderUtils.deleteFileStructureOnExit(projFile);
+			name = projFile.getName();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	IProject project = root.getProject(name);
+		IProject project = root.getProject(name);
 		project.create(null);
 		project.open(null);
 		waitForJobs();

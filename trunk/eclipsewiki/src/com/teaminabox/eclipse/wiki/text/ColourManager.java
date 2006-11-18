@@ -1,7 +1,6 @@
 package com.teaminabox.eclipse.wiki.text;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
@@ -12,8 +11,8 @@ import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
 public final class ColourManager {
 
-	private Map			fColorTable	= new HashMap();
-	private WikiEditor	editor;
+	private Map<RGB, Color>	fColorTable	= new HashMap<RGB, Color>();
+	private WikiEditor		editor;
 
 	public ColourManager(WikiEditor editor) {
 		this.editor = editor;
@@ -24,9 +23,8 @@ public final class ColourManager {
 	}
 
 	public void dispose() {
-		Iterator e = fColorTable.values().iterator();
-		while (e.hasNext()) {
-			((Color) e.next()).dispose();
+		for (Color color : fColorTable.values()) {
+			color.dispose();
 		}
 	}
 

@@ -9,13 +9,12 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 public final class OutlineElement implements IWorkbenchAdapter, IAdaptable {
 
-	private String			headingName;
-	private int				offset;
-	private int				numberOfLines;
-	private int				length;
-	private ArrayList		children;
-	private ImageDescriptor	imageDescriptor;
-
+	private String						headingName;
+	private int							offset;
+	private int							numberOfLines;
+	private int							length;
+	private ArrayList<OutlineElement>	children;
+	private ImageDescriptor				imageDescriptor;
 
 	public OutlineElement(IAdaptable parent, String heading, int offset, int length, ImageDescriptor imageDescriptor) {
 		this.imageDescriptor = imageDescriptor;
@@ -25,13 +24,14 @@ public final class OutlineElement implements IWorkbenchAdapter, IAdaptable {
 		this.headingName = heading;
 		this.offset = offset;
 		this.length = length;
-		children = new ArrayList();
+		children = new ArrayList<OutlineElement>();
 	}
 
 	private void addChild(OutlineElement child) {
 		children.add(child);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		if (adapter == IWorkbenchAdapter.class) {
 			return this;

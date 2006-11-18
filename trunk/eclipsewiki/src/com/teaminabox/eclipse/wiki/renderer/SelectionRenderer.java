@@ -51,20 +51,19 @@ public class SelectionRenderer {
 	}
 
 	private String getHoverInfo(TextRegion textRegion) {
-		String hoverInfo = (String) textRegion.accept(new GenericTextRegionVisitor(null) {
-			public Object visit(WikiWordTextRegion wikiNameTextRegion) {
+		return textRegion.accept(new GenericTextRegionVisitor<String>(null) {
+			public String visit(WikiWordTextRegion wikiNameTextRegion) {
 				return getHoverText(wikiNameTextRegion);
 			}
 
-			public Object visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
+			public String visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 				return getEclipseResourceHover(eclipseResourceTextRegion);
 			}
 
-			public Object visit(PluginResourceTextRegion pluginResourceTextRegion) {
+			public String visit(PluginResourceTextRegion pluginResourceTextRegion) {
 				return getPluginResourceHover(pluginResourceTextRegion);
 			}
 		});
-		return hoverInfo;
 	}
 
 	private String getHoverText(WikiLinkTextRegion wikiNameTextRegion) {

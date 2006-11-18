@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -38,7 +39,7 @@ public final class WikiDocumentContext {
 	private static final String	DEFAULT_CHARSET	= "UTF8";
 	private final IFile			wikiDocument;
 	private Properties			localWikispace;
-	private HashSet				excludeList;
+	private Set<String>			excludeList;
 	private JavaContext			javaContext;
 
 	public WikiDocumentContext(IFile wikiDocument) throws CoreException, IOException {
@@ -77,7 +78,7 @@ public final class WikiDocumentContext {
 	}
 
 	private void loadExcludes() throws IOException, CoreException {
-		excludeList = new HashSet();
+		excludeList = new HashSet<String>();
 		IFile file = getLocalFile(WikiConstants.EXCLUDES_FILE);
 		if (Resources.exists(file)) {
 			excludeList.addAll(Resources.readLines(file));
@@ -147,15 +148,16 @@ public final class WikiDocumentContext {
 		return (String) getWikiSpace().get(name);
 	}
 
-	public Map getWikiSpace() {
-		HashMap local = new HashMap();
+	@SuppressWarnings("unchecked")
+	public Map<String, String> getWikiSpace() {
+		HashMap<String, String> local = new HashMap<String, String>();
 		local.putAll(WikiPreferences.getWikiSpace());
-		local.putAll(localWikispace);
+		local.putAll((Map<? extends String, ? extends String>) localWikispace);
 		return local;
 	}
 
 	public String[] getDocumentWithHeaderAndFooter() throws IOException, CoreException {
-		List lines = new ArrayList();
+		List<String> lines = new ArrayList<String>();
 		IFile file = getFile(HEADER_FILE);
 		if (file != null) {
 			lines.addAll(Resources.readLines(file));
@@ -178,7 +180,7 @@ public final class WikiDocumentContext {
 
 	public String[] getDocument() {
 		try {
-			List lines = Resources.readLines(wikiDocument);
+			List<String> lines = Resources.readLines(wikiDocument);
 			return (String[]) lines.toArray(new String[lines.size()]);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Cannot get Document", e);
@@ -190,7 +192,7 @@ public final class WikiDocumentContext {
 		return excludeList.contains(word);
 	}
 
-	public HashSet getExcludeSet() {
+	public Set<String> getExcludeSet() {
 		return excludeList;
 	}
 

@@ -39,7 +39,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	private LinkMaker			linkMaker;
 	private TextRegionAppender	textRegionAppender;
-	private boolean	isEmbedded;
+	private boolean				isEmbedded;
 
 	public abstract TextRegionMatcher[] getRendererMatchers();
 
@@ -79,7 +79,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	public WikiDocumentContext getContext() {
 		return context;
 	}
-	
+
 	private void initialise(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded) {
 		this.context = context;
 		this.linkMaker = linkMaker;
@@ -103,7 +103,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 			return "<html><body><p>" + e.getLocalizedMessage() + "</p></body></html>";
 		}
 	}
-	
+
 	void embed(EmbeddedWikiWordTextRegion region) {
 		TextRegion embeddedTextRegion = region.getEmbeddedTextRegion();
 		try {
@@ -261,7 +261,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *            replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
+	 *             replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {
@@ -340,7 +340,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		if (index < 0) {
 			return new String[] { line };
 		}
-		ArrayList bits = new ArrayList();
+		ArrayList<String> bits = new ArrayList<String>();
 		int lastIndex = -1;
 		while (index >= 0 && index < line.length()) {
 			if (index > 0) {
@@ -392,7 +392,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	protected void appendNewLine() {
 		append(System.getProperty("line.separator"));
 	}
-	
+
 	protected StringBuffer append(String content) {
 		return buffer.append(content);
 	}

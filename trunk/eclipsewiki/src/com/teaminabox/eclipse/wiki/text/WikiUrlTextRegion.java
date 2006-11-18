@@ -20,7 +20,7 @@ public final class WikiUrlTextRegion extends TextRegion {
 		return getToken(WikiConstants.WIKI_URL, colourManager);
 	}
 
-	public Object accept(TextRegionVisitor textRegionVisitor) {
+	public <T> T accept(TextRegionVisitor<T> textRegionVisitor) {
 		return textRegionVisitor.visit(this);
 	}
 
