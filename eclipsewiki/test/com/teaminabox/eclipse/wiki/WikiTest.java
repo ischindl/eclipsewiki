@@ -104,7 +104,12 @@ public abstract class WikiTest extends TestCase {
 
 	public WikiBrowserEditor createWikiDocumentAndOpen(String content, String fileName) {
 		try {
-			return (WikiBrowserEditor) createAndOpen(content, fileName);
+			IEditorPart editor = createAndOpen(content, fileName);
+			if (editor instanceof WikiBrowserEditor) {
+				return (WikiBrowserEditor) editor;
+			}
+			fail("Expected a WikiBrowserEditor but received a " + editor.getClass());
+			return null; // keep the compiler cheery
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

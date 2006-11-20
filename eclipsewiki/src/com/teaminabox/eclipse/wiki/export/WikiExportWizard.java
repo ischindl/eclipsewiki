@@ -12,6 +12,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -36,16 +37,9 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 
 	public boolean performFinish() {
 		persistExportProperties();
-
 		return runOperationInContainer(new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException {
-				try {
-					new WikiExporter().export(page.getFolder(), page.getExportDirectoryPath(), monitor);
-				} catch (Exception e) {
-					throw new InvocationTargetException(e);
-				} finally {
-					monitor.done();
-				}
+			public void run(final IProgressMonitor monitor) throws InvocationTargetException {
+				doExport(monitor);
 			}
 		});
 	}
@@ -80,5 +74,19 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
+	}
+
+	private void doExport(final IProgressMonitor monitor) {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					new WikiExporter().export(page.getFolder(), page.getExportDirectoryPath(), monitor);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				} finally {
+					monitor.done();
+				}
+			}
+		});
 	}
 }

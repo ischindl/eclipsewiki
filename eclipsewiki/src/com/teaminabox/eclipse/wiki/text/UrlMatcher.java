@@ -6,12 +6,12 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 
 public final class UrlMatcher extends PatternMatcher {
 
-	private static final String URL_REGEX = "(" + StringUtils.join(WikiConstants.URL_PREFIXES, '|') + ")://([-_.!~*';/?:@#&=+$,\\p{Alnum}])+";
-	
+	private static final String	URL_REGEX	= "(" + StringUtils.join(WikiConstants.URL_PREFIXES, '|') + "):(//)?([-_\\.!~*';/?:@#&=+$,\\p{Alnum}])+";
+
 	public UrlMatcher() {
 		super(URL_REGEX);
 	}
-	
+
 	protected boolean accepts(char c, boolean firstCharacter) {
 		if (firstCharacter) {
 			for (int i = 0; i < WikiConstants.URL_PREFIXES.length; i++) {
@@ -22,7 +22,7 @@ public final class UrlMatcher extends PatternMatcher {
 		}
 		return c != ' ';
 	}
-	
+
 	protected TextRegion createTextRegion(String text) {
 		return new UrlTextRegion(text);
 	}

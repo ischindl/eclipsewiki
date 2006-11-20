@@ -28,6 +28,9 @@ WikiLinks can be opened in three ways:
 * Place your cursor on a link and press F3
 * Place your cursor on a link, open the pop-up menu and select 'Open Wiki Link'
 
+'''Headers and Footers'''
+* The files footer.wiki and header.wiki are automatically included in the Browser view and exported documents.
+
 '''Other'''
 * Opening a wiki link which does not exist will create a new page.
 * Navigate to next/previous links using CTRL+SHIFT UP/DOWN arrows respectively.
