@@ -11,7 +11,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 public abstract class PatternMatcher extends AbstractTextRegionMatcher {
 
 	private final Pattern	pattern;
-	private Matcher	matcher;
+	private Matcher			matcher;
 
 	public PatternMatcher(String pattern) {
 		this.pattern = Pattern.compile(pattern);

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: Eclipse Wiki
 Bundle-SymbolicName: com.teaminabox.eclipse.wiki;singleton=true
-Bundle-Version: 2.5.0
+Bundle-Version: 2.5.1.2006_11_20_0800
 Bundle-ClassPath: wiki.jar,
  lib/java2html_4.1.jar,
  lib/commons-lang-2.2.jar
