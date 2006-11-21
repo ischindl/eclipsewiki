@@ -15,7 +15,7 @@ import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 
 	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
-
+	
 	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)),new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
 	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN) };
 

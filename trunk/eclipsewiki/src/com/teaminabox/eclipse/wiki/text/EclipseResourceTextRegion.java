@@ -5,6 +5,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.text.rules.IToken;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
+import com.teaminabox.eclipse.wiki.editors.ColourManager;
 
 /**
  * A region of text referring to a resource in the Eclipse workspace.

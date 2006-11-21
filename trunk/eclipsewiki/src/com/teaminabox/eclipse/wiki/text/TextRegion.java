@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
+import com.teaminabox.eclipse.wiki.editors.ColourManager;
 
 /**
  * I am an atomic region of text.

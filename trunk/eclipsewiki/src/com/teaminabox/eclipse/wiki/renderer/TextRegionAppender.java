@@ -12,7 +12,7 @@ import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 
-public class TextRegionAppender implements TextRegionVisitor<Object> {
+public class TextRegionAppender<T> implements TextRegionVisitor<T> {
 
 	private final LinkMaker					linkMaker;
 	private final StringBuffer				buffer;
@@ -24,52 +24,52 @@ public class TextRegionAppender implements TextRegionVisitor<Object> {
 		this.contentRenderer = contentRenderer;
 	}
 
-	public Object visit(UndefinedTextRegion undefinedTextRegion) {
+	public T visit(UndefinedTextRegion undefinedTextRegion) {
 		buffer.append(undefinedTextRegion.getText());
 		return null;
 	}
 
-	public Object visit(UrlTextRegion urlTextRegion) {
+	public T visit(UrlTextRegion urlTextRegion) {
 		buffer.append(linkMaker.make(urlTextRegion));
 		return null;
 	}
 
-	public Object visit(WikiWordTextRegion wikiNameTextRegion) {
+	public T visit(WikiWordTextRegion wikiNameTextRegion) {
 		buffer.append(linkMaker.make(wikiNameTextRegion));
 		return null;
 	}
 
-	public Object visit(WikiUrlTextRegion wikiUrlTextRegion) {
+	public T visit(WikiUrlTextRegion wikiUrlTextRegion) {
 		buffer.append(linkMaker.make(wikiUrlTextRegion));
 		return null;
 	}
 
-	public Object visit(BasicTextRegion basicTextRegion) {
+	public T visit(BasicTextRegion basicTextRegion) {
 		buffer.append(basicTextRegion.getDisplayText());
 		return null;
 	}
 
-	public Object visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
+	public T visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		buffer.append(linkMaker.make(eclipseResourceTextRegion));
 		return null;
 	}
 
-	public Object visit(PluginResourceTextRegion pluginResourceTextRegion) {
+	public T visit(PluginResourceTextRegion pluginResourceTextRegion) {
 		buffer.append(linkMaker.make(pluginResourceTextRegion));
 		return null;
 	}
 
-	public Object visit(JavaTypeTextRegion region) {
+	public T visit(JavaTypeTextRegion region) {
 		buffer.append(linkMaker.make(region));
 		return null;
 	}
 
-	public Object visit(ForcedLinkTextRegion region) {
+	public T visit(ForcedLinkTextRegion region) {
 		buffer.append(linkMaker.make(region));
 		return null;
 	}
 
-	public Object visit(EmbeddedWikiWordTextRegion region) {
+	public T visit(EmbeddedWikiWordTextRegion region) {
 		contentRenderer.embed(region);
 		return null;
 	}

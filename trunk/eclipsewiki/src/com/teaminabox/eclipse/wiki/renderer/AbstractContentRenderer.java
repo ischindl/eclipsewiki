@@ -23,42 +23,34 @@ import com.teaminabox.eclipse.wiki.util.Resources;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
 
-	public static final String	CLASS_MONO_SPACE	= "monospace";
-	public static final String	CLASS_QUOTE			= "quote";
-	public static final String	TABLE_DELIMITER		= "|";
-	public static final String	HR					= "hr";
-	public static final String	NEW_WIKIDOC_HREF	= "?";
+	public static final String			CLASS_MONO_SPACE	= "monospace";
+	public static final String			CLASS_QUOTE			= "quote";
+	public static final String			TABLE_DELIMITER		= "|";
+	public static final String			HR					= "hr";
+	public static final String			NEW_WIKIDOC_HREF	= "?";
 
-	private WikiDocumentContext	context;
-	private StringBuffer		buffer;
-	private int					currentLine;
-	private int					currentListDepth;
-	private boolean				inTable;
-	private String[]			document;
-	private String				encoding;
+	private WikiDocumentContext			context;
+	private StringBuffer				buffer;
+	private int							currentLine;
+	private int							currentListDepth;
+	private boolean						inTable;
+	private String[]					document;
+	private String						encoding;
 
-	private LinkMaker			linkMaker;
-	private TextRegionAppender	textRegionAppender;
-	private boolean				isEmbedded;
+	private LinkMaker					linkMaker;
+	private TextRegionAppender<Object>	textRegionAppender;
+	private boolean						isEmbedded;
 
 	public abstract TextRegionMatcher[] getRendererMatchers();
-
 	public abstract TextRegionMatcher[] getScannerMatchers();
 
 	protected abstract boolean isList(String line);
-
 	protected abstract char getListType(String line);
-
 	protected abstract boolean isOrderedList(String line);
-
 	protected abstract String getListText(String line);
-
 	protected abstract int getListDepth(String line);
-
 	protected abstract String processTags(String line);
-
 	protected abstract boolean isHeader(String line);
-
 	protected abstract void appendHeader(String line);
 
 	/**
@@ -88,7 +80,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		setInTable(false);
 		encoding = context.getCharset().name();
 		buffer = new StringBuffer();
-		textRegionAppender = new TextRegionAppender(buffer, linkMaker, this);
+		textRegionAppender = new TextRegionAppender<Object>(buffer, linkMaker, this);
 	}
 
 	public final String render(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded) {
@@ -261,7 +253,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *             replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
+	 *              replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {
@@ -352,7 +344,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		if (lastIndex < line.length() - 1) {
 			bits.add(new String(line.substring(lastIndex + 1)));
 		}
-		return (String[]) bits.toArray(new String[bits.size()]);
+		return bits.toArray(new String[bits.size()]);
 	}
 
 	protected final String getTableTag() {

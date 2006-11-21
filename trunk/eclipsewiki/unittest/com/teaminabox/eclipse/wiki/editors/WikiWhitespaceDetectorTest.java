@@ -14,13 +14,6 @@ public class WikiWhitespaceDetectorTest extends TestCase {
 		assertFalse("non whitespace", WikiWhitespaceDetector.isWhiteSpaceCharacter('a'));
 	}
 
-	public void testContainsWhiteSpace() {
-		assertTrue("starts with space", WikiWhitespaceDetector.containsWhiteSpace(" a"));
-		assertTrue("ends with space", WikiWhitespaceDetector.containsWhiteSpace("a\t"));
-		assertTrue("has space", WikiWhitespaceDetector.containsWhiteSpace("b\na"));
-		assertFalse("no space", WikiWhitespaceDetector.containsWhiteSpace("ab"));
-	}
-
 	public void testIndexOfWhiteSpace() {
 		assertEquals("starts with space", 0, WikiWhitespaceDetector.indexOfWhiteSpace(" a"));
 		assertEquals("ends with space", 1, WikiWhitespaceDetector.indexOfWhiteSpace("a\r"));

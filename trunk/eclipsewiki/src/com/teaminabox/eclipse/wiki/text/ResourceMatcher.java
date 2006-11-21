@@ -46,7 +46,7 @@ public abstract class ResourceMatcher extends AbstractTextRegionMatcher {
 		return fPrefix.length();
 	}
 
-	abstract protected File findResourceFromPath(String section);
+	protected abstract File findResourceFromPath(String section);
 
 	private int getLineNumberLength(String text, int colon) {
 		String number = new String(text.substring(colon + 1));

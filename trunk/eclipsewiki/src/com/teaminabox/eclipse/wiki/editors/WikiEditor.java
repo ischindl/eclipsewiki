@@ -40,7 +40,6 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.renderer.SelectionRenderer;
-import com.teaminabox.eclipse.wiki.text.ColourManager;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 
