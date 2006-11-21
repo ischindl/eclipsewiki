@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
+import static com.teaminabox.eclipse.wiki.util.JavaUtils.isJavaProject;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IProject;
@@ -36,7 +37,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 
 			boolean tryJava = resourceCompletions.addCompletions(viewer, documentOffset, proposals);
 
-			if (tryJava && project.hasNature(JavaCore.NATURE_ID)) {
+			if (tryJava && isJavaProject(project)) {
 				IJavaProject javaProject = JavaCore.create(project);
 				proposals.addAll(javaCompletionProcessor.getProposals(javaProject, viewer, documentOffset));
 			}

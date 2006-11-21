@@ -40,13 +40,17 @@ public class NextLinkNavigator extends LinkNavigator {
 
 			if (currentTextRegion.getLength() == 0) {
 				pos++;
-			} else if (currentTextRegion.isLink() && textRegionIndex > endOfCurrentRegion) {
+			} else if (currentTextRegion.isLink() && isAfterCurrentRegion(textRegionIndex)) {
 				getEditor().selectAndReveal(pos - currentTextRegion.getCursorPosition(), 0);
 				return;
 			} else {
 				pos = textRegionIndex + currentTextRegion.getLength() + 1;
 			}
 		}
+	}
+
+	private boolean isAfterCurrentRegion(int textRegionIndex) {
+		return textRegionIndex > endOfCurrentRegion;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.util.JavaUtils.isJavaProject;
 import java.util.HashSet;
 
 import org.eclipse.core.resources.IProject;
@@ -34,7 +35,7 @@ public final class JavaContext implements IResourceChangeListener {
 
 	private void initialiseJavaProject() throws CoreException {
 		IProject project = context.getProject();
-		if (project.hasNature(JavaCore.NATURE_ID)) {
+		if (isJavaProject(project)) {
 			javaProject = JavaCore.create(project);
 			loadPackages();
 		}

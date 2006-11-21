@@ -4,6 +4,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.text.rules.IToken;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
+import com.teaminabox.eclipse.wiki.editors.ColourManager;
 
 public final class JavaTypeTextRegion extends TextRegion {
 

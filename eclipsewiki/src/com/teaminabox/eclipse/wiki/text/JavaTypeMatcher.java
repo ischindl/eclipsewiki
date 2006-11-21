@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.text;
 
+import static com.teaminabox.eclipse.wiki.util.JavaUtils.isJavaClassNamePart;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
@@ -10,7 +12,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.JavaContext;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
-import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
 
@@ -126,7 +127,7 @@ public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
 		if (firstCharacter) {
 			return Character.isJavaIdentifierPart(c);
 		}
-		return JavaUtils.isJavaClassNamePart(c);
+		return isJavaClassNamePart(c);
 	}
 
 }

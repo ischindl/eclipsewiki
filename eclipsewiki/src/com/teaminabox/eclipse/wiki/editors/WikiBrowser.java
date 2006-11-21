@@ -59,7 +59,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	private Form				browserForm;
 	private Browser				browser;
 	private Button				launchButton;
-	private History				history;
+	private History<String>		history;
 	private Button				forwardButton;
 	private Button				backButton;
 	private LocationListener	locationListener;
@@ -69,7 +69,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 	public WikiBrowser(WikiEditor editor) {
 		this.editor = editor;
-		history = new History();
+		history = new History<String>();
 		history.add(WikiConstants.WIKI_HREF + editor.getContext().getWikiNameBeingEdited());
 		WikiPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
 	}

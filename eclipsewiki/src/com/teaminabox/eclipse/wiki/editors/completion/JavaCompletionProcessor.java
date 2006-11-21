@@ -1,5 +1,8 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
+
+import static com.teaminabox.eclipse.wiki.util.JavaUtils.isJavaClassNamePart;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,7 +32,6 @@ import org.eclipse.swt.graphics.Image;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
-import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 public final class JavaCompletionProcessor {
 
@@ -172,7 +174,7 @@ public final class JavaCompletionProcessor {
 	private String getFullyQualifiedTypePrefix(ITextViewer viewer, int documentOffset) throws BadLocationException {
 		IDocument document = viewer.getDocument();
 		int cursorIndex = documentOffset - 1;
-		if (cursorIndex < 0 || !JavaUtils.isJavaClassNamePart(document.getChar(cursorIndex))) {
+		if (cursorIndex < 0 || !isJavaClassNamePart(document.getChar(cursorIndex))) {
 			return null;
 		}
 		int start = findBeginningOfText(document, cursorIndex);
@@ -194,7 +196,7 @@ public final class JavaCompletionProcessor {
 
 	private int findBeginningOfText(IDocument document, int characterIndex) throws BadLocationException {
 		int start = characterIndex;
-		while (start > 0 && JavaUtils.isJavaClassNamePart(document.getChar(start))) {
+		while (start > 0 && isJavaClassNamePart(document.getChar(start))) {
 			start--;
 		}
 		return start;

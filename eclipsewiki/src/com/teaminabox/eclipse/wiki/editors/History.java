@@ -2,18 +2,21 @@ package com.teaminabox.eclipse.wiki.editors;
 
 import java.util.ArrayList;
 
-public final class History {
+public final class History<T> {
 
-	private ArrayList<Object>	items;
+	private ArrayList<T>	items;
 
 	private int					location;
 
 	public History() {
-		items = new ArrayList<Object>();
+		items = new ArrayList<T>();
 		location = -1;
 	}
 
-	public void add(Object object) {
+	public void add(T object) {
+		if (size() > 0 && object.equals(getCurrent())) {
+			return;
+		}
 		location++;
 		int numberToRemove = items.size() - location;
 		for (int i = 0; i < numberToRemove; i++) {
@@ -31,13 +34,13 @@ public final class History {
 		return location;
 	}
 
-	public Object back() {
+	public T back() {
 		location--;
-		Object object = items.get(location);
+		T object = items.get(location);
 		return object;
 	}
 
-	public Object next() {
+	public T next() {
 		location++;
 		return items.get(location);
 	}
@@ -50,7 +53,7 @@ public final class History {
 		return location < items.size() - 1;
 	}
 
-	public Object getCurrent() {
+	public T getCurrent() {
 		return items.get(location);
 	}
 

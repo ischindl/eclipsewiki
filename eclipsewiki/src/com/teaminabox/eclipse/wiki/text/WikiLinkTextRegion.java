@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.rules.IToken;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
+import com.teaminabox.eclipse.wiki.editors.ColourManager;
 
 /**
  * A region of text that is a Wiki name.

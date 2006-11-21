@@ -1,4 +1,4 @@
-package com.teaminabox.eclipse.wiki.text;
+package com.teaminabox.eclipse.wiki.editors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
 public final class ColourManager {
 

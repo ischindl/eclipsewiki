@@ -3,6 +3,8 @@ package com.teaminabox.eclipse.wiki.text;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
+import com.teaminabox.eclipse.wiki.editors.ColourManager;
+
 /**
  * A region of text containing non text characters.
  */
