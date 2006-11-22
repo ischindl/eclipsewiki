@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.export;
 
+import static com.teaminabox.eclipse.wiki.util.JavaUtils.writeJava;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,6 +9,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Map;
@@ -22,11 +26,6 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 import com.teaminabox.eclipse.wiki.util.Resources;
-
-import de.java2html.converter.JavaSource2HTMLConverter;
-import de.java2html.javasource.JavaSource;
-import de.java2html.javasource.JavaSourceParser;
-import de.java2html.options.Java2HtmlConversionOptions;
 
 public final class WikiExporter {
 
@@ -138,16 +137,9 @@ public final class WikiExporter {
 	}
 
 	private void javaToHtml(File source, File destination) throws IOException {
-		JavaSource java = new JavaSourceParser().parse(new FileReader(source));
-		JavaSource2HTMLConverter converter = new JavaSource2HTMLConverter(java);
-		Java2HtmlConversionOptions options = Java2HtmlConversionOptions.getDefault();
-		options.setShowLineNumbers(true);
-		options.setShowFileName(true);
-		options.setShowJava2HtmlLink(true);
-		converter.setConversionOptions(options);
-		FileWriter writer = new FileWriter(destination);
-		converter.convert(writer);
-		writer.flush();
+		Reader reader = new FileReader(source);
+		Writer writer = new FileWriter(destination);
+		writeJava(reader, writer);
 		writer.close();
 	}
 

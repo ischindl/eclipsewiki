@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -14,7 +13,6 @@ import org.eclipse.jface.text.BadLocationException;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
-import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
@@ -23,34 +21,42 @@ import com.teaminabox.eclipse.wiki.util.Resources;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
 
-	public static final String			CLASS_MONO_SPACE	= "monospace";
-	public static final String			CLASS_QUOTE			= "quote";
-	public static final String			TABLE_DELIMITER		= "|";
-	public static final String			HR					= "hr";
-	public static final String			NEW_WIKIDOC_HREF	= "?";
+	public static final String	CLASS_MONO_SPACE	= "monospace";
+	public static final String	CLASS_QUOTE			= "quote";
+	public static final String	TABLE_DELIMITER		= "|";
+	public static final String	HR					= "hr";
+	public static final String	NEW_WIKIDOC_HREF	= "?";
 
-	private WikiDocumentContext			context;
-	private StringBuffer				buffer;
-	private int							currentLine;
-	private int							currentListDepth;
-	private boolean						inTable;
-	private String[]					document;
-	private String						encoding;
+	private WikiDocumentContext	context;
+	private StringBuffer		buffer;
+	private int					currentLine;
+	private int					currentListDepth;
+	private boolean				inTable;
+	private String[]			document;
+	private String				encoding;
 
-	private LinkMaker					linkMaker;
-	private TextRegionAppender<Object>	textRegionAppender;
-	private boolean						isEmbedded;
+	private LinkMaker			linkMaker;
+	private TextRegionAppender	textRegionAppender;
+	private boolean				isEmbedded;
 
 	public abstract TextRegionMatcher[] getRendererMatchers();
+
 	public abstract TextRegionMatcher[] getScannerMatchers();
 
 	protected abstract boolean isList(String line);
+
 	protected abstract char getListType(String line);
+
 	protected abstract boolean isOrderedList(String line);
+
 	protected abstract String getListText(String line);
+
 	protected abstract int getListDepth(String line);
+
 	protected abstract String processTags(String line);
+
 	protected abstract boolean isHeader(String line);
+
 	protected abstract void appendHeader(String line);
 
 	/**
@@ -80,7 +86,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		setInTable(false);
 		encoding = context.getCharset().name();
 		buffer = new StringBuffer();
-		textRegionAppender = new TextRegionAppender<Object>(buffer, linkMaker, this);
+		textRegionAppender = new TextRegionAppender(linkMaker, context);
 	}
 
 	public final String render(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded) {
@@ -93,23 +99,6 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log(e.getLocalizedMessage(), e);
 			return "<html><body><p>" + e.getLocalizedMessage() + "</p></body></html>";
-		}
-	}
-
-	void embed(EmbeddedWikiWordTextRegion region) {
-		TextRegion embeddedTextRegion = region.getEmbeddedTextRegion();
-		try {
-			IFile file = getContext().getFileForWikiName(embeddedTextRegion.getText());
-			if (file == null) {
-				buffer.append(embeddedTextRegion.getText());
-			} else {
-				WikiDocumentContext wikiDocumentContext = new WikiDocumentContext(file);
-				buffer.append(RendererFactory.createContentRenderer().render(wikiDocumentContext, getLinkMaker(), true));
-			}
-		} catch (Exception e) {
-			WikiPlugin.getDefault().log("Could not append contents", e);
-			parseAndAppend(embeddedTextRegion.getText());
-			parseAndAppend(" (error embedding contents, please see logs)");
 		}
 	}
 
@@ -245,7 +234,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	protected void parseAndAppend(String line) {
 		TextRegion[] regions = TextRegionBuilder.getTextRegions(line, context);
 		for (int i = 0; i < regions.length; i++) {
-			regions[i].accept(textRegionAppender);
+			buffer.append(regions[i].accept(textRegionAppender));
 		}
 	}
 
@@ -253,7 +242,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
 	 * 
 	 * <pre>
-	 *              replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
+	 *               replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
 	 * </pre>
 	 */
 	protected String replacePair(String line, String search, String openingTag, String closingTag) {
