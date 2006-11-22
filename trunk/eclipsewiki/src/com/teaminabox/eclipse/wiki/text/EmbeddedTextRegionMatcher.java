@@ -3,11 +3,11 @@ package com.teaminabox.eclipse.wiki.text;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
-public class EmbeddedWikiWordMatcher extends AbstractTextRegionMatcher {
+public class EmbeddedTextRegionMatcher extends AbstractTextRegionMatcher {
 
-	private final WikiWordMatcher	wikiWordMatcher;
+	private final AbstractTextRegionMatcher	wikiWordMatcher;
 
-	public EmbeddedWikiWordMatcher(WikiWordMatcher wikiWordMatcher) {
+	public EmbeddedTextRegionMatcher(AbstractTextRegionMatcher wikiWordMatcher) {
 		this.wikiWordMatcher = wikiWordMatcher;
 	}
 
@@ -16,7 +16,7 @@ public class EmbeddedWikiWordMatcher extends AbstractTextRegionMatcher {
 	}
 
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
-		if (text.startsWith(WikiConstants.EMBEDDED_PREFIX) && text.length() > WikiConstants.EMBEDDED_PREFIX.length() + 1) {
+		if (isEmbedded(text)) {
 			String embeddedText = text.substring(WikiConstants.EMBEDDED_PREFIX.length());
 			TextRegion embedded = wikiWordMatcher.createTextRegion(embeddedText, context);
 			if (embedded != null) {
@@ -24,6 +24,10 @@ public class EmbeddedWikiWordMatcher extends AbstractTextRegionMatcher {
 			}
 		}
 		return null;
+	}
+
+	private boolean isEmbedded(String text) {
+		return text.startsWith(WikiConstants.EMBEDDED_PREFIX) && text.length() > WikiConstants.EMBEDDED_PREFIX.length() + 1;
 	}
 
 }

@@ -2,8 +2,8 @@ Version XXX
 	Added support for embedding WikiDocs
 	Fixed [ 1060777 ] Make keybindings work automatically
 	Fixed [ 1232632 ] Alt-w does not work anymore
-	Partially Implemented [ 1597549 ] Activate the spelling the checker Eclipse 3.2
-	Fixed the URL Matcher
+	Fixed [ 1555738 ] tilde char not recognized as part of URL
+	Added the embedding feature described in [ 1489731 ] Need a mechanism to auto-include common header and footer
 
 Version 2.5.0
 	Added Kim Tiedemanm's patch for forced links in the SnipSnap renderer.

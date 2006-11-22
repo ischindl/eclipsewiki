@@ -34,6 +34,10 @@ public class Resources {
 		return buffer.toString();
 	}
 
+	public static String getContents(IFile file) throws IOException, CoreException {
+		return getContents(file.getContents());
+	}
+	
 	public static List<String> readLines(IFile file) throws IOException, CoreException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents()));
 		String line;
@@ -43,7 +47,7 @@ public class Resources {
 		}
 		return lines;
 	}
-
+	
 	public static boolean exists(IResource resource) {
 		return resource != null && resource.exists();
 	}

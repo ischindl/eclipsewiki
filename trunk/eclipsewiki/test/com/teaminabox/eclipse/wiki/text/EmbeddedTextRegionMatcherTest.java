@@ -1,9 +1,9 @@
 package com.teaminabox.eclipse.wiki.text;
 
-public class EmbeddedWikiWordMatcherTest extends AbstractTextRegionMatcherTest {
+public class EmbeddedTextRegionMatcherTest extends AbstractTextRegionMatcherTest {
 
 	protected TextRegionMatcher getMatcher() {
-		return new EmbeddedWikiWordMatcher(new WikiWordMatcher("([A-Z][a-z]+){2,}"));
+		return new EmbeddedTextRegionMatcher(new WikiWordMatcher("([A-Z][a-z]+){2,}"));
 	}
 
 	protected TextRegionTestBean[] getAcceptableCases() {

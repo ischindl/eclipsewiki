@@ -1,7 +1,7 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
-import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordMatcher;
+import com.teaminabox.eclipse.wiki.text.EmbeddedTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.IgnoredTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.JavaTypeMatcher;
 import com.teaminabox.eclipse.wiki.text.LetterOrDigitMatcher;
@@ -16,8 +16,8 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 
 	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
 	
-	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)),new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
-	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new JavaTypeMatcher(), new EmbeddedWikiWordMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN) };
+	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)),new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
+	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN) };
 
 	private static final String			BULLET_MARKUP				= "*";
 	private static final String			QUOTE_MARKUP_REGEX			= "^\t :\t.*";
