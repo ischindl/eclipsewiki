@@ -33,12 +33,12 @@ public class ProjectVisitor implements IResourceVisitor {
 		return fProjects;
 	}
 
-	final public void doVisit(IResource res) throws CoreException {
+	public final void doVisit(IResource res) throws CoreException {
 		res.accept(this);
 		fProjects.trimToSize();
 	}
 
-	final public void doVisit() throws CoreException {
+	public final void doVisit() throws CoreException {
 		doVisit(ResourcesPlugin.getWorkspace().getRoot());
 	}
 
