@@ -42,3 +42,5 @@ Bug: [ 1181020 ] Escape !WikiWords such as !WardsBrowserContentRendererTest !Tip
 ---+++ Bug: [ 1490333 ] !WikiWord in heading not recognized - TwikiBrowserContentRendererTest
 
 Embed:EmbeddedContent here
+
+Embed:com.teaminabox.foo.BigClass

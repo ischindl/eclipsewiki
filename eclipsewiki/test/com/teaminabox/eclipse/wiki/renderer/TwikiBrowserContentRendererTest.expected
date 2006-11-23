@@ -112,5 +112,41 @@ Bug: [ 1181020 ] Escape WikiWords such as WardsBrowserContentRendererTest TipsJ2
 <p>
 Embedded content with a link to WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></p>
  here</p>
+<p>
+</p>
+<p>
+
+
+<!-- ======================================================== -->
+<!-- = Java Sourcecode to HTML automatically converted code = -->
+<!-- =   Java2Html Converter V4.1 2004 by Markus Gebhard  markus@jave.de   = -->
+<!-- =     Further information: http://www.java2html.de     = -->
+<div align="left" class="java">
+<table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
+   <tr>
+  <!-- start source code -->
+   <td nowrap="nowrap" valign="top" align="left">
+    <code>
+<font color="#808080">1</font>&nbsp;<font color="#7f0055"><b>package&nbsp;</b></font><font color="#000000">com.teaminabox.foo;</font><br/>
+<font color="#808080">2</font>&nbsp;<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">BigClass&nbsp;</font><font color="#000000">{&nbsp;</font><font color="#7f0055"><b>class&nbsp;</b></font><font color="#000000">InnerClass&nbsp;</font><font color="#000000">{}&nbsp;}</font></code>
+    
+   </td>
+  <!-- end source code -->
+   </tr>
+  <!-- start Java2Html link -->
+   <tr>
+    <td align="right">
+<small>
+<a href="http://www.java2html.de" target="_blank">Java2html</a>
+</small>
+    </td>
+   </tr>
+  <!-- end Java2Html link -->
+</table>
+</div>
+<!-- =       END of automatically generated HTML code       = -->
+<!-- ======================================================== -->
+
+</p>
   </body>
 </html>

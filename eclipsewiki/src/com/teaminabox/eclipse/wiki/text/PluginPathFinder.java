@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-// TODO turn this into a class
 public class PluginPathFinder {
 	public static IPath getPluginPath(String text) {
 		if (text == null || text.length() == 0) {
@@ -43,6 +42,10 @@ public class PluginPathFinder {
 			return null;
 		}
 		relPath = relPath.removeFirstSegments(1);
+		return getPath(relPath, wsProj);
+	}
+
+	private static IPath getPath(IPath relPath, IProject wsProj) {
 		IResource res = relPath.segmentCount() > 0 ? wsProj.findMember(relPath) : wsProj;
 		if (res instanceof IProject) {
 			return res.getLocation().addTrailingSeparator();
