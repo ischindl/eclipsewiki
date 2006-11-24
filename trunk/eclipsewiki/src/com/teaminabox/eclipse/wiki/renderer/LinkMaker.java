@@ -77,7 +77,12 @@ public abstract class LinkMaker {
 		if (url == null) {
 			return false;
 		}
-		return url.endsWith(".jpg") || url.endsWith(".jpeg") || url.endsWith(".jpe") || url.endsWith(".gif") || url.endsWith(".png");
+		for (String suffix : WikiConstants.IMAGE_SUFFIXES) {
+			if (url.endsWith(suffix)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected String getTextForJavaType(JavaTypeTextRegion region) {

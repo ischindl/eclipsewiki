@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
-public class Resources {
+public final class Resources {
 
 	public static String getContentsRelativeToPlugin(IPath path) throws IOException {
 		return getContents(FileLocator.openStream(WikiPlugin.getDefault().getBundle(), path, false));
@@ -33,7 +33,7 @@ public class Resources {
 		}
 		return buffer.toString();
 	}
-
+	
 	public static String getContents(IFile file) throws IOException, CoreException {
 		return getContents(file.getContents());
 	}

@@ -43,4 +43,6 @@ Bug: [ 1181020 ] Escape !WikiWords such as !WardsBrowserContentRendererTest !Tip
 
 Embed:EmbeddedContent here
 
+Embed:[[EmbeddedContent]] forced link
+
 Embed:com.teaminabox.foo.BigClass

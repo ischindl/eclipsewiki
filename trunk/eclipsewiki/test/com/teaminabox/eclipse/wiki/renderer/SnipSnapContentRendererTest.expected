@@ -289,6 +289,12 @@ Embedded content with a link to WardsBrowserContentRendererTest<a href="http://-
 <p>
 </p>
 <p>
+<p>
+Embedded content with a link to WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></p>
+ forced link</p>
+<p>
+</p>
+<p>
 
 
 <!-- ======================================================== -->

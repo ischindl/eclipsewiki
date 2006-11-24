@@ -1,6 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors;
 
 import org.eclipse.core.resources.IMarker;
+
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,6 +32,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.outline.WikiContentOutlinePage;
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
+
 import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, IPropertyChangeListener {
@@ -79,7 +81,11 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		createSourcePage();
 		createBrowserPage();
 		createSyntaxPage();
-		setActivePage(sourceIndex);
+		if (WikiPlugin.getDefault().getPluginPreferences().getBoolean(WikiConstants.SHOW_BROWSER_IN_EDITOR_WHEN_OPENING)) {
+			setActivePage(browserIndex);
+		} else {
+			setActivePage(sourceIndex);
+		}
 	}
 
 	private void createSyntaxPage() {

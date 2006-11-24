@@ -44,6 +44,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(WikiConstants.REUSE_EDITOR, WikiConstants.DEFAULT_REUSE_EDITOR);
 		store.setDefault(WikiConstants.WORD_WRAP, WikiConstants.DEFAULT_WORD_WRAP);
 		store.setDefault(WikiConstants.BROWSER_RENDERER, WikiConstants.BROWSER_RENDERERS[0]);
+		store.setDefault(WikiConstants.SHOW_BROWSER_IN_EDITOR_WHEN_OPENING, WikiConstants.DEFAULT_SHOW_BROWSER_IN_EDITOR_WHEN_OPENING);
 
 		store.setDefault(WikiConstants.RENDER_FULLY_QUALIFIED_TYPE_NAMES, WikiConstants.DEFAULT_RENDER_FULLY_QUALIFIED_TYPE_NAMES);
 
