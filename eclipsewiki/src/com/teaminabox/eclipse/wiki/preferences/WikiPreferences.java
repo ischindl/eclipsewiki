@@ -79,6 +79,7 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 		backgroundColourEditor = new BackgroundColourEditor(composite, getPreferenceStore());
 		editorColours = new EditorColours(composite, getPreferenceStore());
 		addField(new StringFieldEditor(WikiConstants.HOVER_PREVIEW_LENGTH, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.HoverLength"), composite)); //$NON-NLS-1$
+		addField(new BooleanFieldEditor(WikiConstants.SHOW_BROWSER_IN_EDITOR_WHEN_OPENING, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.showBrowserInEditorWhenOpening"), composite));//$NON-NLS-1$
 		addField(new BooleanFieldEditor(WikiConstants.REUSE_EDITOR, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.reuseEditor"), composite)); //$NON-NLS-1$
 		addField(new BooleanFieldEditor(WikiConstants.WORD_WRAP, WikiPlugin.getResourceString("WikiSyntaxPreferencePage.wordWrap"), composite));//$NON-NLS-1$
 	}

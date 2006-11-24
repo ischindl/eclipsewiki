@@ -4,6 +4,8 @@ Version XXX
 	Fixed [ 1232632 ] Alt-w does not work anymore
 	Fixed [ 1555738 ] tilde char not recognized as part of URL
 	Added the embedding feature described in [ 1489731 ] Need a mechanism to auto-include common header and footer
+	Added embedding Forced Links for TWiki and SnipSnap
+	Added option to open editor showing browser
 
 Version 2.5.0
 	Added Kim Tiedemanm's patch for forced links in the SnipSnap renderer.

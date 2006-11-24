@@ -10,6 +10,9 @@ public class LinkMakerTest extends TestCase {
 	public void testGetLinkForUrl() throws Exception {
 		assertEquals("<a href=\"http://www.google.com\">Google</a>", linkMaker.getLink("http://www.google.com", "Google"));
 	}
+	public void testGetLinkForImageUrl() throws Exception {
+		assertEquals("<img alt=\"Google\" src=\"http://www.google.com/image.gif\"/>", linkMaker.getLink("http://www.google.com/image.gif", "Google"));
+	}
 
 	public void testGetLinkForImage() throws Exception {
 		assertEquals("<img alt=\"Google\" src=\"http://a.link.to/an/image.jpg\"/>", linkMaker.getLink("http://a.link.to/an/image.jpg", "Google"));
