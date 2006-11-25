@@ -1,4 +1,4 @@
-Version XXX
+Version 2.6.0
 	Added support for embedding WikiDocs
 	Fixed [ 1060777 ] Make keybindings work automatically
 	Fixed [ 1232632 ] Alt-w does not work anymore
