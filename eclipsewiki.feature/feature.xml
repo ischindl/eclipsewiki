@@ -3,19 +3,23 @@
       id="com.stateofflow.EclipseWikiFeature"
       label="EclipseWiki"
       version="2.6.0"
-      provider-name="Channing Walton">
+      provider-name="State of Flow">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://www.stateoffow.com/">
+      This plugin is a simple personal or project Wiki, linking documentation to eclipse resources, web sites, bug tracking tools and other Wikis.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright>
+      Copyright Channing Walton
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="http://www.opensource.org/licenses/cpl1.0.php">
+      Common Public License v 1.0
    </license>
+
+   <url>
+      <update label="State of Flow" url="http://www.stateofflow.com/UpdateSite"/>
+   </url>
 
    <plugin
          id="com.teaminabox.eclipse.wiki"
