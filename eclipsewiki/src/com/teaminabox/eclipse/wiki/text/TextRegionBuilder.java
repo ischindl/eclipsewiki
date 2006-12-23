@@ -25,16 +25,13 @@ public final class TextRegionBuilder {
 			return new UndefinedTextRegion("");
 		}
 		TextRegion[] candidates = TextRegionBuilder.getCandidates(text, context);
-		int length = 0;
-		int best = 0;
-		for (int i = 0; i < candidates.length; i++) {
-			int candidateLength = candidates[i].getLength();
-			if (candidateLength > length) {
-				best = i;
-				length = candidateLength;
+		TextRegion chosen = candidates[0];
+		for (TextRegion textRegion : candidates) {
+			if (textRegion.getLength() > chosen.getLength()) {
+				chosen = textRegion;
 			}
 		}
-		return candidates[best];
+		return chosen;
 	}
 
 	public static TextRegion[] getTextRegions(String text, WikiDocumentContext context) {
