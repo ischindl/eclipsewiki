@@ -95,26 +95,6 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 		assertEquals("Test - foo.bar", proposal.getDisplayString());
 	}
 
-	// public void testFindsTypesInLibraries() throws Exception {
-	// IJavaProject javaProject = JavaCore.create(project);
-	// IClasspathEntry defaultJREContainerEntry = JavaRuntime.getDefaultJREContainerEntry();
-	// IClasspathEntry[] entries = new IClasspathEntry[] {defaultJREContainerEntry};
-	// javaProject.setRawClasspath(entries, null);
-	//		
-	// ArrayList proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH,
-	// "a test String thing", 13);
-	// assertTrue(proposals.size() > 0);
-	// boolean found = false;
-	// for (Iterator iterator = proposals.iterator(); iterator.hasNext();) {
-	// ICompletionProposal proposal = (ICompletionProposal) iterator.next();
-	// if ("String - java.lang".equals(proposal.getDisplayString())) {
-	// found = true;
-	// break;
-	// }
-	// }
-	// assertTrue("Found java.lang.String", found);
-	// }
-
 	public void testCursorOnSpace() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "a Test", 1);
 		assertEquals(0, proposals.size());
