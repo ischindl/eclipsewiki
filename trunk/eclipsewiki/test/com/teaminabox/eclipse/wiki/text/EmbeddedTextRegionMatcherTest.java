@@ -7,12 +7,10 @@ public class EmbeddedTextRegionMatcherTest extends AbstractTextRegionMatcherTest
 	}
 
 	protected TextRegionTestBean[] getAcceptableCases() {
-		return new TextRegionTestBean[] { 
-				new TextRegionTestBean("Embed:WikiWord", new EmbeddedWikiWordTextRegion("Embed:WikiWord", new WikiWordTextRegion("WikiWord"))),
-				new TextRegionTestBean("Embed:WikiWord stuff", new EmbeddedWikiWordTextRegion("Embed:WikiWord", new WikiWordTextRegion("WikiWord")))};
+		return new TextRegionTestBean[] { new TextRegionTestBean("Embed:WikiWord", new EmbeddedWikiWordTextRegion("Embed:WikiWord", new WikiWordTextRegion("WikiWord"))), new TextRegionTestBean("Embed:WikiWord stuff", new EmbeddedWikiWordTextRegion("Embed:WikiWord", new WikiWordTextRegion("WikiWord"))) };
 	}
 
 	protected String[] getUnacceptableText() {
-		return new String[] {"WikiWord", "word", "123", "WikiWord followed by stuff", "Embed:"};
+		return new String[] { "WikiWord", "word", "123", "WikiWord followed by stuff", "Embed:" };
 	}
 }

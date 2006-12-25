@@ -1,17 +1,22 @@
 package com.teaminabox.eclipse.wiki.export;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.*;
 
 import com.teaminabox.eclipse.wiki.WikiTest;
 
 public class WikiExporterTest extends WikiTest {
 
 	// This is just a sanity test
+	@Test
 	public void testExportsWithoutError() throws Exception {
 		create("This is a link to AnotherPage", "HomePage.wiki");
 		create("This is a link to the HomePage", "AnotherPage.wiki");
