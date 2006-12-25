@@ -2,6 +2,8 @@ package com.teaminabox.eclipse.wiki.text;
 
 import junit.framework.Assert;
 
+import org.junit.*;
+
 import com.teaminabox.eclipse.wiki.WikiTest;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
@@ -19,7 +21,8 @@ public abstract class AbstractTextRegionMatcherTest extends WikiTest {
 		return context;
 	}
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		editor = createWikiDocumentAndOpen(AbstractTextRegionMatcherTest.DEFAULT_EDITOR_CONTENT).getEditor();
 		context = editor.getContext();
@@ -28,6 +31,7 @@ public abstract class AbstractTextRegionMatcherTest extends WikiTest {
 
 	protected abstract TextRegionMatcher getMatcher();
 
+	@Test
 	public void testAcceptsWhenTrue() {
 		TextRegionTestBean[] cases = getAcceptableCases();
 		for (int i = 0; i < cases.length; i++) {
@@ -39,6 +43,7 @@ public abstract class AbstractTextRegionMatcherTest extends WikiTest {
 
 	protected abstract TextRegionTestBean[] getAcceptableCases();
 
+	@Test
 	public void testAcceptsWhenFalse() {
 		String[] text = getUnacceptableText();
 		for (int i = 0; i < text.length; i++) {
@@ -48,6 +53,7 @@ public abstract class AbstractTextRegionMatcherTest extends WikiTest {
 
 	protected abstract String[] getUnacceptableText();
 
+	@Test
 	public void testCreateTextRegion() {
 		TextRegionTestBean[] cases = getAcceptableCases();
 

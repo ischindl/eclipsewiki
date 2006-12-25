@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.text;
 
+import org.junit.Before;
+
 import com.teaminabox.eclipse.wiki.WikiConstants;
 
 public final class IgnoredTextRegionMatcherTest extends AbstractTextRegionMatcherTest {
@@ -7,7 +9,8 @@ public final class IgnoredTextRegionMatcherTest extends AbstractTextRegionMatche
 	private static final String					ACCEPTABLE_TEXT		= "IgnoreMe";
 	private static final TextRegionTestBean[]	ACCEPTABLE_CASES	= new TextRegionTestBean[] { new TextRegionTestBean(ACCEPTABLE_TEXT + " stuff", new BasicTextRegion(ACCEPTABLE_TEXT)), new TextRegionTestBean(ACCEPTABLE_TEXT + " stuff", new BasicTextRegion(ACCEPTABLE_TEXT)), };
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		create(IgnoredTextRegionMatcherTest.ACCEPTABLE_TEXT, WikiConstants.EXCLUDES_FILE);
 	}

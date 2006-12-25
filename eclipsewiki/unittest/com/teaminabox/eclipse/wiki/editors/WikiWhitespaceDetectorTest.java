@@ -1,11 +1,16 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.*;
+
 import com.teaminabox.eclipse.wiki.util.WikiWhitespaceDetector;
 
-import junit.framework.TestCase;
+public class WikiWhitespaceDetectorTest {
 
-public class WikiWhitespaceDetectorTest extends TestCase {
-
+	@Test
 	public void testIsWhiteSpaceCharacter() {
 		assertTrue("\\n", WikiWhitespaceDetector.isWhiteSpaceCharacter('\n'));
 		assertTrue("space", WikiWhitespaceDetector.isWhiteSpaceCharacter(' '));
@@ -14,6 +19,7 @@ public class WikiWhitespaceDetectorTest extends TestCase {
 		assertFalse("non whitespace", WikiWhitespaceDetector.isWhiteSpaceCharacter('a'));
 	}
 
+	@Test
 	public void testIndexOfWhiteSpace() {
 		assertEquals("starts with space", 0, WikiWhitespaceDetector.indexOfWhiteSpace(" a"));
 		assertEquals("ends with space", 1, WikiWhitespaceDetector.indexOfWhiteSpace("a\r"));

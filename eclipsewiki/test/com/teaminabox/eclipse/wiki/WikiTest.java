@@ -3,14 +3,15 @@
  */
 package com.teaminabox.eclipse.wiki;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -33,22 +34,26 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.junit.After;
+import org.junit.Before;
 
 import com.teaminabox.eclipse.wiki.editors.WikiBrowserEditor;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
-public abstract class WikiTest extends TestCase {
+public abstract class WikiTest {
 
 	public static final String	TEST_PROJECT	= "wikitest";
 	public static final String	WIKI_FILE		= "HomePage.wiki";
 
 	protected IProject			project;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		project = createProject();
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		closeAllEditors();
 		try {
 			project.delete(true, true, null);

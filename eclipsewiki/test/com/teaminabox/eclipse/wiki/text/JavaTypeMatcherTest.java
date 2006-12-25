@@ -1,5 +1,10 @@
 package com.teaminabox.eclipse.wiki.text;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.*;
+
 public final class JavaTypeMatcherTest extends AbstractTextRegionMatcherTest {
 
 	private static final String					CLASS_SOURCE		= "package com.teaminabox.foo;\npublic class BigClass { class InnerClass {} }";
@@ -8,7 +13,8 @@ public final class JavaTypeMatcherTest extends AbstractTextRegionMatcherTest {
 
 	private static final TextRegionTestBean[]	ACCEPTABLE_CASES	= new TextRegionTestBean[] { new TextRegionTestBean(CLASS_NAME, new JavaTypeTextRegion(CLASS_NAME, null)), new TextRegionTestBean(CLASS_NAME + ".InnerClass", new JavaTypeTextRegion(CLASS_NAME + ".InnerClass", null)), new TextRegionTestBean(CLASS_NAME + ". etc.", new JavaTypeTextRegion(CLASS_NAME, null)), };
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		create(JavaTypeMatcherTest.CLASS_SOURCE, JavaTypeMatcherTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");
 	}
@@ -25,6 +31,7 @@ public final class JavaTypeMatcherTest extends AbstractTextRegionMatcherTest {
 		return JavaTypeMatcherTest.ACCEPTABLE_CASES;
 	}
 
+	@Test
 	public void testTwoTypesOnSameLine() {
 		JavaTypeMatcher matcher = new JavaTypeMatcher();
 		create("package foo.bar;\\npublic class Test { }", "foo/bar/Test.java");

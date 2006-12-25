@@ -1,6 +1,10 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static org.junit.Assert.assertEquals;
+
 import org.eclipse.jface.text.IRegion;
+import org.junit.Before;
+import org.junit.*;
 
 import com.teaminabox.eclipse.wiki.WikiTest;
 
@@ -12,7 +16,8 @@ public final class WikiHoverTest extends WikiTest {
 	private WikiEditor			editor;
 	private WikiHover			hover;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		create(WikiHoverTest.WIKI_HOVER_CONTENT, "WikiHover.wiki");
 		editor = createWikiDocumentAndOpen(WikiHoverTest.WIKI_CONTENT).getEditor();
@@ -31,20 +36,24 @@ public final class WikiHoverTest extends WikiTest {
 		});
 	}
 
+	@Test
 	public void testGetHoverInfoAtBeginning() {
 		assertEquals(WikiHoverTest.WIKI_HOVER_CONTENT, getHoverInfo(getOffsetAtBeginning()));
 	}
 
+	@Test
 	public void testGetHoverInfoAtEnd() {
 		assertEquals(WikiHoverTest.WIKI_HOVER_CONTENT, getHoverInfo(getOffsetAtEnd()));
 	}
 
+	@Test
 	public void testGetHoverRegionBeforeLink() {
 		IRegion hoverRegion = hover.getHoverRegion(editor.getTextViewerForTest(), getOffsetAtBeginning());
 		assertEquals("length", 1, hoverRegion.getLength());
 		assertEquals("offset", getOffsetAtBeginning() - 1, hoverRegion.getOffset());
 	}
 
+	@Test
 	public void testGetHoverRegionInLink() {
 		IRegion hoverRegion = hover.getHoverRegion(editor.getTextViewerForTest(), getOffsetAtBeginning() + 1);
 		assertEquals("length", WikiHoverTest.WIKI_HOVER.length(), hoverRegion.getLength());
