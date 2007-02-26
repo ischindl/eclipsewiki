@@ -42,7 +42,7 @@ public final class TextRegionBuilder {
 			list.add(region);
 			start += region.getLength();
 		}
-		return (TextRegion[]) list.toArray(new TextRegion[list.size()]);
+		return list.toArray(new TextRegion[list.size()]);
 	}
 
 	private static TextRegion[] getCandidates(String text, WikiDocumentContext context) {
@@ -54,7 +54,7 @@ public final class TextRegionBuilder {
 				candidates.add(textRegion);
 			}
 		}
-		return (TextRegion[]) candidates.toArray(new TextRegion[candidates.size()]);
+		return candidates.toArray(new TextRegion[candidates.size()]);
 	}
 
 	public static TextRegion getTextRegionAtCursor(WikiEditor editor, IDocument document, int initialPos) {

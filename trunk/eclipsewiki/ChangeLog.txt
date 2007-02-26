@@ -1,3 +1,6 @@
+Version 3.0.0 - requires Eclipse 3.3
+	Added spelling support
+	
 Version 2.6.0
 	Added support for embedding WikiDocs
 	Fixed [ 1060777 ] Make keybindings work automatically

@@ -1,6 +1,5 @@
 package com.teaminabox.eclipse.wiki.text;
 
-
 /**
  * I match a region of text representing a Wiki word based on a regex.
  */

@@ -158,7 +158,7 @@ public class EditorColours {
 			PreferenceConverter.setValue(getPreferenceStore(), key, currentColours[i]);
 		}
 		for (String key : currentBold.keySet()) {
-			getPreferenceStore().setValue(key, (String) currentBold.get(key));
+			getPreferenceStore().setValue(key, currentBold.get(key));
 		}
 	}
 

@@ -37,6 +37,24 @@ import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, IPropertyChangeListener {
 
+	private final class ResourceChangedEventHandler implements Runnable {
+		private final IResourceChangeEvent	event;
+
+		private ResourceChangedEventHandler(IResourceChangeEvent event) {
+			this.event = event;
+		}
+
+		public void run() {
+			IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
+			for (IWorkbenchPage element : pages) {
+				if (((FileEditorInput) editor.getEditorInput()).getFile().getProject().equals(event.getResource())) {
+					IEditorPart editorPart = element.findEditor(editor.getEditorInput());
+					element.closeEditor(editorPart, true);
+				}
+			}
+		}
+	}
+
 	private WikiEditor	editor;
 	private WikiBrowser	wikiBrowser;
 	private int			browserIndex;
@@ -49,6 +67,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 	}
 
+	@Override
 	public void dispose() {
 		WikiPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(this);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
@@ -77,10 +96,15 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		setPageText(browserIndex, "Browser");
 	}
 
+	@Override
 	protected void createPages() {
 		createSourcePage();
 		createBrowserPage();
 		createSyntaxPage();
+		initialiseActivePage();
+	}
+
+	private void initialiseActivePage() {
 		if (WikiPlugin.getDefault().getPluginPreferences().getBoolean(WikiConstants.SHOW_BROWSER_IN_EDITOR_WHEN_OPENING)) {
 			setActivePage(browserIndex);
 		} else {
@@ -98,10 +122,12 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		setPageText(syntaxIndex, "Syntax");
 	}
 
+	@Override
 	public void doSave(IProgressMonitor monitor) {
 		getEditor(0).doSave(monitor);
 	}
 
+	@Override
 	public void doSaveAs() {
 		IEditorPart editor = getEditor(0);
 		editor.doSaveAs();
@@ -114,6 +140,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		IDE.gotoMarker(getEditor(0), marker);
 	}
 
+	@Override
 	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
 		if (!(editorInput instanceof IFileEditorInput)) {
 			throw new PartInitException("Invalid Input: Must be IFileEditorInput");
@@ -128,6 +155,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		}
 	}
 
+	@Override
 	public void setInput(IEditorInput newInput) {
 		super.setInputWithNotify(newInput);
 		if (editor != null) {
@@ -137,6 +165,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		}
 	}
 
+	@Override
 	protected void pageChange(int newPageIndex) {
 		super.pageChange(newPageIndex);
 		if (newPageIndex == browserIndex) {
@@ -144,6 +173,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		}
 	}
 
+	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
@@ -153,17 +183,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 	 */
 	public void resourceChanged(final IResourceChangeEvent event) {
 		if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
-					for (int i = 0; i < pages.length; i++) {
-						if (((FileEditorInput) editor.getEditorInput()).getFile().getProject().equals(event.getResource())) {
-							IEditorPart editorPart = pages[i].findEditor(editor.getEditorInput());
-							pages[i].closeEditor(editorPart, true);
-						}
-					}
-				}
-			});
+			Display.getDefault().asyncExec(new ResourceChangedEventHandler(event));
 		}
 	}
 
@@ -190,6 +210,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		}
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class key) {
 		if (key.equals(IContentOutlinePage.class)) {

@@ -1,8 +1,5 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
-import static com.teaminabox.eclipse.wiki.util.Resources.existsAsFile;
-import static com.teaminabox.eclipse.wiki.util.Resources.getContents;
-
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -17,6 +14,7 @@ import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<String> {
 
@@ -61,8 +59,8 @@ public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<S
 	@Override
 	public String visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		try {
-			if (existsAsFile(eclipseResourceTextRegion.getResource())) {
-				return getContents((IFile) eclipseResourceTextRegion.getResource());
+			if (Resources.existsAsFile(eclipseResourceTextRegion.getResource())) {
+				return Resources.getContents((IFile) eclipseResourceTextRegion.getResource());
 			}
 		} catch (Exception e) {
 			report(e);
@@ -83,7 +81,7 @@ public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<S
 			return report(e);
 		}
 	}
-	
+
 	private String report(Exception e) {
 		WikiPlugin.getDefault().log("Could not append contents", e);
 		return region.getText() + "(error embedding contents, please see logs)";

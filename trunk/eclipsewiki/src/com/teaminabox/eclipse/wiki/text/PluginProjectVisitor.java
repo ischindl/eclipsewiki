@@ -1,6 +1,6 @@
 /*
  * Created on 12.11.2004
- *
+ * 
  */
 package com.teaminabox.eclipse.wiki.text;
 

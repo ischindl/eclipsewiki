@@ -1,16 +1,22 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
+import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
+import org.eclipse.ui.texteditor.spelling.SpellingReconcileStrategy;
 
 import com.teaminabox.eclipse.wiki.editors.completion.WikiCompletionProcessor;
 
@@ -23,6 +29,7 @@ public final class WikiConfiguration extends TextSourceViewerConfiguration {
 		this.wikiEditor = wikiEditor;
 	}
 
+	@Override
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return new String[] { IDocument.DEFAULT_CONTENT_TYPE };
 	}
@@ -34,6 +41,7 @@ public final class WikiConfiguration extends TextSourceViewerConfiguration {
 		return scanner;
 	}
 
+	@Override
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
 		reconciler.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
@@ -44,16 +52,18 @@ public final class WikiConfiguration extends TextSourceViewerConfiguration {
 
 		return reconciler;
 	}
-// needs eclipse 3.3
-//	public IReconciler getReconciler(ISourceViewer sourceViewer) {
-//		IReconcilingStrategy strategy = new SpellingReconcileStrategy(sourceViewer, EditorsUI.getSpellingService(), "org.eclipse.ui.workbench.texteditor.spelling"); //$NON-NLS-1$
-//		MonoReconciler reconciler = new MonoReconciler(strategy, false);
-//		reconciler.setIsIncrementalReconciler(false);
-//		reconciler.setProgressMonitor(new NullProgressMonitor());
-//		reconciler.setDelay(500);
-//		return reconciler;
-//	}
 
+	@Override
+	public IReconciler getReconciler(ISourceViewer sourceViewer) {
+		IReconcilingStrategy strategy = new SpellingReconcileStrategy(sourceViewer, EditorsUI.getSpellingService());
+		MonoReconciler reconciler = new MonoReconciler(strategy, false);
+		reconciler.setIsIncrementalReconciler(false);
+		reconciler.setProgressMonitor(new NullProgressMonitor());
+		reconciler.setDelay(500);
+		return reconciler;
+	}
+
+	@Override
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
 		assistant.setContentAssistProcessor(new WikiCompletionProcessor(wikiEditor), IDocument.DEFAULT_CONTENT_TYPE);
@@ -68,6 +78,7 @@ public final class WikiConfiguration extends TextSourceViewerConfiguration {
 		return assistant;
 	}
 
+	@Override
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		return new WikiHover(wikiEditor);
 	}

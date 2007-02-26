@@ -1,7 +1,5 @@
 package com.teaminabox.eclipse.wiki.export;
 
-import static com.teaminabox.eclipse.wiki.util.JavaUtils.writeJava;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +23,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
+import com.teaminabox.eclipse.wiki.util.JavaUtils;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class WikiExporter {
@@ -139,7 +138,7 @@ public final class WikiExporter {
 	private void javaToHtml(File source, File destination) throws IOException {
 		Reader reader = new FileReader(source);
 		Writer writer = new FileWriter(destination);
-		writeJava(reader, writer);
+		JavaUtils.writeJava(reader, writer);
 		writer.close();
 	}
 

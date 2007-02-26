@@ -9,11 +9,9 @@ import java.io.IOException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -29,7 +27,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.FileEditorInput;
@@ -39,14 +36,13 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
-import com.teaminabox.eclipse.wiki.renderer.SelectionRenderer;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 
 public final class WikiEditor extends TextEditor {
 
 	public static final String		PART_ID				= WikiEditor.class.getName();
-	public static final String		CONTEXT_MENU_ID		= PART_ID + ".ContextMenu";
+	public static final String		CONTEXT_MENU_ID		= WikiEditor.PART_ID + ".ContextMenu";
 	public static final String		WIKI_TEMP_FOLDER	= "wiki";
 	public static final String		WIKI_TEMP_PROJECT	= "wiki_temp";
 
@@ -67,6 +63,7 @@ public final class WikiEditor extends TextEditor {
 		reusableEditor = this;
 	}
 
+	@Override
 	protected void initializeKeyBindingScopes() {
 		setKeyBindingScopes(new String[] { "org.eclipse.ui.textEditorScope", WikiConstants.KEYBINDING_CONTEXT });
 	}
@@ -84,6 +81,7 @@ public final class WikiEditor extends TextEditor {
 		WikiPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 	}
 
+	@Override
 	public void dispose() {
 		Editors.unregisterEditor(this);
 		WikiPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
@@ -98,6 +96,7 @@ public final class WikiEditor extends TextEditor {
 		}
 	}
 
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		setBackgroundColor();
@@ -147,7 +146,7 @@ public final class WikiEditor extends TextEditor {
 	}
 
 	/**
-	 * This is unfortunate but I cannot see how else to get the {@link AbstractTextEditor#getSourceViewer() TextViewer}to
+	 * This is unfortunate but I cannot see how else to get the {@link AbstractTextEditor#getSourceViewer() TextViewer} to
 	 * support unit tests.
 	 */
 	public ITextViewer getTextViewerForTest() {
@@ -166,7 +165,7 @@ public final class WikiEditor extends TextEditor {
 
 	/**
 	 * Is the file being edited local?
-	 * 
+	 *
 	 * @return whether the file is local or not
 	 */
 	public boolean isLocal() {
@@ -175,14 +174,14 @@ public final class WikiEditor extends TextEditor {
 
 	private IWorkbenchPage getActivePage() {
 		IWorkbenchWindow workbenchWindow = getEditorSite().getWorkbenchWindow();
-		IWorkbenchPage page = workbenchWindow.getActivePage();
-		return page;
+		return workbenchWindow.getActivePage();
 	}
 
 	public ColourManager getColourManager() {
 		return colourManager;
 	}
 
+	@Override
 	protected void createActions() {
 		super.createActions();
 
@@ -209,23 +208,10 @@ public final class WikiEditor extends TextEditor {
 	}
 
 	public void openPreview() {
-		final ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();
-		SelectionRenderer renderer = new SelectionRenderer(this, getSourceViewer(), new IRegion() {
-			public int getLength() {
-				return selection.getLength();
-			}
-
-			public int getOffset() {
-				return selection.getOffset();
-			}
-		});
-		String info = renderer.render();
-		if (info == null) {
-			return;
-		}
-		MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Preview", info);
+		new Preview(this, (ITextSelection) getSelectionProvider().getSelection(), getSourceViewer()).show();
 	}
 
+	@Override
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
 		try {
@@ -253,6 +239,7 @@ public final class WikiEditor extends TextEditor {
 		return context;
 	}
 
+	@Override
 	public boolean isEditable() {
 		return !isTempWiki();
 	}
@@ -269,7 +256,7 @@ public final class WikiEditor extends TextEditor {
 		if (file.getProject() == null || !file.getProject().isOpen()) {
 			return true;
 		}
-		return file.getProject().getName().equals(WIKI_TEMP_PROJECT);
+		return file.getProject().getName().equals(WikiEditor.WIKI_TEMP_PROJECT);
 	}
 
 	public void openWith(IFile file) {

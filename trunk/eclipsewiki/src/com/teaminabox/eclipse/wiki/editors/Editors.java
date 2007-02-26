@@ -17,7 +17,7 @@ public final class Editors {
 	private static Set<WikiEditor>	editors	= Collections.synchronizedSet(new HashSet<WikiEditor>());
 
 	static {
-		addResourceChangeListener();
+		Editors.addResourceChangeListener();
 	}
 
 	private Editors() {
@@ -26,7 +26,7 @@ public final class Editors {
 	private static void addResourceChangeListener() {
 		IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
 			public void resourceChanged(IResourceChangeEvent event) {
-				processResourceChange(event);
+				Editors.processResourceChange(event);
 			}
 		};
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
@@ -37,14 +37,14 @@ public final class Editors {
 			if (event.getType() != IResourceChangeEvent.POST_CHANGE) {
 				return;
 			}
-			refreshEditors();
+			Editors.refreshEditors();
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("WikiEditor: Resource Change Error", e);
 		}
 	}
 
 	private static void refreshEditors() throws IOException, CoreException {
-		for (WikiEditor editor : editors) {
+		for (WikiEditor editor : Editors.editors) {
 			if (editor.getContext() != null) {
 				editor.getContext().loadEnvironment();
 				editor.redrawTextAsync();
@@ -53,11 +53,11 @@ public final class Editors {
 	}
 
 	public static void registerEditor(WikiEditor editor) {
-		editors.add(editor);
+		Editors.editors.add(editor);
 	}
 
 	public static void unregisterEditor(WikiEditor editor) {
-		editors.remove(editor);
+		Editors.editors.remove(editor);
 	}
 
 }

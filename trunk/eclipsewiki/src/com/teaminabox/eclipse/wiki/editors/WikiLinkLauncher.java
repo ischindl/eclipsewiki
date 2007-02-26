@@ -48,11 +48,13 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		this.editor = editor;
 	}
 
+	@Override
 	public Boolean visit(UrlTextRegion urlTextRegion) {
 		Program.launch(urlTextRegion.getText());
 		return true;
 	}
 
+	@Override
 	public Boolean visit(WikiWordTextRegion wikiNameTextRegion) {
 		try {
 			openWikiDocument(wikiNameTextRegion.getText());
@@ -62,6 +64,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		return true;
 	}
 
+	@Override
 	public Boolean visit(ForcedLinkTextRegion region) {
 		try {
 			openWikiDocument(region.getWikiDocumentName());
@@ -71,23 +74,27 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		return true;
 	}
 
+	@Override
 	public Boolean visit(WikiUrlTextRegion wikiUrlTextRegion) {
 		openWikiUrl(wikiUrlTextRegion);
 		return true;
 	}
 
+	@Override
 	public Boolean visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		String location = eclipseResourceTextRegion.getText();
 		openEclipseLocation(location);
 		return true;
 	}
 
+	@Override
 	public Boolean visit(PluginResourceTextRegion pluginResourceTextRegion) {
 		String location = pluginResourceTextRegion.getText();
 		openPluginLocation(location);
 		return true;
 	}
 
+	@Override
 	public Boolean visit(JavaTypeTextRegion javaTypeTextRegion) {
 		openType(javaTypeTextRegion);
 		return true;

@@ -1,8 +1,5 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
-
-import static com.teaminabox.eclipse.wiki.util.JavaUtils.isJavaClassNamePart;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -32,6 +29,7 @@ import org.eclipse.swt.graphics.Image;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
+import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 public final class JavaCompletionProcessor {
 
@@ -115,7 +113,7 @@ public final class JavaCompletionProcessor {
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements, IJavaSearchScope.SOURCES);
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
 		new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, new TypeSearchRequestor(matches), null);
-		return (IType[]) matches.toArray(new IType[matches.size()]);
+		return matches.toArray(new IType[matches.size()]);
 	}
 
 	private String getPackagePrefix(String fullyQualifiedTypeName) {
@@ -141,7 +139,7 @@ public final class JavaCompletionProcessor {
 		for (int i = 0; i < fragments.length; i++) {
 			addTypesInPackage(fragments[i], types);
 		}
-		return (IType[]) types.toArray(new IType[types.size()]);
+		return types.toArray(new IType[types.size()]);
 	}
 
 	private void addTypesInPackage(IPackageFragment fragment, HashSet<IType> types) throws JavaModelException {
@@ -163,7 +161,7 @@ public final class JavaCompletionProcessor {
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { project });
 		SearchPattern pattern = SearchPattern.createPattern(prefix, IJavaSearchConstants.PACKAGE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PREFIX_MATCH);
 		new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope, new PackageSearchRequestor(fragments), null);
-		return (IPackageFragment[]) fragments.toArray(new IPackageFragment[fragments.size()]);
+		return fragments.toArray(new IPackageFragment[fragments.size()]);
 	}
 
 	/**
@@ -174,7 +172,7 @@ public final class JavaCompletionProcessor {
 	private String getFullyQualifiedTypePrefix(ITextViewer viewer, int documentOffset) throws BadLocationException {
 		IDocument document = viewer.getDocument();
 		int cursorIndex = documentOffset - 1;
-		if (cursorIndex < 0 || !isJavaClassNamePart(document.getChar(cursorIndex))) {
+		if (cursorIndex < 0 || !JavaUtils.isJavaClassNamePart(document.getChar(cursorIndex))) {
 			return null;
 		}
 		int start = findBeginningOfText(document, cursorIndex);
@@ -196,7 +194,7 @@ public final class JavaCompletionProcessor {
 
 	private int findBeginningOfText(IDocument document, int characterIndex) throws BadLocationException {
 		int start = characterIndex;
-		while (start > 0 && isJavaClassNamePart(document.getChar(start))) {
+		while (start > 0 && JavaUtils.isJavaClassNamePart(document.getChar(start))) {
 			start--;
 		}
 		return start;

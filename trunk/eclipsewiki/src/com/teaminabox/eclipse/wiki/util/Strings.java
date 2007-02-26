@@ -1,7 +1,7 @@
 package com.teaminabox.eclipse.wiki.util;
 
 public final class Strings {
-	
+
 	/**
 	 * Put spaces before the capital of a wiki word (except the first character).
 	 */

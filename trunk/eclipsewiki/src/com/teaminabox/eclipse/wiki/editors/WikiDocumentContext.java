@@ -90,7 +90,7 @@ public final class WikiDocumentContext {
 			return Charset.forName(wikiDocument.getCharset());
 		} catch (CoreException e) {
 			WikiPlugin.getDefault().log("Unable to get charset", e);
-			return Charset.forName(DEFAULT_CHARSET);
+			return Charset.forName(WikiDocumentContext.DEFAULT_CHARSET);
 		}
 	}
 
@@ -145,7 +145,7 @@ public final class WikiDocumentContext {
 	}
 
 	public String getWikiSpaceLink(String name) {
-		return (String) getWikiSpace().get(name);
+		return getWikiSpace().get(name);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -158,16 +158,16 @@ public final class WikiDocumentContext {
 
 	public String[] getDocumentWithHeaderAndFooter() throws IOException, CoreException {
 		List<String> lines = new ArrayList<String>();
-		IFile file = getFile(HEADER_FILE);
+		IFile file = getFile(WikiDocumentContext.HEADER_FILE);
 		if (file != null) {
 			lines.addAll(Resources.readLines(file));
 		}
 		lines.addAll(Resources.readLines(wikiDocument));
-		file = getFile(FOOTER_FILE);
+		file = getFile(WikiDocumentContext.FOOTER_FILE);
 		if (file != null) {
 			lines.addAll(Resources.readLines(file));
 		}
-		return (String[]) lines.toArray(new String[lines.size()]);
+		return lines.toArray(new String[lines.size()]);
 	}
 
 	private IFile getFile(String file) {
@@ -181,7 +181,7 @@ public final class WikiDocumentContext {
 	public String[] getDocument() {
 		try {
 			List<String> lines = Resources.readLines(wikiDocument);
-			return (String[]) lines.toArray(new String[lines.size()]);
+			return lines.toArray(new String[lines.size()]);
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Cannot get Document", e);
 			return new String[] { "Unable to load document - please check the logs." };
