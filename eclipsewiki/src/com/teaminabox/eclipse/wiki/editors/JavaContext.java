@@ -1,6 +1,5 @@
 package com.teaminabox.eclipse.wiki.editors;
 
-import static com.teaminabox.eclipse.wiki.util.JavaUtils.isJavaProject;
 import java.util.HashSet;
 
 import org.eclipse.core.resources.IProject;
@@ -14,6 +13,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.teaminabox.eclipse.wiki.WikiPlugin;
+import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 public final class JavaContext implements IResourceChangeListener {
 
@@ -35,7 +35,7 @@ public final class JavaContext implements IResourceChangeListener {
 
 	private void initialiseJavaProject() throws CoreException {
 		IProject project = context.getProject();
-		if (isJavaProject(project)) {
+		if (JavaUtils.isJavaProject(project)) {
 			javaProject = JavaCore.create(project);
 			loadPackages();
 		}

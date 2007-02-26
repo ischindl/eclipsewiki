@@ -112,7 +112,7 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 	}
 
 	public static void init(IPreferenceStore store) {
-		wikispace = WikiPreferences.reloadWikiSpaceMap(store);
+		WikiPreferences.wikispace = WikiPreferences.reloadWikiSpaceMap(store);
 	}
 
 	public static Map<String, String> reloadWikiSpaceMap(IPreferenceStore store) {
@@ -130,10 +130,10 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 	}
 
 	public static Map<String, String> getWikiSpace() {
-		return wikispace;
+		return WikiPreferences.wikispace;
 	}
 
 	static void setWikiSpace(Map<String, String> wikis) {
-		wikispace = wikis;
+		WikiPreferences.wikispace = wikis;
 	}
 }

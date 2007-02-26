@@ -15,9 +15,9 @@ import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 
 	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
-	
-	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)),new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
-	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN) };
+
+	private static TextRegionMatcher[]	DEFAULT_RENDERER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WardsBrowserContentRenderer.WIKI_WORD_PATTERN)), new WikiWordMatcher(WardsBrowserContentRenderer.WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher() };
+	private static TextRegionMatcher[]	DEFAULT_SCANNER_MATCHERS	= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WardsBrowserContentRenderer.WIKI_WORD_PATTERN)), new WikiWordMatcher(WardsBrowserContentRenderer.WIKI_WORD_PATTERN) };
 
 	private static final String			BULLET_MARKUP				= "*";
 	private static final String			QUOTE_MARKUP_REGEX			= "^\t :\t.*";
@@ -30,11 +30,11 @@ public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
 	private static final String			PLURAL						= "''''''s";
 
 	public TextRegionMatcher[] getRendererMatchers() {
-		return DEFAULT_RENDERER_MATCHERS;
+		return WardsBrowserContentRenderer.DEFAULT_RENDERER_MATCHERS;
 	}
 
 	public TextRegionMatcher[] getScannerMatchers() {
-		return DEFAULT_SCANNER_MATCHERS;
+		return WardsBrowserContentRenderer.DEFAULT_SCANNER_MATCHERS;
 	}
 
 	/**

@@ -1,20 +1,19 @@
 package com.teaminabox.eclipse.wiki.text;
 
-import static com.teaminabox.eclipse.wiki.util.WikiWhitespaceDetector.indexOfWhiteSpace;
-
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
+import com.teaminabox.eclipse.wiki.util.WikiWhitespaceDetector;
 
 public final class WikiSpaceMatcher extends AbstractTextRegionMatcher {
 
 	protected final int matchLength(String text, WikiDocumentContext context) {
-		int whitespace = indexOfWhiteSpace(text);
+		int whitespace = WikiWhitespaceDetector.indexOfWhiteSpace(text);
 		if (whitespace > 0) {
 			return whitespace;
 		}
 		return text.length();
 	}
-	
+
 	private boolean accepts(String text, WikiDocumentContext context) {
 		int colon = text.indexOf(WikiConstants.WIKISPACE_DELIMITER);
 		if (colon < 0) {

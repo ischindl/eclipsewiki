@@ -231,7 +231,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	private void goForward() {
 		locationListener.listen = false;
 		if (history.hasNext()) {
-			String location = (String) history.next();
+			String location = history.next();
 			openLocation(location);
 			backButton.setEnabled(true);
 			forwardButton.setEnabled(history.hasNext());
@@ -241,7 +241,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	private void goBack() {
 		locationListener.listen = false;
 		if (history.hasPrevious()) {
-			String location = (String) history.back();
+			String location = history.back();
 			openLocation(location);
 			forwardButton.setEnabled(true);
 			backButton.setEnabled(history.hasPrevious());

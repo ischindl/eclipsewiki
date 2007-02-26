@@ -42,7 +42,7 @@ public class PluginPathFinder {
 			return null;
 		}
 		relPath = relPath.removeFirstSegments(1);
-		return getPath(relPath, wsProj);
+		return PluginPathFinder.getPath(relPath, wsProj);
 	}
 
 	private static IPath getPath(IPath relPath, IProject wsProj) {

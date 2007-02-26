@@ -39,6 +39,7 @@ public final class WikiBrowserEditorContributor extends MultiPageEditorActionBar
 	 * (non-JavaDoc) Method declared in AbstractMultiPageEditorActionBarContributor.
 	 */
 
+	@Override
 	public void setActivePage(IEditorPart part) {
 		if (activeEditorPart == part) {
 			return;
@@ -66,10 +67,12 @@ public final class WikiBrowserEditorContributor extends MultiPageEditorActionBar
 		}
 	}
 
+	@Override
 	public void contributeToMenu(IMenuManager manager) {
 
 	}
 
+	@Override
 	public void contributeToToolBar(IToolBarManager manager) {
 
 	}

@@ -1,7 +1,5 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
-import static com.teaminabox.eclipse.wiki.util.JavaUtils.isJavaClassNamePart;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -19,6 +17,8 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.graphics.Image;
+
+import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 /**
  * This is a replacement for the JavaCompletionProcessor. It will replace the JavaCompletionProcessor when I've figured
@@ -58,7 +58,7 @@ public class JavaCompletionProcessor2 extends CompletionRequestor {
 		String displayText = labelProvider.createLabel(proposal);
 		Image image = labelProvider.createImageDescriptor(proposal).createImage();
 		ICompletionProposal myProposal = new org.eclipse.jface.text.contentassist.CompletionProposal(matchName, documentOffset - textToComplete.length(), textToComplete.length(), matchName.length(), image, displayText, null, null);
-		proposals.put(SORT_FORMAT.format(proposal.getRelevance()) + displayText, myProposal);
+		proposals.put(JavaCompletionProcessor2.SORT_FORMAT.format(proposal.getRelevance()) + displayText, myProposal);
 	}
 
 	private void performCodeComplete(IJavaProject project, String text) throws JavaModelException {
@@ -86,7 +86,7 @@ public class JavaCompletionProcessor2 extends CompletionRequestor {
 				sourceFolders.add(entry);
 			}
 		}
-		return (IClasspathEntry[]) sourceFolders.toArray(new IClasspathEntry[sourceFolders.size()]);
+		return sourceFolders.toArray(new IClasspathEntry[sourceFolders.size()]);
 	}
 
 	/**
@@ -97,11 +97,11 @@ public class JavaCompletionProcessor2 extends CompletionRequestor {
 	private String getTextToComplete(ITextViewer viewer, int documentOffset) throws BadLocationException {
 		IDocument document = viewer.getDocument();
 		int characterIndex = documentOffset - 1;
-		if (characterIndex < 0 || !isJavaClassNamePart(document.getChar(characterIndex))) {
+		if (characterIndex < 0 || !JavaUtils.isJavaClassNamePart(document.getChar(characterIndex))) {
 			return null;
 		}
 		int start = characterIndex;
-		while (start > 0 && isJavaClassNamePart(document.getChar(start))) {
+		while (start > 0 && JavaUtils.isJavaClassNamePart(document.getChar(start))) {
 			start--;
 		}
 		while (start < characterIndex && !Character.isJavaIdentifierPart(document.getChar(start))) {

@@ -1,7 +1,5 @@
-/* 
- * Contributors:
- *		Channing Walton
- *		IBM - This file was copied from org.eclipse.jdt.internal.ui.preferences
+/*
+ * Contributors: Channing Walton IBM - This file was copied from org.eclipse.jdt.internal.ui.preferences
  */
 package com.teaminabox.eclipse.wiki.preferences;
 

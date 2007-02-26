@@ -80,14 +80,14 @@ public final class WikiPlugin extends AbstractUIPlugin {
 	}
 
 	public void log(String message) {
-		getDefault().getLog().log(new Status(IStatus.OK, WikiConstants.PLUGIN_ID, IStatus.OK, message, null));
+		WikiPlugin.getDefault().getLog().log(new Status(IStatus.OK, WikiConstants.PLUGIN_ID, IStatus.OK, message, null));
 	}
 
 	public void log(String message, Exception e) {
 		if (message == null) {
 			message = e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
 		}
-		getDefault().getLog().log(new Status(IStatus.ERROR, WikiConstants.PLUGIN_ID, IStatus.OK, message, e));
+		WikiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, WikiConstants.PLUGIN_ID, IStatus.OK, message, e));
 	}
 
 	public void reportError(String title, String message) {

@@ -9,7 +9,7 @@ public final class UrlMatcher extends PatternMatcher {
 	private static final String	URL_REGEX	= "(" + StringUtils.join(WikiConstants.URL_PREFIXES, '|') + "):(//)?([-_\\.!~*';/?:@#&=+$,\\p{Alnum}])+";
 
 	public UrlMatcher() {
-		super(URL_REGEX);
+		super(UrlMatcher.URL_REGEX);
 	}
 
 	protected boolean accepts(char c, boolean firstCharacter) {

@@ -6,12 +6,11 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 public final class OutlineElementProperties implements IPropertySource {
 
-
 	public static final String	PROPERTY_LINECOUNT	= "lineno"; //$NON-NLS-1$
 	public static final String	PROPERTY_START		= "start";	//$NON-NLS-1$
 	public static final String	PROPERTY_LENGTH		= "length"; //$NON-NLS-1$
 
-	private OutlineElement			element;
+	private OutlineElement		element;
 
 	public OutlineElementProperties(OutlineElement element) {
 		super();

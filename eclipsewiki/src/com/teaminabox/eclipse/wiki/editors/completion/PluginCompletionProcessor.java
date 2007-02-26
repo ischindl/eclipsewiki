@@ -134,7 +134,7 @@ public class PluginCompletionProcessor {
 			if (plugDirPath != null) {
 				File plugDir = plugDirPath.toFile();
 				if (plugDir != null && plugDir.exists()) {
-					if (new File(plugDir, WIKI_FOLDER).exists()) {
+					if (new File(plugDir, PluginCompletionProcessor.WIKI_FOLDER).exists()) {
 						selectedIDs.put(currPluginID, currPluginID);
 					}
 				}

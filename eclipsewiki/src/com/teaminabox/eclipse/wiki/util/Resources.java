@@ -20,7 +20,7 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 public final class Resources {
 
 	public static String getContentsRelativeToPlugin(IPath path) throws IOException {
-		return getContents(FileLocator.openStream(WikiPlugin.getDefault().getBundle(), path, false));
+		return Resources.getContents(FileLocator.openStream(WikiPlugin.getDefault().getBundle(), path, false));
 	}
 
 	public static String getContents(InputStream stream) throws IOException {
@@ -33,11 +33,11 @@ public final class Resources {
 		}
 		return buffer.toString();
 	}
-	
+
 	public static String getContents(IFile file) throws IOException, CoreException {
-		return getContents(file.getContents());
+		return Resources.getContents(file.getContents());
 	}
-	
+
 	public static List<String> readLines(IFile file) throws IOException, CoreException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents()));
 		String line;
@@ -47,25 +47,25 @@ public final class Resources {
 		}
 		return lines;
 	}
-	
+
 	public static boolean exists(IResource resource) {
 		return resource != null && resource.exists();
 	}
 
 	public static boolean existsAsFile(IResource resource) {
-		return exists(resource) && resource.getType() == IResource.FILE;
+		return Resources.exists(resource) && resource.getType() == IResource.FILE;
 	}
 
 	public static IFile findFileInWorkspace(String workspaceRelativePath) {
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath);
-		if (existsAsFile(resource)) {
+		if (Resources.existsAsFile(resource)) {
 			return (IFile) resource;
 		}
 		return null;
 	}
 
 	public static boolean isWikiFile(IResource resource) {
-		return exists(resource) && resource.getFileExtension() != null && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
+		return Resources.exists(resource) && resource.getFileExtension() != null && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
 	}
 
 	public static boolean isWikiFile(IFile file) {

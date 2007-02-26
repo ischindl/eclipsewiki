@@ -1,7 +1,5 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
-import static com.teaminabox.eclipse.wiki.util.Strings.deCamelCase;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,6 +17,7 @@ import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 import com.teaminabox.eclipse.wiki.util.Resources;
+import com.teaminabox.eclipse.wiki.util.Strings;
 
 public abstract class AbstractContentRenderer implements ContentRenderer {
 
@@ -111,12 +110,12 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		appendln("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 		appendln("<html>");
 		appendln("  <head>");
-		append("    <title>").append(deCamelCase(context.getWikiNameBeingEdited()));
+		append("    <title>").append(Strings.deCamelCase(context.getWikiNameBeingEdited()));
 		appendln("</title>");
 		appendStyleSheetLink();
 		appendln("  </head>");
 		appendln("  <body>");
-		append("<h1>").append(deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
+		append("<h1>").append(Strings.deCamelCase(context.getWikiNameBeingEdited())).append("</h1>");
 		appendNewLine();
 	}
 

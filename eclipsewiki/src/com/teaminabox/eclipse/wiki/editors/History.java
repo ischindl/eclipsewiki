@@ -6,7 +6,7 @@ public final class History<T> {
 
 	private ArrayList<T>	items;
 
-	private int					location;
+	private int				location;
 
 	public History() {
 		items = new ArrayList<T>();

@@ -34,19 +34,19 @@ public class PluginProjectSupport {
 			throw new RuntimeException("error locating workspace folder", e);
 		}
 		if (projectList.size() > 0) {
-			return (IProject) projectList.get(0);
+			return projectList.get(0);
 		}
 		return null;
 	}
 
 	public static String extractPlugID(IProject pluginProject) {
-		if (isInaccessibleOrClosed(pluginProject)) {
+		if (PluginProjectSupport.isInaccessibleOrClosed(pluginProject)) {
 			return null;
 		}
-		if (!projects.containsKey(pluginProject.getName())) {
-			findPluginId(pluginProject);
+		if (!PluginProjectSupport.projects.containsKey(pluginProject.getName())) {
+			PluginProjectSupport.findPluginId(pluginProject);
 		}
-		return (String) projects.get(pluginProject.getName());
+		return PluginProjectSupport.projects.get(pluginProject.getName());
 	}
 
 	public static boolean isInaccessibleOrClosed(IProject pluginProject) {
@@ -62,7 +62,7 @@ public class PluginProjectSupport {
 		}
 		if (member != null && member.exists()) {
 			try {
-				findPluginId(pluginProject, member, type);
+				PluginProjectSupport.findPluginId(pluginProject, member, type);
 			} catch (Exception e) {
 			}
 		}
@@ -84,7 +84,7 @@ public class PluginProjectSupport {
 			startPos = content.indexOf("\"", startPos);
 			endPos = content.indexOf("\"", startPos + 1);
 			String id = new String(content.substring(startPos + 1, endPos).trim());
-			projects.put(pluginProject.getName(), id);
+			PluginProjectSupport.projects.put(pluginProject.getName(), id);
 		}
 	}
 

@@ -11,7 +11,7 @@ public final class RendererFactory {
 
 	public static ContentRenderer createContentRenderer() {
 		try {
-			return (ContentRenderer) Class.forName(getContentRendererName()).newInstance();
+			return (ContentRenderer) Class.forName(RendererFactory.getContentRendererName()).newInstance();
 		} catch (Exception e) {
 			WikiPlugin.getDefault().log("Unable to create renderer.", e);
 			return null;

@@ -17,12 +17,12 @@ import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 
 public final class SnipSnapContentRenderer extends AbstractContentRenderer {
-	
-	private static final String	WIKI_WORD_PATTERN	= "([A-Z][a-z]+){2,}[0-9]*";
 
-	private static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new ForcedLinkMatcher(1)), new ForcedLinkMatcher(1), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
+	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
 
-	private static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new ForcedLinkMatcher(1)), new ForcedLinkMatcher(1), new EmbeddedTextRegionMatcher(new WikiWordMatcher(WIKI_WORD_PATTERN)), new WikiWordMatcher(WIKI_WORD_PATTERN), };
+	private static TextRegionMatcher[]	RENDERER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new ForcedLinkMatcher(1)), new ForcedLinkMatcher(1), new EmbeddedTextRegionMatcher(new WikiWordMatcher(SnipSnapContentRenderer.WIKI_WORD_PATTERN)), new WikiWordMatcher(SnipSnapContentRenderer.WIKI_WORD_PATTERN), new NonLetterOrDigitMatcher(), new LetterOrDigitMatcher(), };
+
+	private static TextRegionMatcher[]	SCANNER_MATCHERS			= new TextRegionMatcher[] { new IgnoredTextRegionMatcher(), new UrlMatcher(), new EmbeddedTextRegionMatcher(new EclipseResourceMatcher()), new EclipseResourceMatcher(), new PluginResourceMatcher(), new WikiSpaceMatcher(), new EmbeddedTextRegionMatcher(new JavaTypeMatcher()), new JavaTypeMatcher(), new EmbeddedTextRegionMatcher(new ForcedLinkMatcher(1)), new ForcedLinkMatcher(1), new EmbeddedTextRegionMatcher(new WikiWordMatcher(SnipSnapContentRenderer.WIKI_WORD_PATTERN)), new WikiWordMatcher(SnipSnapContentRenderer.WIKI_WORD_PATTERN), };
 
 	private static final String			UNORDERED_LIST_MARKUP		= "*";
 	private static final String			ALT_UNORDERED_LIST_MARKUP	= "-";
