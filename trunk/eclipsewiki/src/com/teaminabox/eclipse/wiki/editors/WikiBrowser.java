@@ -33,6 +33,26 @@ import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 
 public final class WikiBrowser extends ViewPart implements IPropertyChangeListener {
 
+	private static final String	HTML_ESCAPED_SPACE	= "%20";
+
+	private final class BrowserProgressListener implements ProgressListener {
+		public void changed(ProgressEvent event) {
+			if (event.total == 0) {
+				return;
+			}
+			browser.setCursor(waiter);
+			int ratio = event.current * 100 / event.total;
+			progressBar.setSelection(ratio);
+		}
+
+		public void completed(ProgressEvent event) {
+			progressBar.setSelection(0);
+			locationListener.listen(true);
+			stopButton.setEnabled(false);
+			browser.setCursor(null);
+		}
+	}
+
 	/**
 	 * A helper that can ignore events. It is needed because the browser fires events for all the resources a URL
 	 * requires, not just the URL itself. This is problematic because I need to manage the history manually, and don't
@@ -43,12 +63,17 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	 * with the browser has finished loading the page. This is determined by the progress monitor...nasty!
 	 */
 	private class LocationListener extends LocationAdapter {
-		boolean	listen	= true;
+		private boolean	listen	= true;
 
+		@Override
 		public void changing(LocationEvent event) {
 			if (listen) {
 				WikiBrowser.this.followLink(event);
 			}
+		}
+
+		public void listen(boolean listen) {
+			this.listen = listen;
 		}
 	}
 
@@ -74,6 +99,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 		WikiPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
 	}
 
+	@Override
 	public void createPartControl(Composite parent) {
 		toolkit = new FormToolkit(parent.getDisplay());
 		browserForm = toolkit.createForm(parent);
@@ -100,23 +126,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	private void addProgressBar(Composite parent) {
 		progressBar = new ProgressBar(parent, SWT.NONE);
 		progressBar.setLayoutData(new GridData(GridData.BEGINNING));
-		browser.addProgressListener(new ProgressListener() {
-			public void changed(ProgressEvent event) {
-				if (event.total == 0) {
-					return;
-				}
-				browser.setCursor(waiter);
-				int ratio = event.current * 100 / event.total;
-				progressBar.setSelection(ratio);
-			}
-
-			public void completed(ProgressEvent event) {
-				progressBar.setSelection(0);
-				locationListener.listen = true;
-				stopButton.setEnabled(false);
-				browser.setCursor(null);
-			}
-		});
+		browser.addProgressListener(new BrowserProgressListener());
 	}
 
 	private void createButtons(Composite contents) {
@@ -126,6 +136,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 		Button homeButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.wikiHome"), WikiPlugin.getResourceString("WikiBrowser.wikiHomeTooltip"), true, null); //$NON-NLS-1$ //$NON-NLS-2$
 		homeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				history.add(WikiConstants.WIKI_HREF + editor.getContext().getWikiNameBeingEdited());
 				enableButtons(false);
@@ -135,6 +146,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 		backButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.back"), WikiPlugin.getResourceString("WikiBrowser.backTooltip"), false, ISharedImages.IMG_TOOL_BACK); //$NON-NLS-1$ //$NON-NLS-2$
 		backButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.goBack();
 			}
@@ -142,6 +154,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 		forwardButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.forward"), WikiPlugin.getResourceString("WikiBrowser.forwardTooltip"), false, ISharedImages.IMG_TOOL_FORWARD); //$NON-NLS-1$ //$NON-NLS-2$
 		forwardButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.goForward();
 			}
@@ -149,6 +162,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 		refreshButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.refresh"), WikiPlugin.getResourceString("WikiBrowser.refreshTooltip"), false, ISharedImages.IMG_TOOL_REDO); //$NON-NLS-1$ //$NON-NLS-2$
 		refreshButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.refresh();
 			}
@@ -156,6 +170,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 		stopButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.stop"), WikiPlugin.getResourceString("WikiBrowser.stopTooltip"), false, ISharedImages.IMG_TOOL_DELETE); //$NON-NLS-1$ //$NON-NLS-2$
 		stopButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				WikiBrowser.this.browser.stop();
 				WikiBrowser.this.progressBar.setSelection(0);
@@ -164,6 +179,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 
 		launchButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.launch"), WikiPlugin.getResourceString("WikiBrowser.launchTooltip"), false, ISharedImages.IMG_TOOL_UP); //$NON-NLS-1$ //$NON-NLS-2$
 		launchButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Program.launch(browser.getUrl());
 			}
@@ -180,7 +196,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	}
 
 	private void followLink(LocationEvent event) {
-		locationListener.listen = false;
+		locationListener.listen(false);
 		backButton.setEnabled(true);
 		String location = event.location;
 
@@ -190,10 +206,14 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 			if (WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR)) {
 				history.add(event.location);
 			}
-		} else if (!"about:blank".equals(location)) { //$NON-NLS-1$
+		} else if (!locationIsBlank(location)) {
 			history.add(event.location);
 			enableButtons(true);
 		}
+	}
+
+	private boolean locationIsBlank(String location) {
+		return "about:blank".equals(location);
 	}
 
 	private void openWikiLocation(String location) {
@@ -205,21 +225,27 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 		if (wikiDoc.startsWith(WikiConstants.JAVA_LINK_PREFIX)) {
 			new WikiLinkLauncher(editor).openJavaType(wikiDoc.substring(WikiConstants.JAVA_LINK_PREFIX.length()));
 		} else if (wikiDoc.startsWith(WikiConstants.ECLIPSE_PREFIX)) {
-			String escaped = wikiDoc.replaceAll("%20", " "); //$NON-NLS-1$ //$NON-NLS-2$
-			new WikiLinkLauncher(editor).openEclipseLocation(escaped);
+			new WikiLinkLauncher(editor).openEclipseLocation(unescapeHtmlSpaces(wikiDoc));
 		} else if (wikiDoc.startsWith(WikiConstants.PLUGIN_PREFIX)) {
-			String escaped = wikiDoc.replaceAll("%20", " "); //$NON-NLS-1$ //$NON-NLS-2$
-			new WikiLinkLauncher(editor).openPluginLocation(escaped);
+			new WikiLinkLauncher(editor).openPluginLocation(unescapeHtmlSpaces(wikiDoc));
 		} else {
-			try {
-				new WikiLinkLauncher(editor).openWikiDocument(wikiDoc);
-			} catch (Exception e) {
-				WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
-			}
+			launchWikiLocation(wikiDoc);
 		}
 		enableButtons(false);
 		browser.setCursor(null);
-		locationListener.listen = true;
+		locationListener.listen(true);
+	}
+
+	private void launchWikiLocation(String wikiDoc) {
+		try {
+			new WikiLinkLauncher(editor).openWikiDocument(wikiDoc);
+		} catch (Exception e) {
+			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
+		}
+	}
+
+	private String unescapeHtmlSpaces(String wikiDoc) {
+		return wikiDoc.replaceAll(HTML_ESCAPED_SPACE, " ");
 	}
 
 	private void enableButtons(boolean state) {
@@ -229,7 +255,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	}
 
 	private void goForward() {
-		locationListener.listen = false;
+		locationListener.listen(false);
 		if (history.hasNext()) {
 			String location = history.next();
 			openLocation(location);
@@ -239,7 +265,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	}
 
 	private void goBack() {
-		locationListener.listen = false;
+		locationListener.listen(false);
 		if (history.hasPrevious()) {
 			String location = history.back();
 			openLocation(location);
@@ -251,7 +277,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	}
 
 	private void refresh() {
-		locationListener.listen = false;
+		locationListener.listen(false);
 		browser.refresh();
 	}
 
@@ -289,10 +315,12 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 		browserContentRenderer = RendererFactory.createContentRenderer();
 	}
 
+	@Override
 	public void setFocus() {
 		browser.setFocus();
 	}
 
+	@Override
 	public void dispose() {
 		waiter.dispose();
 		WikiPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(this);
