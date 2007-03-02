@@ -2,12 +2,12 @@ package com.teaminabox.eclipse.wiki.text;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
-import com.teaminabox.eclipse.wiki.util.WikiWhitespaceDetector;
+import com.teaminabox.eclipse.wiki.util.Strings;
 
 public final class WikiSpaceMatcher extends AbstractTextRegionMatcher {
 
 	protected int matchLength(String text, WikiDocumentContext context) {
-		int whitespace = WikiWhitespaceDetector.indexOfWhiteSpace(text);
+		int whitespace = Strings.indexOfWhiteSpace(text);
 		if (whitespace > 0) {
 			return whitespace;
 		}

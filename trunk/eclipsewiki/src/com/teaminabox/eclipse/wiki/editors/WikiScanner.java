@@ -9,7 +9,6 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 
 import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
-import com.teaminabox.eclipse.wiki.util.WikiWhitespaceDetector;
 
 public final class WikiScanner extends RuleBasedScanner {
 
