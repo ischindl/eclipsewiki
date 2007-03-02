@@ -13,6 +13,10 @@ import com.teaminabox.eclipse.wiki.editors.ColourManager;
  */
 public final class PluginResourceTextRegion extends TextRegion {
 
+	public PluginResourceTextRegion(String text) {
+		super(text);
+	}
+
 	public static IResource findResource(String path) {
 		IPath pluginPath = PluginPathFinder.getPluginPath(path);
 		if (pluginPath != null) {
@@ -21,22 +25,20 @@ public final class PluginResourceTextRegion extends TextRegion {
 		return null;
 	}
 
-	public PluginResourceTextRegion(String text) {
-		super(text);
-	}
-
 	/**
 	 * @see com.teaminabox.eclipse.wiki.text.TextRegion#accept(com.teaminabox.eclipse.wiki.text.TextRegionVisitor)
 	 */
+	@Override
 	public <T> T accept(TextRegionVisitor<T> textRegionVisitor) {
 		return textRegionVisitor.visit(this);
 	}
 
 	/**
 	 * This is a special Wiki region of text.
-	 * 
+	 *
 	 * @return <code>true</code>
 	 */
+	@Override
 	public boolean isLink() {
 		return true;
 	}
@@ -44,6 +46,7 @@ public final class PluginResourceTextRegion extends TextRegion {
 	/**
 	 * @see com.teaminabox.eclipse.wiki.text.TextRegion#getToken(ColourManager colourManager)
 	 */
+	@Override
 	public IToken getToken(ColourManager colourManager) {
 		return getToken(WikiConstants.PLUGIN_RESOURCE, colourManager);
 	}

@@ -13,7 +13,7 @@ public class FolderUtils {
 
 	/**
 	 * Generates a unique, random file folder name and creates a corresponding temporary file folder out on disk.
-	 * 
+	 *
 	 * @param prefix
 	 *            Name for the folder to create (will be suffixed with a random number)
 	 * @param baseFolder
@@ -30,7 +30,7 @@ public class FolderUtils {
 
 	/**
 	 * Recursively deletes a file or an entire directory structure.
-	 * 
+	 *
 	 * @param fileOrFolder
 	 *            the location of the old file or directory
 	 * @return true if the operation succeeds without errors
@@ -44,10 +44,8 @@ public class FolderUtils {
 			 */
 			File[] subFiles = fileOrFolder.listFiles();
 			if (subFiles != null) {
-				for (int i = 0; i < subFiles.length; i++) {
-					File oldSubFile = subFiles[i];
+				for (File oldSubFile : subFiles) {
 					if (!deleteFileStructure(oldSubFile)) {
-						// System.out.println("Unable to delete "+oldSubFile.getPath());
 						return false;
 					}
 				}
@@ -58,7 +56,7 @@ public class FolderUtils {
 
 	/**
 	 * Queues the given file (or folder structure) to be deleted when the JVM shuts down, if possible.
-	 * 
+	 *
 	 * @param fileOrFolder
 	 */
 	public static void deleteFileStructureOnExit(File fileOrFolder) {
@@ -68,7 +66,7 @@ public class FolderUtils {
 	/**
 	 * For stubborn Windows files, attempts to delete the specified file or folder structure. Will keep trying up to
 	 * maxTries times, pausing longer with each attempt.
-	 * 
+	 *
 	 * @param name
 	 * @param fileOrFolder
 	 * @param maxTries
@@ -76,9 +74,9 @@ public class FolderUtils {
 	 *         try, 2 = deleted on second try, etc.
 	 * @throws Exception
 	 * @usage <code>
-	 * try { 
+	 * try {
 	 * 		int tries = FolderUtils.deleteStubbornFiles(name, myFileFolder, 30);
-	 * 		if (tries > 1) 
+	 * 		if (tries > 1)
 	 * 			System.out.println("It took "+tries+" tries to delete the folder.");
 	 * } catch (Exception e) {
 	 * 		e.printStackTrace();

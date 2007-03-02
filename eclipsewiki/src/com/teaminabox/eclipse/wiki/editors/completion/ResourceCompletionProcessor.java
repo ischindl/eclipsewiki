@@ -35,6 +35,46 @@ import com.teaminabox.eclipse.wiki.text.UndefinedTextRegion;
 
 public class ResourceCompletionProcessor {
 
+	private final class WikiProposalsVisitor extends GenericTextRegionVisitor<List<ICompletionProposal>> {
+		private final TextRegion	textRegion;
+		private final int			documentOffset;
+
+		private WikiProposalsVisitor(TextRegion textRegion, int documentOffset) {
+			super(new ArrayList<ICompletionProposal>());
+			this.textRegion = textRegion;
+			this.documentOffset = documentOffset;
+		}
+
+		@Override
+		public List<ICompletionProposal> visit(UndefinedTextRegion undefinedTextRegion) {
+			return getPotentialWikiNameCompletion(textRegion.getTextToCursor(), documentOffset);
+		}
+
+		@Override
+		public List<ICompletionProposal> visit(BasicTextRegion basicTextRegion) {
+			return getPotentialWikiNameCompletion(textRegion.getTextToCursor(), documentOffset);
+		}
+
+		@Override
+		public List<ICompletionProposal> visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
+			int colon = textRegion.getTextToCursor().indexOf(WikiConstants.WIKISPACE_DELIMITER) + 1;
+			String location = new String(textRegion.getTextToCursor().substring(colon));
+			return getResourceCompletions(textRegion.getTextToCursor(), location, documentOffset);
+		}
+
+		@Override
+		public List<ICompletionProposal> visit(PluginResourceTextRegion pluginResourceTextRegion) {
+			int colon = textRegion.getTextToCursor().indexOf(WikiConstants.WIKISPACE_DELIMITER) + 1;
+			String location = new String(textRegion.getTextToCursor().substring(colon));
+			IPath path = PluginPathFinder.getPluginPath(location);
+			int slashPos = location.indexOf('/');
+			if (slashPos < 0 || slashPos == location.lastIndexOf('/') && slashPos - 1 == location.length()) {
+				return pluginCompletionProcessor.getPluginCompletions(textRegion.getTextToCursor(), location, documentOffset);
+			}
+			return pluginCompletionProcessor.getPluginCompletions(textRegion.getTextToCursor(), location, documentOffset, path);
+		}
+	}
+
 	private final WikiEditor				wikiEditor;
 
 	private ITextViewer						viewer;
@@ -125,33 +165,7 @@ public class ResourceCompletionProcessor {
 	}
 
 	List<ICompletionProposal> computeWikiProposals(final int documentOffset, final TextRegion textRegion) {
-		List<ICompletionProposal> defaultValue = new ArrayList<ICompletionProposal>();
-		List<ICompletionProposal> list = textRegion.accept(new GenericTextRegionVisitor<List<ICompletionProposal>>(defaultValue) {
-			public List<ICompletionProposal> visit(UndefinedTextRegion undefinedTextRegion) {
-				return getPotentialWikiNameCompletion(textRegion.getTextToCursor(), documentOffset);
-			}
-
-			public List<ICompletionProposal> visit(BasicTextRegion basicTextRegion) {
-				return getPotentialWikiNameCompletion(textRegion.getTextToCursor(), documentOffset);
-			}
-
-			public List<ICompletionProposal> visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
-				int colon = textRegion.getTextToCursor().indexOf(WikiConstants.WIKISPACE_DELIMITER) + 1;
-				String location = new String(textRegion.getTextToCursor().substring(colon));
-				return getResourceCompletions(textRegion.getTextToCursor(), location, documentOffset);
-			}
-
-			public List<ICompletionProposal> visit(PluginResourceTextRegion pluginResourceTextRegion) {
-				int colon = textRegion.getTextToCursor().indexOf(WikiConstants.WIKISPACE_DELIMITER) + 1;
-				String location = new String(textRegion.getTextToCursor().substring(colon));
-				IPath path = PluginPathFinder.getPluginPath(location);
-				int slashPos = location.indexOf('/');
-				if (slashPos < 0 || slashPos == location.lastIndexOf('/') && slashPos - 1 == location.length()) {
-					return pluginCompletionProcessor.getPluginCompletions(textRegion.getTextToCursor(), location, documentOffset);
-				}
-				return pluginCompletionProcessor.getPluginCompletions(textRegion.getTextToCursor(), location, documentOffset, path);
-			}
-		});
+		List<ICompletionProposal> list = textRegion.accept(new WikiProposalsVisitor(textRegion, documentOffset));
 
 		addWikiSpaceCompletions(textRegion.getTextToCursor(), list, documentOffset);
 		return list;
@@ -236,8 +250,8 @@ public class ResourceCompletionProcessor {
 	 */
 	ArrayList<ICompletionProposal> buildResourceProposals(String[] replacements, String prefix, int replacementOffset, int replacementLength) {
 		ArrayList<ICompletionProposal> list = new ArrayList<ICompletionProposal>();
-		for (int i = 0; i < replacements.length; i++) {
-			String child = prefix + replacements[i];
+		for (String element : replacements) {
+			String child = prefix + element;
 			list.add(new CompletionProposal(child, replacementOffset, replacementLength, child.length(), WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.WIKI_RESOURCE_ICON), null, null, null));
 		}
 		return list;
@@ -274,8 +288,7 @@ public class ResourceCompletionProcessor {
 	private String[] getChildren(String resourcePrefix, File parent) {
 		SortedMap<String, String> sort = new TreeMap<String, String>();
 		File[] files = parent.listFiles();
-		for (int i = 0; i < files.length; i++) {
-			File file = files[i];
+		for (File file : files) {
 			if (file.getName().startsWith(resourcePrefix)) {
 				sort.put(file.getName(), file.getName());
 			}
@@ -288,9 +301,9 @@ public class ResourceCompletionProcessor {
 		IContainer container = (IContainer) resource;
 		IResource[] children = container.members();
 		ArrayList<String> childNames = new ArrayList<String>();
-		for (int i = 0; i < children.length; i++) {
-			if (children[i].getName().startsWith(resourcePrefix)) {
-				childNames.add(children[i].getName());
+		for (IResource element : children) {
+			if (element.getName().startsWith(resourcePrefix)) {
+				childNames.add(element.getName());
 			}
 		}
 		return childNames.toArray(new String[childNames.size()]);
@@ -303,8 +316,7 @@ public class ResourceCompletionProcessor {
 		}
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		ArrayList<String> names = new ArrayList<String>();
-		for (int i = 0; i < projects.length; i++) {
-			IProject proj = projects[i];
+		for (IProject proj : projects) {
 			if (prefix == null || prefix.length() == 0 || proj.getName().startsWith(prefix)) {
 				names.add(proj.getName());
 			}
@@ -320,8 +332,8 @@ public class ResourceCompletionProcessor {
 			}
 			IResource[] resources = wikiEditor.getContext().getWorkingLocation().members(IResource.FILE);
 			ArrayList<ICompletionProposal> list = new ArrayList<ICompletionProposal>();
-			for (int i = 0; i < resources.length; i++) {
-				String name = resources[i].getName();
+			for (IResource element : resources) {
+				String name = element.getName();
 				if (isWikiFile(name) && name.startsWith(word)) {
 					String wikiName = getWikiWord(name);
 					ICompletionProposal proposal = new CompletionProposal(wikiName, documentOffset - word.length(), word.length(), wikiName.length(), WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.WIKI_ICON), null, null, null);

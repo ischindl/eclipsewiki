@@ -6,7 +6,7 @@ import com.teaminabox.eclipse.wiki.util.WikiWhitespaceDetector;
 
 public final class WikiSpaceMatcher extends AbstractTextRegionMatcher {
 
-	protected final int matchLength(String text, WikiDocumentContext context) {
+	protected int matchLength(String text, WikiDocumentContext context) {
 		int whitespace = WikiWhitespaceDetector.indexOfWhiteSpace(text);
 		if (whitespace > 0) {
 			return whitespace;
@@ -39,6 +39,7 @@ public final class WikiSpaceMatcher extends AbstractTextRegionMatcher {
 		return linkPrefix + linkSuffix;
 	}
 
+	@Override
 	protected boolean accepts(char c, boolean firstCharacter) {
 		return c != ' ';
 	}
