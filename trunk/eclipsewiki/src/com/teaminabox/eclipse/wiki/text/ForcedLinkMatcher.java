@@ -14,6 +14,7 @@ public final class ForcedLinkMatcher extends AbstractTextRegionMatcher {
 		closingBrackets = new String("]]".substring(0, brackets));
 	}
 
+	@Override
 	protected boolean accepts(char c, boolean firstCharacter) {
 		if (firstCharacter) {
 			return c == '[';
@@ -21,7 +22,7 @@ public final class ForcedLinkMatcher extends AbstractTextRegionMatcher {
 		return Character.isLetterOrDigit(c) || c == '[' || c == ']';
 	}
 
-	public final TextRegion createTextRegion(String text, WikiDocumentContext context) {
+	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		if (accepts(text, context)) {
 			return createTextRegionImpl(text, context);
 		}

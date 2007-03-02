@@ -104,7 +104,14 @@ public final class WikiSpacePreferencePage {
 		urlColumn = new TableColumn(table, SWT.NONE);
 		urlColumn.setText(WikiPlugin.getResourceString("WikiSpacePreferencePage.url")); //$NON-NLS-1$
 
-		Composite buttons = new Composite(basicComposite, SWT.NONE);
+		createButtons(basicComposite);
+
+		load();
+	}
+
+	private void createButtons(Composite parent) {
+		GridLayout layout;
+		final Composite buttons = new Composite(parent, SWT.NONE);
 		buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 		layout = new GridLayout();
 		layout.marginHeight = 0;
@@ -114,14 +121,14 @@ public final class WikiSpacePreferencePage {
 		addButton = createPushButton(buttons, WikiPlugin.getResourceString("WikiSpacePreferencePage.new")); //$NON-NLS-1$
 		addButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-				WikiSpacePreferencePage.this.add(parent.getShell(), "", "");
+				WikiSpacePreferencePage.this.add(buttons.getShell(), "", "");
 			}
 		});
 
 		editButton = createPushButton(buttons, WikiPlugin.getResourceString("WikiSpacePreferencePage.edit")); //$NON-NLS-1$
 		editButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-				WikiSpacePreferencePage.this.edit(parent.getShell());
+				WikiSpacePreferencePage.this.edit(buttons.getShell());
 			}
 		});
 
@@ -131,8 +138,6 @@ public final class WikiSpacePreferencePage {
 				WikiSpacePreferencePage.this.remove();
 			}
 		});
-
-		load();
 	}
 
 	private Button createPushButton(Composite parent, String key) {
@@ -192,7 +197,7 @@ public final class WikiSpacePreferencePage {
 
 	/**
 	 * Add a new WikiSpace entry.
-	 * 
+	 *
 	 * @param shell
 	 *            the shell to open the dialog with
 	 * @param wiki

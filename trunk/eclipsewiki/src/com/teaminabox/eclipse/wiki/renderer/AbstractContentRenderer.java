@@ -61,7 +61,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	/**
 	 * Get the header from a line with header markup
-	 * 
+	 *
 	 * @param line
 	 *            guaranteed to be a valid header as defined by b {@link #isHeader(String) isHeader(String)}
 	 */
@@ -69,7 +69,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	/**
 	 * Gives implementors a chance to do processing on this line.
-	 * 
+	 *
 	 * @return if true, the line will not be processed further
 	 */
 	protected abstract boolean process(String line);
@@ -192,7 +192,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		return lineNumber < document.length;
 	}
 
-	private final void appendListItem(String line) {
+	private void appendListItem(String line) {
 		boolean ordered = isOrderedList(line);
 		char type = '1';
 		if (ordered) {
@@ -233,14 +233,14 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	protected void parseAndAppend(String line) {
 		TextRegion[] regions = TextRegionBuilder.getTextRegions(line, context);
-		for (int i = 0; i < regions.length; i++) {
-			buffer.append(regions[i].accept(textRegionAppender));
+		for (TextRegion element : regions) {
+			buffer.append(element.accept(textRegionAppender));
 		}
 	}
 
 	/**
 	 * Replace all occurrences of markeup which occurs in pairs with an opening and closing tag in the given line. e.g.
-	 * 
+	 *
 	 * <pre>
 	 *               replacePair(&quot;my ''bold'' word&quot;, &quot;''&quot;, &quot;&lt;b&gt;&quot;, &quot;,&lt;/b&gt;&quot;) returns &quot;my &lt;b&gt;bold&lt;/b&gt; word&quot;
 	 * </pre>
@@ -292,8 +292,8 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		append("<tr>");
 
 		String[] cells = split(line, AbstractContentRenderer.TABLE_DELIMITER);
-		for (int i = 0; i < cells.length; i++) {
-			appendTableCell(cells[i]);
+		for (String element : cells) {
+			appendTableCell(element);
 		}
 		appendln("</tr>");
 		if (!isTableLine(peekNextLine())) {

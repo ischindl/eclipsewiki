@@ -10,6 +10,7 @@ import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -34,6 +35,51 @@ import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 public final class WikiBrowser extends ViewPart implements IPropertyChangeListener {
 
 	private static final String	HTML_ESCAPED_SPACE	= "%20";
+
+	private final class LaunchAction extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			Program.launch(browser.getUrl());
+		}
+	}
+
+	private final class StopAction extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			WikiBrowser.this.browser.stop();
+			WikiBrowser.this.progressBar.setSelection(0);
+		}
+	}
+
+	private final class RefreshAction extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			WikiBrowser.this.refresh();
+		}
+	}
+
+	private final class ForwardAction extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			WikiBrowser.this.goForward();
+		}
+	}
+
+	private final class BackAction extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			WikiBrowser.this.goBack();
+		}
+	}
+
+	private final class HomeAction extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			history.add(WikiConstants.WIKI_HREF + editor.getContext().getWikiNameBeingEdited());
+			enableButtons(false);
+			redrawWebView();
+		}
+	}
 
 	private final class BrowserProgressListener implements ProgressListener {
 		public void changed(ProgressEvent event) {
@@ -134,64 +180,22 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 		buttonComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		buttonComposite.setLayout(new GridLayout(6, false));
 
-		Button homeButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.wikiHome"), WikiPlugin.getResourceString("WikiBrowser.wikiHomeTooltip"), true, null); //$NON-NLS-1$ //$NON-NLS-2$
-		homeButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				history.add(WikiConstants.WIKI_HREF + editor.getContext().getWikiNameBeingEdited());
-				enableButtons(false);
-				redrawWebView();
-			}
-		});
+		createButton(buttonComposite, "wikiHome", null, new HomeAction()).setEnabled(true);
 
-		backButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.back"), WikiPlugin.getResourceString("WikiBrowser.backTooltip"), false, ISharedImages.IMG_TOOL_BACK); //$NON-NLS-1$ //$NON-NLS-2$
-		backButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				WikiBrowser.this.goBack();
-			}
-		});
-
-		forwardButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.forward"), WikiPlugin.getResourceString("WikiBrowser.forwardTooltip"), false, ISharedImages.IMG_TOOL_FORWARD); //$NON-NLS-1$ //$NON-NLS-2$
-		forwardButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				WikiBrowser.this.goForward();
-			}
-		});
-
-		refreshButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.refresh"), WikiPlugin.getResourceString("WikiBrowser.refreshTooltip"), false, ISharedImages.IMG_TOOL_REDO); //$NON-NLS-1$ //$NON-NLS-2$
-		refreshButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				WikiBrowser.this.refresh();
-			}
-		});
-
-		stopButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.stop"), WikiPlugin.getResourceString("WikiBrowser.stopTooltip"), false, ISharedImages.IMG_TOOL_DELETE); //$NON-NLS-1$ //$NON-NLS-2$
-		stopButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				WikiBrowser.this.browser.stop();
-				WikiBrowser.this.progressBar.setSelection(0);
-			}
-		});
-
-		launchButton = createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser.launch"), WikiPlugin.getResourceString("WikiBrowser.launchTooltip"), false, ISharedImages.IMG_TOOL_UP); //$NON-NLS-1$ //$NON-NLS-2$
-		launchButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Program.launch(browser.getUrl());
-			}
-		});
+		backButton = createButton(buttonComposite, "back", ISharedImages.IMG_TOOL_BACK, new BackAction());
+		forwardButton = createButton(buttonComposite, "forward", ISharedImages.IMG_TOOL_FORWARD, new ForwardAction());
+		refreshButton = createButton(buttonComposite, "refresh", ISharedImages.IMG_TOOL_REDO, new RefreshAction());
+		stopButton = createButton(buttonComposite, "stop", ISharedImages.IMG_TOOL_DELETE, new StopAction());
+		launchButton = createButton(buttonComposite, "launch", ISharedImages.IMG_TOOL_UP, new LaunchAction());
 	}
 
-	private Button createButton(Composite buttonComposite, String label, String toolTip, boolean enabled, String sharedImagesConstant) {
-		Button button = toolkit.createButton(buttonComposite, label, SWT.PUSH);
+	private Button createButton(Composite buttonComposite, String label, String sharedImagesConstant, SelectionListener selectionListener) {
+		Button button = toolkit.createButton(buttonComposite, WikiPlugin.getResourceString("WikiBrowser." + label), SWT.PUSH);
 		button.setLayoutData(new GridData(GridData.BEGINNING));
-		button.setToolTipText(toolTip);
-		button.setEnabled(enabled);
+		button.setToolTipText(WikiPlugin.getResourceString("WikiBrowser." + label + "Tooltip"));
+		button.setEnabled(false);
 		button.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(sharedImagesConstant));
+		button.addSelectionListener(selectionListener);
 		return button;
 	}
 

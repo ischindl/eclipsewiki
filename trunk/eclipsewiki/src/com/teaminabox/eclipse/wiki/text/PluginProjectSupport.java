@@ -16,12 +16,15 @@ import org.eclipse.core.runtime.CoreException;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
 /**
- * 
+ *
  * @author Ronald Steinhau
  */
 public class PluginProjectSupport {
 
 	private static Map<String, String>	projects	= new HashMap<String, String>();
+
+	private PluginProjectSupport() {
+	}
 
 	public static IProject locateProjectInWorkspace(String pluginID) {
 		IWorkspaceRoot rootFolder = ResourcesPlugin.getWorkspace().getRoot();
@@ -88,6 +91,4 @@ public class PluginProjectSupport {
 		}
 	}
 
-	private PluginProjectSupport() {
-	}
 }

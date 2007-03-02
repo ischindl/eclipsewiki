@@ -3,7 +3,6 @@ package com.teaminabox.eclipse.wiki.editors.completion;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
@@ -115,8 +114,7 @@ public class PluginCompletionProcessor {
 		Set<String> plugIds = gatherPluginIds(path);
 		SortedMap<String, String> selectedIDs = new TreeMap<String, String>();
 
-		for (Iterator<String> ids = plugIds.iterator(); ids.hasNext();) {
-			String currPluginID = ids.next();
+		for (String currPluginID : plugIds) {
 			addWikiFromPlugin(path, currPluginID, selectedIDs);
 		}
 		return selectedIDs.values().toArray(new String[selectedIDs.size()]);
@@ -133,10 +131,8 @@ public class PluginCompletionProcessor {
 			}
 			if (plugDirPath != null) {
 				File plugDir = plugDirPath.toFile();
-				if (plugDir != null && plugDir.exists()) {
-					if (new File(plugDir, PluginCompletionProcessor.WIKI_FOLDER).exists()) {
-						selectedIDs.put(currPluginID, currPluginID);
-					}
+				if (plugDir != null && plugDir.exists() && new File(plugDir, PluginCompletionProcessor.WIKI_FOLDER).exists()) {
+					selectedIDs.put(currPluginID, currPluginID);
 				}
 			}
 		}
@@ -158,8 +154,7 @@ public class PluginCompletionProcessor {
 	private void getPluginsFromWorkspace(Set<String> plugIds) {
 		String[] projects = resourceCompletionProcessor.getProjectList("");
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		for (int i = 0; i < projects.length; i++) {
-			String projName = projects[i];
+		for (String projName : projects) {
 			IProject proj = root.getProject(projName);
 			if (proj.getFile("plugin.xml").exists() || proj.getFile("fragment.xml").exists()) {
 				String id = PluginProjectSupport.extractPlugID(proj);

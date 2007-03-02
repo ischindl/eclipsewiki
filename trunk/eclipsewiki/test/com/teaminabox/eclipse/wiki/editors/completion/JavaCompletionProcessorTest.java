@@ -4,9 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.ui.PartInitException;
-import org.junit.*;
+import org.junit.Test;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
@@ -31,7 +32,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetClassProposalDefaultPackage() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare("public class Test {\n}", "Test.java", "T", 1);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("Test - (default package)", proposal.getDisplayString());
 		assertEquals("Image", WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.CLASS_ICON), proposal.getImage());
 	}
@@ -40,12 +41,12 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetPackageProposal() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "f", 1);
 		assertEquals(2, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 
 		assertEquals("foo", proposal.getDisplayString());
 		assertEquals("Image", WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.PACKAGE_ICON), proposal.getImage());
 
-		proposal = (ICompletionProposal) proposals.get(1);
+		proposal = proposals.get(1);
 		assertEquals("foo.bar", proposal.getDisplayString());
 
 		assertEquals("Image", WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.PACKAGE_ICON), proposal.getImage());
@@ -55,7 +56,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetPackageProposalWithPartitialPackageName() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "foo.ba", 6);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("foo.bar", proposal.getDisplayString());
 		assertEquals("Image", WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.PACKAGE_ICON), proposal.getImage());
 	}
@@ -64,7 +65,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetTypeProposalInPackage() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "foo.bar.", 8);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("Test - foo.bar", proposal.getDisplayString());
 	}
 
@@ -72,7 +73,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetTypeProposalInSentence() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "a test foo.bar. thing", 15);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("Test - foo.bar", proposal.getDisplayString());
 	}
 
@@ -80,7 +81,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetTypePrefixedWithNonJavaCharacters() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "'''T", 4);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("Test - foo.bar", proposal.getDisplayString());
 	}
 
@@ -88,7 +89,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetTypePrefixedWithFullStop() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, ".T", 2);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("Test - foo.bar", proposal.getDisplayString());
 	}
 
@@ -96,7 +97,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testGetTypePrefixedWithSpace() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, " T", 2);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("Test - foo.bar", proposal.getDisplayString());
 	}
 
@@ -104,7 +105,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 	public void testTypeInPackage() throws Exception {
 		ArrayList<ICompletionProposal> proposals = prepare(JavaCompletionProcessorTest.TYPE_CONTENTS, JavaCompletionProcessorTest.TYPE_PATH, "a test Test thing", 11);
 		assertEquals(1, proposals.size());
-		ICompletionProposal proposal = (ICompletionProposal) proposals.get(0);
+		ICompletionProposal proposal = proposals.get(0);
 		assertEquals("Test - foo.bar", proposal.getDisplayString());
 	}
 
@@ -126,7 +127,7 @@ public final class JavaCompletionProcessorTest extends WikiTest {
 		assertEquals(0, proposals.size());
 	}
 
-	private ArrayList<ICompletionProposal> prepare(String code, String path, String wikiContents, int cursorPosition) throws Exception, PartInitException {
+	private ArrayList<ICompletionProposal> prepare(String code, String path, String wikiContents, int cursorPosition) throws BadLocationException, CoreException {
 		createAndOpen(code, path);
 		WikiEditor editor = createWikiDocumentAndOpen(wikiContents).getEditor();
 		return new JavaCompletionProcessor().getProposals(getJavaProject(), editor.getTextViewerForTest(), cursorPosition);

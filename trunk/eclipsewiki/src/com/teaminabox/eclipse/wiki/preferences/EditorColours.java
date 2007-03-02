@@ -20,7 +20,7 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public class EditorColours {
 
-	private final String[][]		COLOUR_LIST		= new String[][] { { WikiPlugin.getResourceString("WikiSyntaxPreferencePage.WikiName"), WikiConstants.WIKI_NAME }, //$NON-NLS-1$
+	private static final String[][]		COLOUR_LIST		= new String[][] { { WikiPlugin.getResourceString("WikiSyntaxPreferencePage.WikiName"), WikiConstants.WIKI_NAME }, //$NON-NLS-1$
 			{ WikiPlugin.getResourceString("WikiSyntaxPreferencePage.NewWikiName"), WikiConstants.NEW_WIKI_NAME }, //$NON-NLS-1$
 			{ WikiPlugin.getResourceString("WikiSyntaxPreferencePage.WikiSpaceURL"), WikiConstants.WIKI_URL }, //$NON-NLS-1$
 			{ WikiPlugin.getResourceString("WikiSyntaxPreferencePage.URL"), WikiConstants.URL }, //$NON-NLS-1$
@@ -90,6 +90,13 @@ public class EditorColours {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalAlignment = GridData.BEGINNING;
 		fgColorButton.setLayoutData(gd);
+		fgColorButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int i = colors.getSelectionIndex();
+				currentColours[i] = fgColorEditor.getColorValue();
+			}
+		});
 
 		label = new Label(stylesComposite, SWT.LEFT);
 		label.setText(WikiPlugin.getResourceString("WikiSyntaxPreferencePage.bold")); //$NON-NLS-1$
@@ -102,14 +109,8 @@ public class EditorColours {
 		gd.horizontalAlignment = GridData.BEGINNING;
 		fgBold.setLayoutData(gd);
 
-		fgColorButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int i = colors.getSelectionIndex();
-				currentColours[i] = fgColorEditor.getColorValue();
-			}
-		});
-
 		fgBold.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int i = colors.getSelectionIndex();
 				String key = COLOUR_LIST[i][1] + WikiConstants.SUFFIX_STYLE;
@@ -119,6 +120,7 @@ public class EditorColours {
 		});
 
 		colors.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleSyntaxColorListSelection();
 			}

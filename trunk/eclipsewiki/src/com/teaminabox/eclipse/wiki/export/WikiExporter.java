@@ -28,10 +28,9 @@ import com.teaminabox.eclipse.wiki.util.Resources;
 
 public final class WikiExporter {
 
-	private static final String	JAVA_EXTENSION	= "java";
 	public static final String	HTML_EXTENSION	= ".html";
-
 	public static final String	WORKSPACE		= "workspace";
+	private static final String	JAVA_EXTENSION	= "java";
 
 	private File				exportDirectory;
 
@@ -47,9 +46,9 @@ public final class WikiExporter {
 		exportDirectory = new File(exportDirectoryName);
 		IResource[] resources = folder.members(IResource.FILE);
 		monitor.beginTask(WikiPlugin.getResourceString("Export.wikiPages"), resources.length + 1);
-		for (int i = 0; i < resources.length; i++) {
-			if (Resources.isWikiFile(resources[i])) {
-				exportFile((IFile) resources[i]);
+		for (IResource element : resources) {
+			if (Resources.isWikiFile(element)) {
+				exportFile((IFile) element);
 			}
 			monitor.worked(1);
 		}
