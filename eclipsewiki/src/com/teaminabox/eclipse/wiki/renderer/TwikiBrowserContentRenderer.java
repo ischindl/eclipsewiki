@@ -1,9 +1,11 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import org.eclipse.jface.text.BadLocationException;
+
+import com.teaminabox.eclipse.wiki.WikiPlugin;
+import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.EmbeddedTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.EscapedWikiWordMatcher;
-import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
-import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkMatcher;
 import com.teaminabox.eclipse.wiki.text.IgnoredTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.JavaTypeMatcher;
@@ -13,6 +15,7 @@ import com.teaminabox.eclipse.wiki.text.PluginResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
+import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 
 public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
@@ -31,22 +34,36 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	private static final String					ORDERED_LIST_MARKUP_REGEX	= "^\\s+[1|a|A|i|I]\\.\\s.*";
 	private static final String					HEADER_MARKUP_REGEX			= "^---+(\\++|\\#+)\\s*(.+)\\s*$";
 
+	@Override
 	public TextRegionMatcher[] getRendererMatchers() {
 		return TwikiBrowserContentRenderer.RENDERER_MATCHERS;
 	}
 
+	@Override
 	public TextRegionMatcher[] getScannerMatchers() {
 		return TwikiBrowserContentRenderer.SCANNER_MATCHERS;
 	}
 
+	@Override
 	protected void appendHeader(String line) {
+		String headerText = getHeaderText(line);
+		appendHeaderAnchor(headerText);
 		int headerSize = getHeaderSize(line);
 		append("<h").append(headerSize).append(">");
-		parseAndAppend(getHeaderText(line));
+		parseAndAppend(headerText);
 		append("</h").append(headerSize).append(">");
 		appendNewLine();
 	}
 
+	private void appendHeaderAnchor(String headerText) {
+		append("<a name=\"").append(createHeaderAnchor(headerText)).append("\"/>");
+	}
+
+	private String createHeaderAnchor(String headerText) {
+		return headerText.replaceAll(" ", "_");
+	}
+
+	@Override
 	protected String getHeaderText(String line) {
 		return new String(line.substring(getHeaderStart(line)));
 	}
@@ -65,14 +82,17 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return size;
 	}
 
+	@Override
 	protected boolean isOrderedList(String line) {
 		return line.matches(TwikiBrowserContentRenderer.ORDERED_LIST_MARKUP_REGEX);
 	}
 
+	@Override
 	protected char getListType(String line) {
 		return line.trim().charAt(0);
 	}
 
+	@Override
 	protected int getListDepth(String line) {
 		if (isOrderedList(line)) {
 			return line.indexOf(TwikiBrowserContentRenderer.ORDERED_LIST_END_MARKER) / 3;
@@ -80,10 +100,12 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return line.indexOf(TwikiBrowserContentRenderer.UNORDERED_LIST_MARKUP) / 3;
 	}
 
+	@Override
 	protected boolean isHeader(String line) {
 		return line.matches(TwikiBrowserContentRenderer.HEADER_MARKUP_REGEX);
 	}
 
+	@Override
 	protected boolean isList(String line) {
 		return isUnorderedList(line) || isOrderedList(line);
 	}
@@ -92,6 +114,7 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return line.matches(TwikiBrowserContentRenderer.UNORDERED_LIST_MARKUP_REGEX);
 	}
 
+	@Override
 	protected String getListText(String line) {
 		if (isOrderedList(line)) {
 			return new String(line.substring(line.indexOf(TwikiBrowserContentRenderer.ORDERED_LIST_END_MARKER) + 1).trim());
@@ -99,15 +122,43 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return new String(line.substring(line.indexOf(TwikiBrowserContentRenderer.UNORDERED_LIST_MARKUP) + 1).trim());
 	}
 
+	@Override
 	protected boolean process(String line) {
+		// TODO enable this when this bug is fixed: https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307
+//		if ("%TOC%".equals(line)) {
+//			appendToc();
+//			return true;
+//		}
 		if (isVerbatim(line)) {
 			processVerbatim();
 			return true;
-		} else if (line.trim().matches("^----*$")) {
+		}
+		if (line.trim().matches("^----*$")) {
 			appendHR();
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307 fix needed before I can use this
+	 */
+	private void appendToc() {
+		appendln("<div class=\"twikiToc\">");
+		appendln("<ul>");
+		try {
+			forEachHeader(getContext(), new StructureClosure() {
+				public void acceptHeader(String header, int line) throws BadLocationException {
+					append("<li><a href=\"#").append(createHeaderAnchor(header)).append("\">").append(header).append("</a>");
+					appendln("</li>");
+				}
+			});
+		} catch (BadLocationException e) {
+			WikiPlugin.getDefault().log("Unable to build Table contents", e);
+			append("<p>Sorry, there was an error building the table of contents. Please report the error in your logs. Thanks.</p>");
+		}
+		appendln("</ul>");
+		appendln("</div>");
 	}
 
 	private void processVerbatim() {
@@ -133,6 +184,7 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return line.toLowerCase().startsWith("<verbatim>");
 	}
 
+	@Override
 	protected String processTags(String line) {
 		// enclose in white space for the regex that follow
 		line = '\n' + line + '\n';

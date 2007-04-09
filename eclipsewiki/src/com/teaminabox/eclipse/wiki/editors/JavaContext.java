@@ -52,7 +52,7 @@ public final class JavaContext implements IResourceChangeListener {
 		packages = new HashSet<String>();
 		IPackageFragment[] packageFragments = javaProject.getPackageFragments();
 		for (IPackageFragment packageFragment : packageFragments) {
-			if (packageFragment.isDefaultPackage()) {
+			if (!packageFragment.isDefaultPackage()) {
 				packages.add(packageFragment.getElementName());
 			}
 		}

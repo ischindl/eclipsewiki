@@ -202,15 +202,13 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	private void followLink(LocationEvent event) {
 		locationListener.listen(false);
 		backButton.setEnabled(true);
-		String location = event.location;
-
-		if (WikiBrowser.isWikiLocation(location)) {
-			openWikiLocation(location);
+		if (WikiBrowser.isWikiLocation(event.location)) {
+			openWikiLocation(event.location);
 			event.doit = false;
 			if (WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR)) {
 				history.add(event.location);
 			}
-		} else if (!locationIsBlank(location)) {
+		} else if (!locationIsBlank(event.location)) {
 			history.add(event.location);
 			enableButtons(true);
 		}

@@ -1,5 +1,6 @@
 Version 3.0.0 - requires Eclipse 3.3
-	Added spelling support
+	Implemented [ 1597549 ] Activate the spelling the checker Eclipse 3.2
+	Improved Java completion by using an EvaluationContext and code snippet support
 	
 Version 2.6.0
 	Added support for embedding WikiDocs
