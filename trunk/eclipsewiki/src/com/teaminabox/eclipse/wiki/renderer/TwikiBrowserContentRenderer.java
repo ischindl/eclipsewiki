@@ -47,7 +47,10 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	@Override
 	protected void appendHeader(String line) {
 		String headerText = getHeaderText(line);
-		appendHeaderAnchor(headerText);
+		/*
+		 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307 fix needed before I can use this
+		 */
+		// appendHeaderAnchor(headerText);
 		int headerSize = getHeaderSize(line);
 		append("<h").append(headerSize).append(">");
 		parseAndAppend(headerText);
@@ -55,8 +58,11 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		appendNewLine();
 	}
 
+	/**
+	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307 fix needed before I can use this
+	 */
 	private void appendHeaderAnchor(String headerText) {
-		append("<a name=\"").append(createHeaderAnchor(headerText)).append("\"/>");
+		append("<a name=\"#").append(createHeaderAnchor(headerText)).append("\"/>");
 	}
 
 	private String createHeaderAnchor(String headerText) {
