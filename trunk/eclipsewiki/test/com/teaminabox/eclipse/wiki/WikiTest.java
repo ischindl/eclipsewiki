@@ -12,6 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -25,8 +28,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
@@ -65,7 +72,7 @@ public abstract class WikiTest {
 
 	/**
 	 * Process UI input but do not return for the specified time interval.
-	 * 
+	 *
 	 * @param waitTimeMillis
 	 *            the number of milliseconds
 	 */
@@ -168,6 +175,15 @@ public abstract class WikiTest {
 		newNatures[natures.length] = JavaCore.NATURE_ID;
 		description.setNatureIds(newNatures);
 		project.setDescription(description, null);
+		IJavaProject javaProject = JavaCore.create(project);
+		Set<IClasspathEntry> entries = new HashSet<IClasspathEntry>();
+		entries.addAll(Arrays.asList(javaProject.getRawClasspath()));
+		IVMInstall vmInstall= JavaRuntime.getDefaultVMInstall();
+		LibraryLocation[] locations= JavaRuntime.getLibraryLocations(vmInstall);
+		for (LibraryLocation element : locations) {
+			entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
+		}
+		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
 		waitForJobs();
 		return project;
 	}
@@ -199,8 +215,8 @@ public abstract class WikiTest {
 			return;
 		}
 		IWorkbenchPage[] pages = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPages();
-		for (int i = 0; i < pages.length; i++) {
-			pages[i].closeAllEditors(false);
+		for (IWorkbenchPage element : pages) {
+			element.closeAllEditors(false);
 		}
 		waitForJobs();
 	}
@@ -241,5 +257,4 @@ public abstract class WikiTest {
 		file.setCharset("UTF8", null);
 		return file;
 	}
-
 }
