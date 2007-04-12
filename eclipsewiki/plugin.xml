@@ -200,5 +200,13 @@
             id="com.teaminabox.eclipse.wiki.keywordReference.snipsnap"
             label="SnipSnap"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="com.teaminabox.eclipse.wiki.properties.PropertiesPage"
+            id="com.teaminabox.eclipse.wiki.properties"
+            name="Wiki">
+      </page>
+   </extension>
 
 </plugin>

@@ -15,8 +15,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
@@ -39,18 +37,18 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 
-public final class WikiEditor extends TextEditor {
+public final class WikiEditor extends TextEditor implements PropertyListener {
 
-	public static final String		PART_ID				= WikiEditor.class.getName();
-	public static final String		CONTEXT_MENU_ID		= WikiEditor.PART_ID + ".ContextMenu";
-	public static final String		WIKI_TEMP_FOLDER	= "wiki";
-	public static final String		WIKI_TEMP_PROJECT	= "wiki_temp";
+	public static final String	PART_ID				= WikiEditor.class.getName();
+	public static final String	CONTEXT_MENU_ID		= WikiEditor.PART_ID + ".ContextMenu";
+	public static final String	WIKI_TEMP_FOLDER	= "wiki";
+	public static final String	WIKI_TEMP_PROJECT	= "wiki_temp";
 
-	private ColourManager			colourManager;
-	private Color					backgroundColor;
-	private IReusableEditor			reusableEditor;
-	private IPropertyChangeListener	propertyChangeListener;
-	private WikiDocumentContext		context;
+	private ColourManager		colourManager;
+	private Color				backgroundColor;
+	private IReusableEditor		reusableEditor;
+	private PropertyAdapter		propertyListener	= new PropertyAdapter(this);
+	private WikiDocumentContext	context;
 
 	public WikiEditor() {
 		super();
@@ -58,9 +56,16 @@ public final class WikiEditor extends TextEditor {
 		setSourceViewerConfiguration(new WikiConfiguration(this));
 		setDocumentProvider(new FileDocumentProvider());
 		setEditorContextMenuId(WikiEditor.CONTEXT_MENU_ID);
-		addPropertyChangeListener();
 		Editors.registerEditor(this);
 		reusableEditor = this;
+	}
+
+	public void propertyChanged() {
+		if (getSourceViewer() != null) {
+			setWordWrap();
+			setBackgroundColor();
+			redrawTextAsync();
+		}
 	}
 
 	@Override
@@ -68,29 +73,16 @@ public final class WikiEditor extends TextEditor {
 		setKeyBindingScopes(new String[] { "org.eclipse.ui.textEditorScope", WikiConstants.KEYBINDING_CONTEXT });
 	}
 
-	private void addPropertyChangeListener() {
-		propertyChangeListener = new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				if (WikiEditor.this.getSourceViewer() != null) {
-					WikiEditor.this.setWordWrap();
-					WikiEditor.this.setBackgroundColor();
-					WikiEditor.this.redrawTextAsync();
-				}
-			}
-		};
-		WikiPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
-	}
-
 	@Override
 	public void dispose() {
 		Editors.unregisterEditor(this);
-		WikiPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
+		propertyListener.dispose();
 		colourManager.dispose();
 		context.dispose();
 		super.dispose();
 	}
 
-	private void setWordWrap() {
+	void setWordWrap() {
 		if (getSourceViewer() != null) {
 			getSourceViewer().getTextWidget().setWordWrap(WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.WORD_WRAP));
 		}
@@ -103,7 +95,7 @@ public final class WikiEditor extends TextEditor {
 		setWordWrap();
 	}
 
-	private void setBackgroundColor() {
+	void setBackgroundColor() {
 		Control widget = getSourceViewer().getTextWidget();
 		backgroundColor = getBackgroundColor();
 		widget.setBackground(backgroundColor);
@@ -146,8 +138,8 @@ public final class WikiEditor extends TextEditor {
 	}
 
 	/**
-	 * This is unfortunate but I cannot see how else to get the {@link AbstractTextEditor#getSourceViewer() TextViewer} to
-	 * support unit tests.
+	 * This is unfortunate but I cannot see how else to get the {@link AbstractTextEditor#getSourceViewer() TextViewer}
+	 * to support unit tests.
 	 */
 	public ITextViewer getTextViewerForTest() {
 		return getSourceViewer();

@@ -23,6 +23,8 @@ import org.eclipse.core.runtime.Path;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.preferences.WikiPreferences;
+import com.teaminabox.eclipse.wiki.properties.ProjectProperties;
+import com.teaminabox.eclipse.wiki.renderer.ContentRenderer;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
@@ -198,5 +200,18 @@ public final class WikiDocumentContext {
 
 	public void dispose() {
 		javaContext.dispose();
+	}
+
+	public ContentRenderer getContentRenderer() {
+		try {
+			String renderer = WikiPlugin.getDefault().getPreferenceStore().getString(WikiConstants.BROWSER_RENDERER);
+			if (ProjectProperties.getInstance().isProjectPropertiesEnabled(getProject()) && ProjectProperties.getInstance().isRendererSet(getProject())) {
+				renderer = ProjectProperties.getInstance().getRenderer(getProject());
+			}
+			return (ContentRenderer) Class.forName(renderer).newInstance();
+		} catch (Exception e) {
+			WikiPlugin.getDefault().log("Unable to instantiate renderer", e);
+			return null;
+		}
 	}
 }

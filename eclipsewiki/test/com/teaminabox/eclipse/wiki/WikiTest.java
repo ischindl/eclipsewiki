@@ -31,9 +31,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
@@ -178,11 +176,7 @@ public abstract class WikiTest {
 		IJavaProject javaProject = JavaCore.create(project);
 		Set<IClasspathEntry> entries = new HashSet<IClasspathEntry>();
 		entries.addAll(Arrays.asList(javaProject.getRawClasspath()));
-		IVMInstall vmInstall= JavaRuntime.getDefaultVMInstall();
-		LibraryLocation[] locations= JavaRuntime.getLibraryLocations(vmInstall);
-		for (LibraryLocation element : locations) {
-			entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
-		}
+		entries.add(JavaRuntime.getDefaultJREContainerEntry());
 		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
 		waitForJobs();
 		return project;

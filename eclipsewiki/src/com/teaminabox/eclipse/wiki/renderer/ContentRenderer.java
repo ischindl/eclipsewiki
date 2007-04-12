@@ -24,4 +24,6 @@ public interface ContentRenderer {
 	 */
 	TextRegionMatcher[] getRendererMatchers();
 
+	String getName();
+
 }

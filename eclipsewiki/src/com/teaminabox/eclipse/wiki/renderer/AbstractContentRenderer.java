@@ -78,6 +78,10 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 		return context;
 	}
 
+	public String getName() {
+		return getClass().getName();
+	}
+
 	private void initialise(WikiDocumentContext context, LinkMaker linkMaker, boolean isEmbedded) {
 		this.context = context;
 		this.linkMaker = linkMaker;
@@ -138,7 +142,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 
 	protected void appendStyle() throws IOException {
 		appendln("<style type=\"text/css\"><!--");
-		IPath path = new Path("style").append(RendererFactory.getContentRendererName() + ".css");
+		IPath path = new Path("style").append(context.getContentRenderer().getName() + ".css");
 		appendln(Resources.getContentsRelativeToPlugin(path));
 		appendln("--></style>");
 	}

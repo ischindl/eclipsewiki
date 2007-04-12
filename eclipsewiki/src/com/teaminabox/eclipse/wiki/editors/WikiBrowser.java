@@ -1,7 +1,5 @@
 package com.teaminabox.eclipse.wiki.editors;
 
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationAdapter;
@@ -30,9 +28,8 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.renderer.ContentRenderer;
 import com.teaminabox.eclipse.wiki.renderer.IdeLinkMaker;
-import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 
-public final class WikiBrowser extends ViewPart implements IPropertyChangeListener {
+public final class WikiBrowser extends ViewPart implements PropertyListener {
 
 	private static final String	HTML_ESCAPED_SPACE	= "%20";
 
@@ -137,12 +134,13 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	private Button				refreshButton;
 	private Button				stopButton;
 	private ProgressBar			progressBar;
+	private PropertyAdapter		propertyListener;
 
 	public WikiBrowser(WikiEditor editor) {
 		this.editor = editor;
 		history = new History<String>();
 		history.add(WikiConstants.WIKI_HREF + editor.getContext().getWikiNameBeingEdited());
-		WikiPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
+		propertyListener = new PropertyAdapter(this);
 	}
 
 	@Override
@@ -304,17 +302,13 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 		browser.setCursor(null);
 	}
 
-	public void propertyChange(PropertyChangeEvent event) {
-		if (WikiConstants.BROWSER_RENDERER.equals(event.getProperty()) && !browserContentRenderer.getClass().getName().equals(event.getNewValue())) {
-			createBrowserRenderer();
-			redrawWebView();
-		} else if (WikiConstants.BROWSER_CSS_URL.equals(event.getProperty())) {
-			redrawWebView();
-		}
+	public void propertyChanged() {
+		createBrowserRenderer();
+		redrawWebView();
 	}
 
 	private void createBrowserRenderer() {
-		browserContentRenderer = RendererFactory.createContentRenderer();
+		browserContentRenderer = editor.getContext().getContentRenderer();
 	}
 
 	@Override
@@ -325,7 +319,7 @@ public final class WikiBrowser extends ViewPart implements IPropertyChangeListen
 	@Override
 	public void dispose() {
 		waiter.dispose();
-		WikiPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(this);
+		propertyListener.dispose();
 		browser.dispose();
 		toolkit.dispose();
 	}

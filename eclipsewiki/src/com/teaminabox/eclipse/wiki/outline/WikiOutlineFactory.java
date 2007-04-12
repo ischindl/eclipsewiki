@@ -8,7 +8,6 @@ import org.eclipse.ui.model.AdaptableList;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
-import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 import com.teaminabox.eclipse.wiki.renderer.StructureClosure;
 
 public final class WikiOutlineFactory {
@@ -20,7 +19,7 @@ public final class WikiOutlineFactory {
 
 	/**
 	 * Returns the content outline for the given manifest file.
-	 * 
+	 *
 	 * @return the content outline for the argument
 	 */
 	public AdaptableList getContentOutline(WikiEditor editor) {
@@ -31,7 +30,7 @@ public final class WikiOutlineFactory {
 	private OutlineElement[] getContents(final IFile file, final WikiEditor editor) {
 		try {
 			final OutlineElement root = new OutlineElement(file, editor.getContext().getWikiNameBeingEdited(), 0, 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
-			RendererFactory.createContentRenderer().forEachHeader(editor.getContext(), new StructureClosure() {
+			editor.getContext().getContentRenderer().forEachHeader(editor.getContext(), new StructureClosure() {
 				public void acceptHeader(String header, int line) throws BadLocationException {
 					new OutlineElement(root, header, editor.getOffset(line), 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
 				}
