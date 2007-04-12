@@ -10,7 +10,6 @@ import org.eclipse.ui.PlatformUI;
 
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
-import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
 
 /**
  * Builds {@link TextRegion text regions}.
@@ -47,9 +46,9 @@ public final class TextRegionBuilder {
 
 	private static TextRegion[] getCandidates(String text, WikiDocumentContext context) {
 		ArrayList<TextRegion> candidates = new ArrayList<TextRegion>();
-		TextRegionMatcher[] matchers = RendererFactory.createContentRenderer().getRendererMatchers();
-		for (int i = 0; i < matchers.length; i++) {
-			TextRegion textRegion = matchers[i].createTextRegion(text, context);
+		TextRegionMatcher[] matchers = context.getContentRenderer().getRendererMatchers();
+		for (TextRegionMatcher element : matchers) {
+			TextRegion textRegion = element.createTextRegion(text, context);
 			if (textRegion != null) {
 				candidates.add(textRegion);
 			}

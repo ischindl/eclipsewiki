@@ -36,7 +36,7 @@ public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<S
 			if (file == null) {
 				return region.getText();
 			} else {
-				return RendererFactory.createContentRenderer().render(new WikiDocumentContext(file), linkMaker, true);
+				return context.getContentRenderer().render(new WikiDocumentContext(file), linkMaker, true);
 			}
 		} catch (Exception e) {
 			return report(e);
@@ -75,7 +75,7 @@ public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<S
 			if (file == null) {
 				return region.getText();
 			} else {
-				return RendererFactory.createContentRenderer().render(new WikiDocumentContext(file), linkMaker, true);
+				return context.getContentRenderer().render(new WikiDocumentContext(file), linkMaker, true);
 			}
 		} catch (Exception e) {
 			return report(e);

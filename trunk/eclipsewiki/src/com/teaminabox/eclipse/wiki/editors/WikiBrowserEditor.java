@@ -1,7 +1,6 @@
 package com.teaminabox.eclipse.wiki.editors;
 
 import org.eclipse.core.resources.IMarker;
-
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -9,8 +8,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
@@ -31,11 +28,9 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.outline.WikiContentOutlinePage;
-import com.teaminabox.eclipse.wiki.renderer.RendererFactory;
-
 import com.teaminabox.eclipse.wiki.util.Resources;
 
-public final class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, IPropertyChangeListener {
+public final class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, PropertyListener {
 
 	private final class ResourceChangedEventHandler implements Runnable {
 		private final IResourceChangeEvent	event;
@@ -55,21 +50,27 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		}
 	}
 
-	private WikiEditor	editor;
-	private WikiBrowser	wikiBrowser;
-	private int			browserIndex;
-	private int			sourceIndex;
-	private Browser		syntaxBrowser;
-	private int			syntaxIndex;
+	private WikiEditor		editor;
+	private WikiBrowser		wikiBrowser;
+	private int				browserIndex;
+	private int				sourceIndex;
+	private Browser			syntaxBrowser;
+	private int				syntaxIndex;
+	private PropertyAdapter	propertyListener;
 
 	public WikiBrowserEditor() {
 		super();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+		propertyListener = new PropertyAdapter(this);
+	}
+
+	public void propertyChanged() {
+		initialiseSyntaxBrowser();
 	}
 
 	@Override
 	public void dispose() {
-		WikiPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(this);
+		propertyListener.dispose();
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		wikiBrowser.dispose();
 		editor.dispose();
@@ -117,7 +118,6 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		composite.setLayout(new FillLayout());
 		syntaxBrowser = new Browser(composite, SWT.NONE);
 		initialiseSyntaxBrowser();
-		WikiPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
 		syntaxIndex = addPage(composite);
 		setPageText(syntaxIndex, "Syntax");
 	}
@@ -195,12 +195,8 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		return getActivePage() == sourceIndex;
 	}
 
-	public void propertyChange(PropertyChangeEvent event) {
-		initialiseSyntaxBrowser();
-	}
-
 	private void initialiseSyntaxBrowser() {
-		String renderer = RendererFactory.getContentRendererName();
+		String renderer = editor.getContext().getContentRenderer().getName();
 		IPath path = new Path(WikiConstants.HELP_PATH).append(renderer + ".html");
 		try {
 			syntaxBrowser.setText(Resources.getContentsRelativeToPlugin(path));
@@ -218,4 +214,5 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		}
 		return super.getAdapter(key);
 	}
+
 }
