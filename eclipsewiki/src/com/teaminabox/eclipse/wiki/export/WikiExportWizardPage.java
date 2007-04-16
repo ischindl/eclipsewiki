@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.export;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -49,7 +51,7 @@ public final class WikiExportWizardPage extends WizardPage implements IPropertyC
 		} catch (RuntimeException rex) {
 			throw rex;
 		} catch (CoreException cex) {
-			WikiPlugin.getDefault().log("", cex);
+			wikiPlugin().log("", cex);
 			throw new RuntimeException("Caught CoreException. See log for details.");
 		}
 		dialogChanged();
@@ -86,6 +88,7 @@ public final class WikiExportWizardPage extends WizardPage implements IPropertyC
 		Button button = new Button(container, SWT.PUSH);
 		button.setText(WikiPlugin.getResourceString("Export.wizardBrowse"));
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleBrowseHtmlExportLocation();
 			}
@@ -98,11 +101,12 @@ public final class WikiExportWizardPage extends WizardPage implements IPropertyC
 		Button button = new Button(container, SWT.PUSH);
 		button.setText(WikiPlugin.getResourceString("Export.wizardBrowse"));
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					handleBrowseFolders();
 				} catch (CoreException cex) {
-					WikiPlugin.getDefault().log("", cex);
+					wikiPlugin().log("", cex);
 					throw new RuntimeException("Caught CoreException. See log for details.");
 				}
 			}

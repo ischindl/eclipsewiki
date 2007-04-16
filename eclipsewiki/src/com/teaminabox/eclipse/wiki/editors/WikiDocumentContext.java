@@ -1,5 +1,8 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+import static com.teaminabox.eclipse.wiki.properties.ProjectProperties.projectProperties;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -69,7 +72,7 @@ public final class WikiDocumentContext {
 				stream.close();
 			}
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
 		}
 	}
 
@@ -91,7 +94,7 @@ public final class WikiDocumentContext {
 		try {
 			return Charset.forName(wikiDocument.getCharset());
 		} catch (CoreException e) {
-			WikiPlugin.getDefault().log("Unable to get charset", e);
+			wikiPlugin().log("Unable to get charset", e);
 			return Charset.forName(WikiDocumentContext.DEFAULT_CHARSET);
 		}
 	}
@@ -185,7 +188,7 @@ public final class WikiDocumentContext {
 			List<String> lines = Resources.readLines(wikiDocument);
 			return lines.toArray(new String[lines.size()]);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().log("Cannot get Document", e);
+			wikiPlugin().log("Cannot get Document", e);
 			return new String[] { "Unable to load document - please check the logs." };
 		}
 	}
@@ -204,13 +207,13 @@ public final class WikiDocumentContext {
 
 	public ContentRenderer getContentRenderer() {
 		try {
-			String renderer = WikiPlugin.getDefault().getPreferenceStore().getString(WikiConstants.BROWSER_RENDERER);
-			if (ProjectProperties.getInstance().isProjectPropertiesEnabled(getProject()) && ProjectProperties.getInstance().isRendererSet(getProject())) {
-				renderer = ProjectProperties.getInstance().getRenderer(getProject());
+			String renderer = wikiPlugin().getPreferenceStore().getString(WikiConstants.BROWSER_RENDERER);
+			if (projectProperties().isProjectPropertiesEnabled(getProject()) && ProjectProperties.projectProperties().isRendererSet(getProject())) {
+				renderer = projectProperties().getRenderer(getProject());
 			}
 			return (ContentRenderer) Class.forName(renderer).newInstance();
 		} catch (Exception e) {
-			WikiPlugin.getDefault().log("Unable to instantiate renderer", e);
+			wikiPlugin().log("Unable to instantiate renderer", e);
 			return null;
 		}
 	}

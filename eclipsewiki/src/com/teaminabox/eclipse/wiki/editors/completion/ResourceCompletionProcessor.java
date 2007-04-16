@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +23,6 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.text.BasicTextRegion;
@@ -132,7 +133,7 @@ public class ResourceCompletionProcessor {
 	 * Get the character position of the document offset (which is the cursor position). The documentOffset when the
 	 * cursor is after the last character then it is == viewer.getDocument().getLength(). In which case documentOffset -
 	 * 1 is returned.
-	 * 
+	 *
 	 * @throws BadLocationException
 	 */
 	private int getCharacterAtDocumentOffset(final ITextViewer viewer, int documentOffset) throws BadLocationException {
@@ -177,7 +178,7 @@ public class ResourceCompletionProcessor {
 		for (String name : wikiEditor.getContext().getWikiSpace().keySet()) {
 			if (name.toLowerCase().startsWith(word)) {
 				String completion = name + WikiConstants.WIKISPACE_DELIMITER;
-				ICompletionProposal proposal = new CompletionProposal(completion, documentOffset - word.length(), word.length(), completion.length(), WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.WIKI_SPACE_ICON), null, null, null);
+				ICompletionProposal proposal = new CompletionProposal(completion, documentOffset - word.length(), word.length(), completion.length(), wikiPlugin().getImageRegistry().get(WikiConstants.WIKI_SPACE_ICON), null, null, null);
 				list.add(proposal);
 			}
 		}
@@ -185,7 +186,7 @@ public class ResourceCompletionProcessor {
 
 	/**
 	 * Get WikiSpace completions for local resources
-	 * 
+	 *
 	 * @param word
 	 *            text to the cursor which is at the documentOffset
 	 * @param list
@@ -231,7 +232,7 @@ public class ResourceCompletionProcessor {
 			String[] children = getChildren(location);
 			return buildResourceProposals(children, "", replacementOffset, lengthToBeReplaced);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
+			wikiPlugin().logAndReport("Completion Error", e.getLocalizedMessage(), e);
 			return new ArrayList<ICompletionProposal>();
 		}
 	}
@@ -252,7 +253,7 @@ public class ResourceCompletionProcessor {
 		ArrayList<ICompletionProposal> list = new ArrayList<ICompletionProposal>();
 		for (String element : replacements) {
 			String child = prefix + element;
-			list.add(new CompletionProposal(child, replacementOffset, replacementLength, child.length(), WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.WIKI_RESOURCE_ICON), null, null, null));
+			list.add(new CompletionProposal(child, replacementOffset, replacementLength, child.length(), wikiPlugin().getImageRegistry().get(WikiConstants.WIKI_RESOURCE_ICON), null, null, null));
 		}
 		return list;
 	}
@@ -336,13 +337,13 @@ public class ResourceCompletionProcessor {
 				String name = element.getName();
 				if (isWikiFile(name) && name.startsWith(word)) {
 					String wikiName = getWikiWord(name);
-					ICompletionProposal proposal = new CompletionProposal(wikiName, documentOffset - word.length(), word.length(), wikiName.length(), WikiPlugin.getDefault().getImageRegistry().get(WikiConstants.WIKI_ICON), null, null, null);
+					ICompletionProposal proposal = new CompletionProposal(wikiName, documentOffset - word.length(), word.length(), wikiName.length(), wikiPlugin().getImageRegistry().get(WikiConstants.WIKI_ICON), null, null, null);
 					list.add(proposal);
 				}
 			}
 			return list;
 		} catch (CoreException e) {
-			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
+			wikiPlugin().logAndReport("Completion Error", e.getLocalizedMessage(), e);
 			return new ArrayList<ICompletionProposal>();
 		}
 	}

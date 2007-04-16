@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.text;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
@@ -9,7 +11,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.ColourManager;
 
 /**
@@ -62,6 +63,7 @@ public abstract class TextRegion {
 		this.text = text;
 	}
 
+	@Override
 	public String toString() {
 		return "Region text: " + text + ", length = " + text.length() + (cursorPositionSet ? ", cursor position = " + cursorPosition : ", cursor position not set.");
 	}
@@ -69,7 +71,7 @@ public abstract class TextRegion {
 	/**
 	 * Get the position of the cursor relative to the start of this TextRegion. This only makes sense if the position
 	 * has been {@link #setCursorPosition (int) set}.
-	 * 
+	 *
 	 * @return int the position of the cursor relative to the start of this TextRegion
 	 */
 	public int getCursorPosition() {
@@ -78,7 +80,7 @@ public abstract class TextRegion {
 
 	/**
 	 * Sets the position of the cursor relative to the start of this TextRegion.
-	 * 
+	 *
 	 * @param cursorPosition
 	 */
 	public void setCursorPosition(int cursorPosition) {
@@ -102,9 +104,9 @@ public abstract class TextRegion {
 	}
 
 	protected IToken getToken(String preferenceKey, ColourManager colourManager) {
-		RGB rgb = PreferenceConverter.getColor(WikiPlugin.getDefault().getPreferenceStore(), preferenceKey + WikiConstants.SUFFIX_FOREGROUND);
+		RGB rgb = PreferenceConverter.getColor(wikiPlugin().getPreferenceStore(), preferenceKey + WikiConstants.SUFFIX_FOREGROUND);
 		Color foreground = colourManager.getColor(rgb);
-		String style = WikiPlugin.getDefault().getPreferenceStore().getString(preferenceKey + WikiConstants.SUFFIX_STYLE);
+		String style = wikiPlugin().getPreferenceStore().getString(preferenceKey + WikiConstants.SUFFIX_STYLE);
 		boolean bold = WikiConstants.STYLE_BOLD.equals(style);
 		return new Token(new TextAttribute(foreground, null, bold ? SWT.BOLD : SWT.NORMAL));
 	}
@@ -121,6 +123,7 @@ public abstract class TextRegion {
 		locationInDocument = i;
 	}
 
+	@Override
 	public boolean equals(Object object) {
 		if (object == this) {
 			return true;
@@ -132,6 +135,7 @@ public abstract class TextRegion {
 		return text.equals(other.getText()) && getLocationInDocument() == other.getLocationInDocument() && getCursorPosition() == other.getCursorPosition();
 	}
 
+	@Override
 	public int hashCode() {
 		return getText().hashCode() ^ getLocationInDocument() ^ getCursorPosition();
 	}

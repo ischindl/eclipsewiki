@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -26,7 +28,6 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.outline.WikiContentOutlinePage;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
@@ -56,12 +57,12 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 	private int				sourceIndex;
 	private Browser			syntaxBrowser;
 	private int				syntaxIndex;
-	private PropertyAdapter	propertyListener;
+	private PropertyChangeAdapter	propertyListener;
 
 	public WikiBrowserEditor() {
 		super();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-		propertyListener = new PropertyAdapter(this);
+		propertyListener = new PropertyChangeAdapter(this);
 	}
 
 	public void propertyChanged() {
@@ -106,7 +107,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 	}
 
 	private void initialiseActivePage() {
-		if (WikiPlugin.getDefault().getPluginPreferences().getBoolean(WikiConstants.SHOW_BROWSER_IN_EDITOR_WHEN_OPENING)) {
+		if (wikiPlugin().getPluginPreferences().getBoolean(WikiConstants.SHOW_BROWSER_IN_EDITOR_WHEN_OPENING)) {
 			setActivePage(browserIndex);
 		} else {
 			setActivePage(sourceIndex);
@@ -201,7 +202,7 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 		try {
 			syntaxBrowser.setText(Resources.getContentsRelativeToPlugin(path));
 		} catch (Exception e) {
-			WikiPlugin.getDefault().log("Unable to load syntax", e);
+			wikiPlugin().log("Unable to load syntax", e);
 			syntaxBrowser.setText(e.getLocalizedMessage());
 		}
 	}

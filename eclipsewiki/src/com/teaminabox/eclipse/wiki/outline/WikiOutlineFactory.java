@@ -1,12 +1,13 @@
 package com.teaminabox.eclipse.wiki.outline;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.model.AdaptableList;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.renderer.StructureClosure;
 
@@ -29,15 +30,15 @@ public final class WikiOutlineFactory {
 
 	private OutlineElement[] getContents(final IFile file, final WikiEditor editor) {
 		try {
-			final OutlineElement root = new OutlineElement(file, editor.getContext().getWikiNameBeingEdited(), 0, 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
+			final OutlineElement root = new OutlineElement(file, editor.getContext().getWikiNameBeingEdited(), 0, 0, wikiPlugin().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
 			editor.getContext().getContentRenderer().forEachHeader(editor.getContext(), new StructureClosure() {
 				public void acceptHeader(String header, int line) throws BadLocationException {
-					new OutlineElement(root, header, editor.getOffset(line), 0, WikiPlugin.getDefault().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
+					new OutlineElement(root, header, editor.getOffset(line), 0, wikiPlugin().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
 				}
 			});
 			return new OutlineElement[] { root };
 		} catch (Exception e) {
-			WikiPlugin.getDefault().log(e.getLocalizedMessage(), e);
+			wikiPlugin().log(e.getLocalizedMessage(), e);
 		}
 		return new OutlineElement[0];
 	}

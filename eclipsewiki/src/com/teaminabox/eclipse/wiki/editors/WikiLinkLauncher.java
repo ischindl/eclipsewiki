@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -59,7 +61,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		try {
 			openWikiDocument(wikiNameTextRegion.getText());
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
 		}
 		return true;
 	}
@@ -69,7 +71,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		try {
 			openWikiDocument(region.getWikiDocumentName());
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
 		}
 		return true;
 	}
@@ -134,7 +136,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		try {
 			PathWithLineNumber pathWithLineNumber = new PathWithLineNumber(path);
 			if (pathWithLineNumber.segmentCount() < 2) {
-				WikiPlugin.getDefault().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TEXT));
+				wikiPlugin().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TEXT));
 				return;
 			}
 			IResource resource = findPluginResource(path);
@@ -148,14 +150,14 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 				}
 				Program.launch(resource.getLocation().toString());
 			}
-			WikiPlugin.getDefault().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TEXT) + " " + path);
+			wikiPlugin().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_PLUGIN_RESOURCE_TEXT) + " " + path);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), "Unable to open " + path, e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), "Unable to open " + path, e);
 		}
 	}
 
 	private IEditorPart openFile(IFile file) throws CoreException {
-		if (Resources.isWikiFile(file) && WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR) && !editor.isTempWiki(file)) {
+		if (Resources.isWikiFile(file) && wikiPlugin().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR) && !editor.isTempWiki(file)) {
 			editor.openWith(file);
 			return editor;
 		}
@@ -202,7 +204,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		try {
 			PathWithLineNumber pathWithLineNumber = new PathWithLineNumber(path);
 			if (pathWithLineNumber.segmentCount() < 2) {
-				WikiPlugin.getDefault().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TEXT));
+				wikiPlugin().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TEXT));
 				return;
 			}
 			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(pathWithLineNumber.getPath());
@@ -212,10 +214,10 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 					gotoLine(pathWithLineNumber.getLine(), part);
 				}
 			} else {
-				WikiPlugin.getDefault().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TEXT) + " " + path);
+				wikiPlugin().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TEXT) + " " + path);
 			}
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), "Unable to open " + path, e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), "Unable to open " + path, e);
 		}
 	}
 
@@ -235,7 +237,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		try {
 			JavaUI.openInEditor(javaTypeTextRegion.getType());
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
 		}
 	}
 
@@ -247,7 +249,7 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		try {
 			JavaUI.openInEditor(editor.getContext().getJavaContext().getJavaProject().findType(typeName));
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_PROGRAMMATIC_ERROR_TEXT), e);
 		}
 	}
 }

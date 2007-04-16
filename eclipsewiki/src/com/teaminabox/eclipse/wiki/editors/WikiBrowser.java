@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationAdapter;
@@ -134,13 +136,13 @@ public final class WikiBrowser extends ViewPart implements PropertyListener {
 	private Button				refreshButton;
 	private Button				stopButton;
 	private ProgressBar			progressBar;
-	private PropertyAdapter		propertyListener;
+	private PropertyChangeAdapter		propertyListener;
 
 	public WikiBrowser(WikiEditor editor) {
 		this.editor = editor;
 		history = new History<String>();
 		history.add(WikiConstants.WIKI_HREF + editor.getContext().getWikiNameBeingEdited());
-		propertyListener = new PropertyAdapter(this);
+		propertyListener = new PropertyChangeAdapter(this);
 	}
 
 	@Override
@@ -203,7 +205,7 @@ public final class WikiBrowser extends ViewPart implements PropertyListener {
 		if (WikiBrowser.isWikiLocation(event.location)) {
 			openWikiLocation(event.location);
 			event.doit = false;
-			if (WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR)) {
+			if (wikiPlugin().getPreferenceStore().getBoolean(WikiConstants.REUSE_EDITOR)) {
 				history.add(event.location);
 			}
 		} else if (!locationIsBlank(event.location)) {
@@ -240,7 +242,7 @@ public final class WikiBrowser extends ViewPart implements PropertyListener {
 		try {
 			new WikiLinkLauncher(editor).openWikiDocument(wikiDoc);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
+			wikiPlugin().logAndReport(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_WIKI_FILE_TEXT), e);
 		}
 	}
 

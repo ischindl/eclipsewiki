@@ -3,6 +3,7 @@
  */
 package com.teaminabox.eclipse.wiki;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -126,7 +127,7 @@ public abstract class WikiTest {
 	}
 
 	private IEditorPart open(IFile file) throws PartInitException {
-		return IDE.openEditor(WikiPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage(), file, true);
+		return IDE.openEditor(wikiPlugin().getWorkbench().getActiveWorkbenchWindow().getActivePage(), file, true);
 	}
 
 	public IFile create(String content, String fileName) {

@@ -4,6 +4,8 @@
  */
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.IOException;
 
 import org.eclipse.core.resources.IFile;
@@ -33,7 +35,6 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 
@@ -47,7 +48,7 @@ public final class WikiEditor extends TextEditor implements PropertyListener {
 	private ColourManager		colourManager;
 	private Color				backgroundColor;
 	private IReusableEditor		reusableEditor;
-	private PropertyAdapter		propertyListener	= new PropertyAdapter(this);
+	private PropertyChangeAdapter		propertyListener	= new PropertyChangeAdapter(this);
 	private WikiDocumentContext	context;
 
 	public WikiEditor() {
@@ -84,7 +85,7 @@ public final class WikiEditor extends TextEditor implements PropertyListener {
 
 	void setWordWrap() {
 		if (getSourceViewer() != null) {
-			getSourceViewer().getTextWidget().setWordWrap(WikiPlugin.getDefault().getPreferenceStore().getBoolean(WikiConstants.WORD_WRAP));
+			getSourceViewer().getTextWidget().setWordWrap(wikiPlugin().getPreferenceStore().getBoolean(WikiConstants.WORD_WRAP));
 		}
 	}
 
@@ -102,10 +103,10 @@ public final class WikiEditor extends TextEditor implements PropertyListener {
 	}
 
 	private Color getBackgroundColor() {
-		if (WikiPlugin.getDefault().getPreferenceStore().getBoolean(AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT)) {
+		if (wikiPlugin().getPreferenceStore().getBoolean(AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT)) {
 			return null;
 		}
-		RGB rgb = PreferenceConverter.getColor(WikiPlugin.getDefault().getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND);
+		RGB rgb = PreferenceConverter.getColor(wikiPlugin().getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND);
 		return colourManager.getColor(rgb);
 	}
 
@@ -177,7 +178,7 @@ public final class WikiEditor extends TextEditor implements PropertyListener {
 	protected void createActions() {
 		super.createActions();
 
-		IAction action = new TextOperationAction(WikiPlugin.getDefault().getResourceBundle(), "ContentAssistProposal.", this, ISourceViewer.CONTENTASSIST_PROPOSALS);
+		IAction action = new TextOperationAction(wikiPlugin().getResourceBundle(), "ContentAssistProposal.", this, ISourceViewer.CONTENTASSIST_PROPOSALS);
 
 		action.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
 		setAction(WikiConstants.CONTENT_ASSIST, action);
@@ -209,7 +210,7 @@ public final class WikiEditor extends TextEditor implements PropertyListener {
 		try {
 			context = new WikiDocumentContext(((IFileEditorInput) input).getFile());
 		} catch (IOException e) {
-			WikiPlugin.getDefault().log("Error whilst setting editor input", e);
+			wikiPlugin().log("Error whilst setting editor input", e);
 		}
 	}
 
