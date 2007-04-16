@@ -1,12 +1,13 @@
 package com.teaminabox.eclipse.wiki.export;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.renderer.LinkMaker;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
@@ -26,6 +27,7 @@ public final class ExportLinkMaker extends LinkMaker {
 		linkedResources = new HashMap<IResource, String>();
 	}
 
+	@Override
 	public String make(WikiLinkTextRegion wikiNameTextRegion) {
 		if (getContext().hasWikiSibling(wikiNameTextRegion)) {
 			return getLink(wikiNameTextRegion.getWikiDocumentName() + WikiExporter.HTML_EXTENSION, wikiNameTextRegion.getDisplayText());
@@ -33,6 +35,7 @@ public final class ExportLinkMaker extends LinkMaker {
 		return wikiNameTextRegion.getDisplayText();
 	}
 
+	@Override
 	public String make(WikiUrlTextRegion wikiUrlTextRegion) {
 		if (wikiUrlTextRegion.getLink().startsWith(WikiConstants.ECLIPSE_PREFIX)) {
 			return make(new EclipseResourceTextRegion(wikiUrlTextRegion.getLink()));
@@ -42,6 +45,7 @@ public final class ExportLinkMaker extends LinkMaker {
 		return getLink(wikiUrlTextRegion.getLink(), wikiUrlTextRegion.getText());
 	}
 
+	@Override
 	public String make(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		if (Resources.existsAsFile(eclipseResourceTextRegion.getResource())) {
 			String href = getHref(eclipseResourceTextRegion);
@@ -52,6 +56,7 @@ public final class ExportLinkMaker extends LinkMaker {
 		return eclipseResourceTextRegion.getText();
 	}
 
+	@Override
 	public String make(PluginResourceTextRegion pluginResourceTextRegion) {
 		if (Resources.existsAsFile(pluginResourceTextRegion.getResource())) {
 			String href = getHref(pluginResourceTextRegion);
@@ -62,6 +67,7 @@ public final class ExportLinkMaker extends LinkMaker {
 		return pluginResourceTextRegion.getText();
 	}
 
+	@Override
 	public String make(JavaTypeTextRegion region) {
 		try {
 			if (region.getType().getUnderlyingResource() != null) {
@@ -71,7 +77,7 @@ public final class ExportLinkMaker extends LinkMaker {
 			}
 			return region.getText();
 		} catch (JavaModelException e) {
-			WikiPlugin.getDefault().logAndReport("Error", e.getLocalizedMessage(), e);
+			wikiPlugin().logAndReport("Error", e.getLocalizedMessage(), e);
 			return "Error";
 		}
 	}

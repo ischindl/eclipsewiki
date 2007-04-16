@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.IOException;
 
 import org.eclipse.core.resources.IFile;
@@ -8,7 +10,6 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
@@ -52,14 +53,17 @@ public class SelectionRenderer {
 
 	private String getHoverInfo(TextRegion textRegion) {
 		return textRegion.accept(new GenericTextRegionVisitor<String>(null) {
+			@Override
 			public String visit(WikiWordTextRegion wikiNameTextRegion) {
 				return getHoverText(wikiNameTextRegion);
 			}
 
+			@Override
 			public String visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 				return getEclipseResourceHover(eclipseResourceTextRegion);
 			}
 
+			@Override
 			public String visit(PluginResourceTextRegion pluginResourceTextRegion) {
 				return getPluginResourceHover(pluginResourceTextRegion);
 			}
@@ -75,7 +79,7 @@ public class SelectionRenderer {
 			}
 			return getHoverText(file);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport("Hover Error", e.getLocalizedMessage(), e);
+			wikiPlugin().logAndReport("Hover Error", e.getLocalizedMessage(), e);
 			return "";
 		}
 	}
@@ -103,7 +107,7 @@ public class SelectionRenderer {
 				return relativePath.toString();
 			}
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport("Hover Error", "Cannot get hover info for " + relativePath, e);
+			wikiPlugin().logAndReport("Hover Error", "Cannot get hover info for " + relativePath, e);
 		}
 		return "";
 	}
@@ -119,7 +123,7 @@ public class SelectionRenderer {
 		if (Resources.isWikiFile(file) || file.getName().endsWith(".txt")) {
 			String contents = Resources.getContents(file.getContents());
 			if (contents.length() > 0) {
-				int length = Math.min(WikiPlugin.getDefault().getPreferenceStore().getInt(WikiConstants.HOVER_PREVIEW_LENGTH), contents.length());
+				int length = Math.min(wikiPlugin().getPreferenceStore().getInt(WikiConstants.HOVER_PREVIEW_LENGTH), contents.length());
 				return new String(contents.substring(0, length));
 			}
 		}

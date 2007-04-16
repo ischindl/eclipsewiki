@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.preferences;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Properties;
@@ -14,16 +16,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	private IPreferenceStore	store;
 
 	public PreferenceInitializer() {
-		store = WikiPlugin.getDefault().getPreferenceStore();
+		store = wikiPlugin().getPreferenceStore();
 	}
 
+	@Override
 	public void initializeDefaultPreferences() {
 		PreferenceConverter.setDefault(store, AbstractTextEditor.PREFERENCE_COLOR_FOREGROUND, Display.getDefault().getSystemColor(SWT.COLOR_LIST_FOREGROUND).getRGB());
 		store.setDefault(AbstractTextEditor.PREFERENCE_COLOR_FOREGROUND_SYSTEM_DEFAULT, true);
@@ -54,7 +56,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	private void loadWikiSpaceDefaults(IPreferenceStore store) {
 		try {
 			Properties properties = new Properties();
-			properties.load(FileLocator.openStream(WikiPlugin.getDefault().getBundle(), new Path(WikiConstants.WIKISPACE_FILE), false));
+			properties.load(FileLocator.openStream(wikiPlugin().getBundle(), new Path(WikiConstants.WIKISPACE_FILE), false));
 			StringBuffer names = new StringBuffer();
 			StringBuffer urls = new StringBuffer();
 			Iterator<Object> iterator = properties.keySet().iterator();
@@ -67,7 +69,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 			store.setDefault(WikiConstants.WIKISPACE_NAMES, names.toString());
 			store.setDefault(WikiConstants.WIKISPACE_URLS, urls.toString());
 		} catch (IOException e) {
-			WikiPlugin.getDefault().log("", e);
+			wikiPlugin().log("", e);
 		}
 	}
 

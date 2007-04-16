@@ -1,15 +1,16 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.WikiTest;
 import com.teaminabox.eclipse.wiki.editors.WikiBrowserEditor;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
@@ -19,6 +20,7 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 	private static final String	CLASS_SOURCE	= "package com.teaminabox.foo;\npublic class BigClass { class InnerClass {} }";
 	private static final String	CLASS_NAME		= "com.teaminabox.foo.BigClass";
 
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
@@ -54,7 +56,7 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 
 		create(load("EmbeddedContent.wiki"), "EmbeddedContent.wiki");
 
-		WikiPlugin.getDefault().getPluginPreferences().setValue(WikiConstants.BROWSER_RENDERER, getRenderer().getClass().getName());
+		wikiPlugin().getPluginPreferences().setValue(WikiConstants.BROWSER_RENDERER, getRenderer().getClass().getName());
 		WikiDocumentContext context = editor.getEditor().getContext();
 
 		String html = getRenderer().render(context, new IdeLinkMaker(context), false);

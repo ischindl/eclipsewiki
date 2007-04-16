@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IProject;
@@ -11,7 +13,6 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
@@ -43,7 +44,7 @@ public final class WikiCompletionProcessor implements IContentAssistProcessor {
 			}
 			return proposals.toArray(new ICompletionProposal[proposals.size()]);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport("Completion Processor", e.getLocalizedMessage(), e);
+			wikiPlugin().logAndReport("Completion Processor", e.getLocalizedMessage(), e);
 			return WikiCompletionProcessor.EMPTY_COMPLETIONS;
 		}
 	}

@@ -1,8 +1,9 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.jface.text.BadLocationException;
 
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.EmbeddedTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.EscapedWikiWordMatcher;
@@ -160,7 +161,7 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 				}
 			});
 		} catch (BadLocationException e) {
-			WikiPlugin.getDefault().log("Unable to build Table contents", e);
+			wikiPlugin().log("Unable to build Table contents", e);
 			append("<p>Sorry, there was an error building the table of contents. Please report the error in your logs. Thanks.</p>");
 		}
 		appendln("</ul>");

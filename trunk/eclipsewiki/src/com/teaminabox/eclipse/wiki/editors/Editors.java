@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,8 +11,6 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public final class Editors {
 
@@ -39,7 +39,7 @@ public final class Editors {
 			}
 			Editors.refreshEditors();
 		} catch (Exception e) {
-			WikiPlugin.getDefault().log("WikiEditor: Resource Change Error", e);
+			wikiPlugin().log("WikiEditor: Resource Change Error", e);
 		}
 	}
 

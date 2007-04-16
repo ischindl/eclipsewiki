@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.util.HashSet;
 
 import org.eclipse.core.resources.IProject;
@@ -12,7 +14,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
 public final class JavaContext implements IResourceChangeListener {
@@ -85,7 +86,7 @@ public final class JavaContext implements IResourceChangeListener {
 		try {
 			loadPackages();
 		} catch (JavaModelException e) {
-			WikiPlugin.getDefault().log("JavaContext", e);
+			wikiPlugin().log("JavaContext", e);
 		}
 	}
 

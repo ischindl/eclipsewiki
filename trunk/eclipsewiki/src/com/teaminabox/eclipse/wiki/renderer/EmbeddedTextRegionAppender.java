@@ -1,11 +1,12 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.eclipse.core.resources.IFile;
 
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkTextRegion;
@@ -83,7 +84,7 @@ public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<S
 	}
 
 	private String report(Exception e) {
-		WikiPlugin.getDefault().log("Could not append contents", e);
+		wikiPlugin().log("Could not append contents", e);
 		return region.getText() + "(error embedding contents, please see logs)";
 	}
 

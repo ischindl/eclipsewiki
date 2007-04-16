@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.renderer;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,7 +13,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
@@ -101,7 +102,7 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 			appendHtmlFooter();
 			return buffer.toString();
 		} catch (Exception e) {
-			WikiPlugin.getDefault().log(e.getLocalizedMessage(), e);
+			wikiPlugin().log(e.getLocalizedMessage(), e);
 			return "<html><body><p>" + e.getLocalizedMessage() + "</p></body></html>";
 		}
 	}
@@ -124,9 +125,9 @@ public abstract class AbstractContentRenderer implements ContentRenderer {
 	}
 
 	private void appendStyleSheetLink() throws IOException {
-		if (WikiPlugin.getDefault().getPluginPreferences().contains(WikiConstants.BROWSER_CSS_URL) && WikiPlugin.getDefault().getPluginPreferences().getString(WikiConstants.BROWSER_CSS_URL).trim().length() > 0) {
+		if (wikiPlugin().getPluginPreferences().contains(WikiConstants.BROWSER_CSS_URL) && wikiPlugin().getPluginPreferences().getString(WikiConstants.BROWSER_CSS_URL).trim().length() > 0) {
 			buffer.append("      <link href=\"");
-			buffer.append(WikiPlugin.getDefault().getPluginPreferences().getString(WikiConstants.BROWSER_CSS_URL));
+			buffer.append(wikiPlugin().getPluginPreferences().getString(WikiConstants.BROWSER_CSS_URL));
 			appendln("\" type=\"text/css\" rel=\"STYLESHEET\">");
 		} else {
 			appendStyle();

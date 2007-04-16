@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.preferences;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -32,9 +34,10 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 	public WikiPreferences() {
 		super(FieldEditorPreferencePage.GRID);
 		setDescription(WikiPlugin.getResourceString("WikiSyntaxPreferencePage.description")); //$NON-NLS-1$
-		setPreferenceStore(WikiPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(wikiPlugin().getPreferenceStore());
 	}
 
+	@Override
 	public boolean performOk() {
 		wikiSpacePreferencePage.store();
 		backgroundColourEditor.store();
@@ -42,6 +45,7 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 		return super.performOk();
 	}
 
+	@Override
 	protected void performDefaults() {
 		backgroundColourEditor.loadDefault();
 		wikiSpacePreferencePage.loadDefault();
@@ -49,10 +53,12 @@ public final class WikiPreferences extends FieldEditorPreferencePage implements 
 		super.performDefaults();
 	}
 
+	@Override
 	protected void addField(FieldEditor editor) {
 		super.addField(editor);
 	}
 
+	@Override
 	public void createFieldEditors() {
 		Composite composite = new Composite(getFieldEditorParent(), SWT.NONE);
 		GridLayout layout = new GridLayout();

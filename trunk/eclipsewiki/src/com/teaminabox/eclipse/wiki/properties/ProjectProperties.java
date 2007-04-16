@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.properties;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -8,7 +10,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public class ProjectProperties {
 
@@ -22,7 +23,7 @@ public class ProjectProperties {
 	private ProjectProperties() {
 	}
 
-	public static final ProjectProperties getInstance() {
+	public static final ProjectProperties projectProperties() {
 		return INSTANCE;
 	}
 
@@ -38,7 +39,7 @@ public class ProjectProperties {
 		try {
 			return project.getPersistentProperty(qualifiedName);
 		} catch (CoreException e) {
-			WikiPlugin.getDefault().log("Unable to get property for " + qualifiedName, e);
+			wikiPlugin().log("Unable to get property for " + qualifiedName, e);
 		}
 		return null;
 	}
@@ -49,7 +50,7 @@ public class ProjectProperties {
 			project.setPersistentProperty(qualifiedName, value);
 			listeners.firePropertyChange(RENDERER.getLocalName(), oldValue, value);
 		} catch (CoreException e) {
-			WikiPlugin.getDefault().log("Unable to get property for " + qualifiedName, e);
+			wikiPlugin().log("Unable to get property for " + qualifiedName, e);
 		}
 	}
 

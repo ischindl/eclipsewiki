@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.properties;
 
+import static com.teaminabox.eclipse.wiki.properties.ProjectProperties.projectProperties;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.Dialog;
@@ -22,9 +23,6 @@ public class PropertiesPage extends PropertyPage {
 	private Combo	combo;
 	private Button	enabled;
 
-	public PropertiesPage() {
-	}
-
 	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
@@ -32,7 +30,7 @@ public class PropertiesPage extends PropertyPage {
 		composite.setLayout(layout);
 
 		enabled = new Button(composite, SWT.CHECK);
-		enabled.setText("Enable Project Specific Settings: ");
+		enabled.setText(WikiPlugin.getResourceString("WikiProjectProperties.enableProjectSpecificSettings")); //$NON-NLS-1$
 
 		enabled.addSelectionListener(new SelectionAdapter() {
 
@@ -42,10 +40,10 @@ public class PropertiesPage extends PropertyPage {
 			}
 
 		});
-		enabled.setSelection(ProjectProperties.getInstance().isProjectPropertiesEnabled(getProject()));
+		enabled.setSelection(projectProperties().isProjectPropertiesEnabled(getProject()));
 
 		Label label = new Label(composite, SWT.LEFT);
-		label.setText("Renderer: ");
+		label.setText(WikiPlugin.getResourceString("BrowserRenderer")); //$NON-NLS-1$
 
 		combo = new Combo(composite, SWT.DROP_DOWN);
 		setRendererLabels();
@@ -60,29 +58,33 @@ public class PropertiesPage extends PropertyPage {
 	}
 
 	private void setRendererLabels() {
-		String preferred = ProjectProperties.getInstance().getRenderer(getProject());
-		int selected = 0;
+		String preferred = ProjectProperties.projectProperties().getRenderer(getProject());
+		int selected = -1;
 		String[] items = new String[WikiConstants.BROWSER_RENDERERS.length];
 		for (int i = 0; i < WikiConstants.BROWSER_RENDERERS.length; i++) {
 			String renderer = WikiConstants.BROWSER_RENDERERS[i];
 			items[i] = WikiPlugin.getResourceString(renderer);
-			if (preferred.equals(renderer)) {
+			if (preferred != null && preferred.equals(renderer)) {
 				selected = i;
 			}
 		}
 		combo.setItems(items);
-		combo.select(selected);
+		if (selected >= 0) {
+			combo.select(selected);
+		}
 	}
 
 	@Override
 	protected void performDefaults() {
-		ProjectProperties.getInstance().setDefaults(getProject());
+		projectProperties().setDefaults(getProject());
 	}
 
 	@Override
 	public boolean performOk() {
-		ProjectProperties.getInstance().setRenderer(getProject(), WikiConstants.BROWSER_RENDERERS[combo.getSelectionIndex()]);
-		ProjectProperties.getInstance().setProjectPropertiesEnabled(getProject(), enabled.getSelection());
+		if (combo.getSelectionIndex() >= 0) {
+			projectProperties().setRenderer(getProject(), WikiConstants.BROWSER_RENDERERS[combo.getSelectionIndex()]);
+		}
+		projectProperties().setProjectPropertiesEnabled(getProject(), enabled.getSelection());
 		return true;
 	}
 

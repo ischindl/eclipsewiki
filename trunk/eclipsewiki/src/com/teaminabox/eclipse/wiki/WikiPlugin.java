@@ -27,6 +27,7 @@ public final class WikiPlugin extends AbstractUIPlugin {
 	/**
 	 * This method is called upon plug-in activation
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		initialiseResourceBundle();
@@ -37,6 +38,7 @@ public final class WikiPlugin extends AbstractUIPlugin {
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		WikiPlugin.plugin = null;
@@ -44,8 +46,8 @@ public final class WikiPlugin extends AbstractUIPlugin {
 	}
 
 	private void initialiseImageRegistry() {
-		for (int i = 0; i < WikiConstants.ICONS.length; i++) {
-			getImageRegistry().put(WikiConstants.ICONS[i], AbstractUIPlugin.imageDescriptorFromPlugin(WikiConstants.PLUGIN_ID, WikiConstants.ICONS[i]));
+		for (String element : WikiConstants.ICONS) {
+			getImageRegistry().put(element, AbstractUIPlugin.imageDescriptorFromPlugin(WikiConstants.PLUGIN_ID, element));
 		}
 	}
 
@@ -57,12 +59,12 @@ public final class WikiPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	public static WikiPlugin getDefault() {
+	public static WikiPlugin wikiPlugin() {
 		return WikiPlugin.plugin;
 	}
 
 	public static String getResourceString(String key) {
-		ResourceBundle bundle = WikiPlugin.getDefault().getResourceBundle();
+		ResourceBundle bundle = wikiPlugin().getResourceBundle();
 		try {
 			return bundle.getString(key);
 		} catch (MissingResourceException e) {
@@ -80,14 +82,14 @@ public final class WikiPlugin extends AbstractUIPlugin {
 	}
 
 	public void log(String message) {
-		WikiPlugin.getDefault().getLog().log(new Status(IStatus.OK, WikiConstants.PLUGIN_ID, IStatus.OK, message, null));
+		wikiPlugin().getLog().log(new Status(IStatus.OK, WikiConstants.PLUGIN_ID, IStatus.OK, message, null));
 	}
 
 	public void log(String message, Exception e) {
 		if (message == null) {
 			message = e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
 		}
-		WikiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, WikiConstants.PLUGIN_ID, IStatus.OK, message, e));
+		wikiPlugin().getLog().log(new Status(IStatus.ERROR, WikiConstants.PLUGIN_ID, IStatus.OK, message, e));
 	}
 
 	public void reportError(String title, String message) {

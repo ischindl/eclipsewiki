@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.properties;
 
+import static com.teaminabox.eclipse.wiki.properties.ProjectProperties.projectProperties;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -20,7 +21,7 @@ public class ProjectPropertiesTest {
 
 	@Before
 	public void tearDown() throws CoreException {
-		ProjectProperties.getInstance().removeListeners();
+		projectProperties().removeListeners();
 		context.checking(new Expectations() {
 			{
 				ignoring(project).getPersistentProperty(ProjectProperties.RENDERER);
@@ -35,7 +36,7 @@ public class ProjectPropertiesTest {
 				one(project).setPersistentProperty(ProjectProperties.RENDERER, null);
 			}
 		});
-		ProjectProperties.getInstance().clearRenderer(project);
+		projectProperties().clearRenderer(project);
 	}
 
 	@Test
@@ -43,12 +44,12 @@ public class ProjectPropertiesTest {
 		final PropertyChangeListener listener = context.mock(PropertyChangeListener.class);
 		context.checking(new Expectations() {
 			{
-				one(listener).propertyChange(new PropertyChangeEvent(ProjectProperties.getInstance(), ProjectProperties.RENDERER.getLocalName(), null, "new"));
+				one(listener).propertyChange(new PropertyChangeEvent(projectProperties(), ProjectProperties.RENDERER.getLocalName(), null, "new"));
 				one(project).setPersistentProperty(ProjectProperties.RENDERER, "new");
 			}
 		});
-		ProjectProperties.getInstance().addPropertyChangeListener(listener);
-		ProjectProperties.getInstance().setRenderer(project, "new");
+		projectProperties().addPropertyChangeListener(listener);
+		projectProperties().setRenderer(project, "new");
 	}
 
 	@Test
@@ -59,8 +60,8 @@ public class ProjectPropertiesTest {
 				one(project).setPersistentProperty(ProjectProperties.RENDERER, "new");
 			}
 		});
-		ProjectProperties.getInstance().addPropertyChangeListener(listener);
-		ProjectProperties.getInstance().removePropertyChangeListener(listener);
-		ProjectProperties.getInstance().setRenderer(project, "new");
+		projectProperties().addPropertyChangeListener(listener);
+		projectProperties().removePropertyChangeListener(listener);
+		projectProperties().setRenderer(project, "new");
 	}
 }

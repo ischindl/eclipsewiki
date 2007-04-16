@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.export;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
@@ -17,7 +19,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public final class WikiExportWizard extends Wizard implements INewWizard {
 	static final QualifiedName		DIRECTORY_QUALIFIED_NAME	= new QualifiedName(WikiConstants.PLUGIN_ID, "exportDirectory");
@@ -30,11 +31,13 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 		setNeedsProgressMonitor(true);
 	}
 
+	@Override
 	public void addPages() {
 		page = new WikiExportWizardPage(selection);
 		addPage(page);
 	}
 
+	@Override
 	public boolean performFinish() {
 		persistExportProperties();
 		return runOperationInContainer(new IRunnableWithProgress() {
@@ -50,7 +53,7 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 		} catch (InterruptedException e) {
 			return false;
 		} catch (InvocationTargetException e) {
-			WikiPlugin.getDefault().log("", e);
+			wikiPlugin().log("", e);
 			MessageDialog.openError(getShell(), "Error", e.getTargetException().getMessage());
 			return false;
 		}
@@ -68,7 +71,7 @@ public final class WikiExportWizard extends Wizard implements INewWizard {
 	}
 
 	private void noteException(CoreException cex) {
-		WikiPlugin.getDefault().log("Export Error", cex);
+		wikiPlugin().log("Export Error", cex);
 		throw new RuntimeException("An error occurred. Please see the log for details.");
 	}
 

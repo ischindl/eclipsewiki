@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.text;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
@@ -7,7 +9,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.JavaContext;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
@@ -35,7 +36,7 @@ public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
 			}
 			return null;
 		} catch (JavaModelException e) {
-			WikiPlugin.getDefault().log("Could not create TextRegion", e);
+			wikiPlugin().log("Could not create TextRegion", e);
 		}
 		return null;
 	}
@@ -122,6 +123,7 @@ public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
 		return new Path(fullyQualifiedType.replaceAll("\\.", "/"));
 	}
 
+	@Override
 	protected boolean accepts(char c, boolean firstCharacter) {
 		if (firstCharacter) {
 			return Character.isJavaIdentifierPart(c);

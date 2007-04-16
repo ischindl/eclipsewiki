@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.util;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,12 +17,11 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 
 public final class Resources {
 
 	public static String getContentsRelativeToPlugin(IPath path) throws IOException {
-		return Resources.getContents(FileLocator.openStream(WikiPlugin.getDefault().getBundle(), path, false));
+		return Resources.getContents(FileLocator.openStream(wikiPlugin().getBundle(), path, false));
 	}
 
 	public static String getContents(InputStream stream) throws IOException {

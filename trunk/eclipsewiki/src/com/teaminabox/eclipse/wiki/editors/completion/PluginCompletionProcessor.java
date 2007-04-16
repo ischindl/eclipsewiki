@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,7 +21,6 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
-import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginProjectSupport;
@@ -78,7 +79,7 @@ public class PluginCompletionProcessor {
 			String[] children = resourceCompletionProcessor.getChildren(path.toString() + rest);
 			return resourceCompletionProcessor.buildResourceProposals(children, "", replacementOffset, lengthToBeReplaced);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
+			wikiPlugin().logAndReport("Completion Error", e.getLocalizedMessage(), e);
 			return new ArrayList<ICompletionProposal>(1);
 		}
 	}
@@ -98,7 +99,7 @@ public class PluginCompletionProcessor {
 			String[] children = collectPlugIDs(location);
 			return resourceCompletionProcessor.buildResourceProposals(children, "", replacementOffset, lengthToBeReplaced);
 		} catch (Exception e) {
-			WikiPlugin.getDefault().logAndReport("Completion Error", e.getLocalizedMessage(), e);
+			wikiPlugin().logAndReport("Completion Error", e.getLocalizedMessage(), e);
 			return new ArrayList<ICompletionProposal>(1);
 		}
 	}
