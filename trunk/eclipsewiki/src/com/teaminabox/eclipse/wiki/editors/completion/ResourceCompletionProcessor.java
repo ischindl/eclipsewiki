@@ -110,9 +110,8 @@ public class ResourceCompletionProcessor {
 		if (proposals.size() == 0) {
 			proposals.addAll(computeWikiProposals(documentOffset, textRegion));
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private List<ICompletionProposal> computeWorkspaceCompletions(final ITextViewer viewer, int documentOffset, TextRegion textRegion) throws BadLocationException {

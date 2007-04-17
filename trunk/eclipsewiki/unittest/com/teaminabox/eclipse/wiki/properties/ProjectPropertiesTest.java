@@ -27,7 +27,7 @@ public class ProjectPropertiesTest {
 	private final IProject	project	= context.mock(IProject.class);
 
 	@Before
-	public void tearDown() throws CoreException {
+	public void tearDown() {
 		projectProperties().removeListeners();
 	}
 
