@@ -57,9 +57,6 @@ public final class WikiExporter {
 		monitor.worked(1);
 	}
 
-	/**
-	 * TODO: This is a horrible hack for a quick solution.
-	 */
 	private void createIndex() throws IOException {
 		File indexFile = createHtmlFile("index");
 
