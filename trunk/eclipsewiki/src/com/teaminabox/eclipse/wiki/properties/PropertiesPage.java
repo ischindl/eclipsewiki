@@ -36,7 +36,7 @@ public class PropertiesPage extends PropertyPage {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				toggleEnablement();
+				setEnablement();
 			}
 
 		});
@@ -47,13 +47,14 @@ public class PropertiesPage extends PropertyPage {
 
 		combo = new Combo(composite, SWT.DROP_DOWN);
 		setRendererLabels();
+		setEnablement();
 
 		Dialog.applyDialogFont(composite);
 
 		return composite;
 	}
 
-	protected void toggleEnablement() {
+	private void setEnablement() {
 		combo.setEnabled(enabled.getSelection());
 	}
 
@@ -71,6 +72,8 @@ public class PropertiesPage extends PropertyPage {
 		combo.setItems(items);
 		if (selected >= 0) {
 			combo.select(selected);
+		} else {
+			combo.select(0);
 		}
 	}
 
