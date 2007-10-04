@@ -1,6 +1,6 @@
 /*
- * Contributors: Channing Walton Torsten Juergeleit helped me with making the content assist and open wiki link use the
- * same accelerators as the Java editor Ronald Steinhau for the Plugin protocol support
+ * Contributors: Channing Walton. Torsten Juergeleit helped with making the content assist and open wiki link use the
+ * same accelerators as the Java editor. Ronald Steinhau added the Plugin protocol support
  */
 package com.teaminabox.eclipse.wiki.editors;
 
@@ -182,7 +182,6 @@ public final class WikiEditor extends TextEditor implements PropertyListener {
 
 		action.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
 		setAction(WikiConstants.CONTENT_ASSIST, action);
-
 	}
 
 	public void navigateToNextLink() {

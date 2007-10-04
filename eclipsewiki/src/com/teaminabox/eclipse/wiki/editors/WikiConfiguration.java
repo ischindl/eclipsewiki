@@ -1,5 +1,7 @@
 package com.teaminabox.eclipse.wiki.editors;
 
+import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
@@ -7,6 +9,7 @@ import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.quickassist.IQuickAssistAssistant;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
@@ -17,6 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.eclipse.ui.texteditor.spelling.SpellingReconcileStrategy;
+import org.eclipse.ui.texteditor.spelling.SpellingService;
 
 import com.teaminabox.eclipse.wiki.editors.completion.WikiCompletionProcessor;
 
@@ -26,6 +30,7 @@ public final class WikiConfiguration extends TextSourceViewerConfiguration {
 	private WikiEditor	wikiEditor;
 
 	public WikiConfiguration(WikiEditor wikiEditor) {
+		super(wikiPlugin().getPreferenceStore());
 		this.wikiEditor = wikiEditor;
 	}
 
@@ -83,4 +88,9 @@ public final class WikiConfiguration extends TextSourceViewerConfiguration {
 		return new WikiHover(wikiEditor);
 	}
 
+	@Override
+	public IQuickAssistAssistant getQuickAssistAssistant(ISourceViewer sourceViewer) {
+		wikiPlugin().getPreferenceStore().setValue(SpellingService.PREFERENCE_SPELLING_ENABLED, true);
+		return super.getQuickAssistAssistant(sourceViewer);
+	}
 }
