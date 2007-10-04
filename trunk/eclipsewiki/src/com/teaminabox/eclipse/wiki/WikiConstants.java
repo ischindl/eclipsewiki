@@ -66,6 +66,7 @@ public interface WikiConstants {
 	String			STYLE_BOLD													= "bold";
 
 	String			CONTENT_ASSIST												= "WikiContentAssist";
+	String			QUICK_ASSIST												= "WikiQuickAssist";
 
 	String			NAVIGATE_TO_NEXT_LINK_ACTION_ID								= "com.teaminabox.eclipse.wiki.NavigateToNextLinkActionID";
 	String			NAVIGATE_TO_PREVIOUS_LINK_ACTION_ID							= "com.teaminabox.eclipse.wiki.NavigateToPreviousLinkActionID";

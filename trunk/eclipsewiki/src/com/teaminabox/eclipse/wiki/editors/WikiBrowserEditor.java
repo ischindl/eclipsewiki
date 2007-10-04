@@ -197,6 +197,9 @@ public final class WikiBrowserEditor extends MultiPageEditorPart implements IReu
 	}
 
 	private void initialiseSyntaxBrowser() {
+		if (syntaxBrowser == null) {
+			return;
+		}
 		String renderer = editor.getContext().getContentRenderer().getName();
 		IPath path = new Path(WikiConstants.HELP_PATH).append(renderer + ".html");
 		try {
