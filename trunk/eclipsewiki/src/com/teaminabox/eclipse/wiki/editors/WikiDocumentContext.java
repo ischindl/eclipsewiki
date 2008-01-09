@@ -153,11 +153,13 @@ public final class WikiDocumentContext {
 		return getWikiSpace().get(name);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<String, String> getWikiSpace() {
 		HashMap<String, String> local = new HashMap<String, String>();
 		local.putAll(WikiPreferences.getWikiSpace());
-		local.putAll((Map<? extends String, ? extends String>) localWikispace);
+		for (Object keyObject : localWikispace.keySet()) {
+			String key = (String) keyObject;
+			local.put(key, localWikispace.getProperty(key));
+		}
 		return local;
 	}
 
