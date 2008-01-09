@@ -36,7 +36,7 @@ public class FolderUtils {
 	 * @return true if the operation succeeds without errors
 	 */
 	public static boolean deleteFileStructure(File fileOrFolder) {
-		if (fileOrFolder == null)
+		if (fileOrFolder == null || !fileOrFolder.exists())
 			return false;
 		if (fileOrFolder.isDirectory()) {
 			/*

@@ -1,5 +1,6 @@
 package com.teaminabox.eclipse.wiki.editors.completion;
 
+import static com.teaminabox.eclipse.wiki.text.TextRegionBuilder.getTextRegionAtCursor;
 import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
 
 import java.io.File;
@@ -31,7 +32,6 @@ import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
-import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 import com.teaminabox.eclipse.wiki.text.UndefinedTextRegion;
 
 public class ResourceCompletionProcessor {
@@ -95,11 +95,14 @@ public class ResourceCompletionProcessor {
 		this.viewer = viewer;
 		this.documentOffset = documentOffset;
 		this.proposals = proposals;
-		TextRegion textRegion = TextRegionBuilder.getTextRegionAtCursor(wikiEditor, viewer.getDocument(), documentOffset);
 		if (isCompletionPossible()) {
-			return computeWorkspaceCompletions(textRegion);
+			return computeWorkspaceCompletions(getTextRegionAtCursor(wikiEditor, viewer.getDocument(), documentOffset));
 		}
 		return true;
+	}
+	
+	private boolean isCompletionPossible() throws BadLocationException {
+		return viewer.getDocument().getLength() > 0 && getCharacterAtDocumentOffset(viewer, documentOffset) != '.';
 	}
 
 	/**
@@ -122,10 +125,6 @@ public class ResourceCompletionProcessor {
 			wikiProposals = pluginCompletionProcessor.computePluginResourceCompletionProposals(viewer, documentOffset);
 		}
 		return wikiProposals;
-	}
-
-	private boolean isCompletionPossible() throws BadLocationException {
-		return viewer.getDocument().getLength() > 0 && getCharacterAtDocumentOffset(viewer, documentOffset) != '.';
 	}
 
 	/**
