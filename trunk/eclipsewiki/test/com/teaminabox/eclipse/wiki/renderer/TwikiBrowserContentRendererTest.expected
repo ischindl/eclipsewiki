@@ -75,13 +75,27 @@ td {
   </head>
   <body>
 <h1>Twiki Browser Content Renderer Test</h1>
-<h1>Header 1</h1>
-<h2>Header 2</h2>
-<h3>Header 3</h3>
-<h4>Header 4</h4>
-<h5>Header 5</h5>
-<h6>Header 6</h6>
-<h6>Header 7</h6>
+<div class="twikiToc">
+<ul>
+<li><a href="#Header_1">Header 1</a></li>
+<li><a href="#Header_2">Header 2</a></li>
+<li><a href="#Header_3">Header 3</a></li>
+<li><a href="#Header_4">Header 4</a></li>
+<li><a href="#Header_5">Header 5</a></li>
+<li><a href="#Header_6">Header 6</a></li>
+<li><a href="#Header_7">Header 7</a></li>
+<li><a href="#Bug:_[_1490333_]_!WikiWord_in_heading_not_recognized_-_TwikiBrowserContentRendererTest">Bug: [ 1490333 ] !WikiWord in heading not recognized - TwikiBrowserContentRendererTest</a></li>
+</ul>
+</div>
+<p>
+</p>
+<a name="#Header_1"/><h1>Header 1</h1>
+<a name="#Header_2"/><h2>Header 2</h2>
+<a name="#Header_3"/><h3>Header 3</h3>
+<a name="#Header_4"/><h4>Header 4</h4>
+<a name="#Header_5"/><h5>Header 5</h5>
+<a name="#Header_6"/><h6>Header 6</h6>
+<a name="#Header_7"/><h6>Header 7</h6>
 <p>
 </p>
 <p>
@@ -131,7 +145,7 @@ Bug: [ 1487063 ] Some WikiWords not recognized: TipsJ2ME<a href="http://--wiki/T
 Bug: [ 1181020 ] Escape WikiWords such as WardsBrowserContentRendererTest TipsJ2ME MeetingNotes2006x03x25 TwikiBrowserContentRendererTest</p>
 <p>
 </p>
-<h3>Bug: [ 1490333 ] WikiWord in heading not recognized - <a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></h3>
+<a name="#Bug:_[_1490333_]_!WikiWord_in_heading_not_recognized_-_TwikiBrowserContentRendererTest"/><h3>Bug: [ 1490333 ] WikiWord in heading not recognized - <a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></h3>
 <p>
 </p>
 <p>
