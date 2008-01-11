@@ -20,6 +20,7 @@ import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 
 public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
+	private static final String					TOC							= "%TOC%";
 	private static final String					TWIKI_WORD_PATTERN			= "[A-Z]+[a-z]+[A-Z]+\\w*";
 	private static final String					ESCAPED_TWIKI_WORD_PATTERN	= "!(\\[\\[)?" + TwikiBrowserContentRenderer.TWIKI_WORD_PATTERN + "(\\]\\])?";
 	private static final String[]				TEXT_TO_REMOVE_FOR_ESCAPED	= { "\\!", "\\[\\[", "\\]\\]" };
@@ -48,10 +49,7 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	@Override
 	protected void appendHeader(String line) {
 		String headerText = getHeaderText(line);
-		/*
-		 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307 fix needed before I can use this
-		 */
-		// appendHeaderAnchor(headerText);
+		appendHeaderAnchor(headerText);
 		int headerSize = getHeaderSize(line);
 		append("<h").append(headerSize).append(">");
 		parseAndAppend(headerText);
@@ -59,9 +57,6 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		appendNewLine();
 	}
 
-	/**
-	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307 fix needed before I can use this
-	 */
 	private void appendHeaderAnchor(String headerText) {
 		append("<a name=\"#").append(createHeaderAnchor(headerText)).append("\"/>");
 	}
@@ -131,11 +126,10 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
 	@Override
 	protected boolean process(String line) {
-		// TODO enable this when this bug is fixed: https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307
-//		if ("%TOC%".equals(line)) {
-//			appendToc();
-//			return true;
-//		}
+		if (TOC.equals(line)) {
+			appendToc();
+			return true;
+		}
 		if (isVerbatim(line)) {
 			processVerbatim();
 			return true;
@@ -147,9 +141,6 @@ public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return false;
 	}
 
-	/**
-	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=176307 fix needed before I can use this
-	 */
 	private void appendToc() {
 		appendln("<div class=\"twikiToc\">");
 		appendln("<ul>");
