@@ -216,7 +216,7 @@ public final class WikiEditor extends TextEditor implements PropertyListener {
 	public void redrawTextAsync() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				if (WikiEditor.this.getSourceViewer() != null) {
+				if (WikiEditor.this.getSourceViewer() != null && !WikiEditor.this.getSourceViewer().getTextWidget().isDisposed()) {
 					WikiEditor.this.getSourceViewer().invalidateTextPresentation();
 				}
 			}
