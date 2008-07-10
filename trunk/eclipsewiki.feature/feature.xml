@@ -2,7 +2,7 @@
 <feature
       id="com.stateofflow.EclipseWikiFeature"
       label="EclipseWiki"
-      version="2.7.0.qualifier"
+      version="2.7.1.qualifier"
       provider-name="State of Flow">
 
    <description url="http://www.stateoffow.com/">

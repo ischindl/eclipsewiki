@@ -40,6 +40,7 @@ Text with Java types com.teaminabox.foo.BigClass and an inner class com.teaminab
 Bug: [ 1490342 ] URL in brackets detected incorrectly: I am sure you have heard of Google (http://www.google.com).
 Bug: [ 1487063 ] Some !WikiWords not recognized: TipsJ2ME EclipseME MyVPN MeetingNotes2006x03x25 blah
 Bug: [ 1181020 ] Escape !WikiWords such as !WardsBrowserContentRendererTest !TipsJ2ME !MeetingNotes2006x03x25 ![[TwikiBrowserContentRendererTest]]
+Bug: [ 2014771 ] %-encoded URLs like this http://abc.def.se/WEBLINK/ViewDocs?DocumentName=EAB%2FOEP-07%3A0518&Latest=true
 
 ---+++ Bug: [ 1490333 ] !WikiWord in heading not recognized - TwikiBrowserContentRendererTest
 

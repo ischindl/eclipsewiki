@@ -32,6 +32,8 @@ Text with Java types com.teaminabox.foo.BigClass and an inner class com.teaminab
 
 Bug: [ 1490342 ] URL in brackets detected incorrectly: I am sure you have heard of Google (http://www.google.com).
 
+Bug: [2014771] %-encoded URLs like this http://abc.def.se/WEBLINK/ViewDocs?DocumentName=EAB%2FOEP-07%3A0518&Latest=true
+
 Embed:EmbeddedContent here
 
 Embed:com.teaminabox.foo.BigClass
