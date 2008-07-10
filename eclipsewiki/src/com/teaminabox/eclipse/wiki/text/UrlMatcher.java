@@ -1,12 +1,12 @@
 package com.teaminabox.eclipse.wiki.text;
 
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.join;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 
 public final class UrlMatcher extends PatternMatcher {
 
-	private static final String	URL_REGEX	= "(" + StringUtils.join(WikiConstants.URL_PREFIXES, '|') + "):(//)?([-_\\.!~*';/?:@#&=+$,\\p{Alnum}])+";
+	private static final String	URL_REGEX	= "(" + join(WikiConstants.URL_PREFIXES, '|') + "):(//)?([-_\\.!~*';/?:@#&=+$%,\\p{Alnum}])+";
 
 	public UrlMatcher() {
 		super(UrlMatcher.URL_REGEX);

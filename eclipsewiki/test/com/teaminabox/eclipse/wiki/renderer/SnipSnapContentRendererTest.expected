@@ -283,6 +283,10 @@ Bug: 1490342 URL in brackets detected incorrectly: I am sure you have heard of G
 <p>
 </p>
 <p>
+Bug: 2014771 %-encoded URLs like this <a href="http://abc.def.se/WEBLINK/ViewDocs?DocumentName=EAB%2FOEP-07%3A0518&amp;Latest=true">http://abc.def.se/WEBLINK/ViewDocs?DocumentName=EAB%2FOEP-07%3A0518&amp;Latest=true</a></p>
+<p>
+</p>
+<p>
 <p>
 Embedded content with a link to WardsBrowserContentRendererTest<a href="http://--wiki/WardsBrowserContentRendererTest">?</a></p>
  here</p>

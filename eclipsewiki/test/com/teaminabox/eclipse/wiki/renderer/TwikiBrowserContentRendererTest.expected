@@ -144,6 +144,8 @@ Bug: [ 1487063 ] Some WikiWords not recognized: TipsJ2ME<a href="http://--wiki/T
 <p>
 Bug: [ 1181020 ] Escape WikiWords such as WardsBrowserContentRendererTest TipsJ2ME MeetingNotes2006x03x25 TwikiBrowserContentRendererTest</p>
 <p>
+Bug: [ 2014771 ] %-encoded URLs like this <a href="http://abc.def.se/WEBLINK/ViewDocs?DocumentName=EAB%2FOEP-07%3A0518&amp;Latest=true">http://abc.def.se/WEBLINK/ViewDocs?DocumentName=EAB%2FOEP-07%3A0518&amp;Latest=true</a></p>
+<p>
 </p>
 <a name="#Bug:_[_1490333_]_!WikiWord_in_heading_not_recognized_-_TwikiBrowserContentRendererTest"/><h3>Bug: [ 1490333 ] WikiWord in heading not recognized - <a href="http://--wiki/TwikiBrowserContentRendererTest">TwikiBrowserContentRendererTest</a></h3>
 <p>
