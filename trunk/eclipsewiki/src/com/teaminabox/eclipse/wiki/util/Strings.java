@@ -6,7 +6,7 @@ public final class Strings {
 	 * Put spaces before the capital of a wiki word (except the first character).
 	 */
 	public static String deCamelCase(String wikiWord) {
-		return wikiWord.replaceAll("([A-Z])", " $0").trim();
+		return wikiWord.replaceAll("([A-Z])", " $0").replaceAll("  ", " ").trim();
 	}
 
 	public static boolean isWhiteSpaceCharacter(char c) {
