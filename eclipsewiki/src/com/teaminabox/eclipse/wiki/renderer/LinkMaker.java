@@ -9,6 +9,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
+import com.teaminabox.eclipse.wiki.text.ProjectResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
@@ -23,6 +24,8 @@ public abstract class LinkMaker {
 	public abstract String make(WikiUrlTextRegion wikiUrlTextRegion);
 
 	public abstract String make(EclipseResourceTextRegion eclipseResourceTextRegion);
+	
+	public abstract String make(ProjectResourceTextRegion projectResourceTextRegion) ;
 
 	public abstract String make(PluginResourceTextRegion pluginResourceTextRegion);
 

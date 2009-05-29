@@ -50,4 +50,9 @@ public class GenericTextRegionVisitor<T> implements TextRegionVisitor<T> {
 	public T visit(EmbeddedWikiWordTextRegion region) {
 		return defaultReturnValue;
 	}
+
+	public T visit(ProjectResourceTextRegion arg0) {
+		return defaultReturnValue;
+	}
+
 }

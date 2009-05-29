@@ -32,6 +32,7 @@ import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
+import com.teaminabox.eclipse.wiki.text.ProjectResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
@@ -86,6 +87,12 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 	public Boolean visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		String location = eclipseResourceTextRegion.getText();
 		openEclipseLocation(location);
+		return true;
+	}
+	
+	@Override
+	public Boolean visit(ProjectResourceTextRegion projectResourceTextRegion) {
+		openEclipseLocation(projectResourceTextRegion.asEclipseLocation());
 		return true;
 	}
 

@@ -32,6 +32,7 @@ public interface WikiConstants {
 
 	String[]		URL_PREFIXES												= new String[] { "http", "https", "ftp", "sftp", "mailto", "file", "news", "gopher", "telnet", "afp", "nfs", "smb" };
 	String			ECLIPSE_PREFIX												= "Eclipse:";
+	String			PROJECT_PREFIX												= "Project:";
 	String			PLUGIN_PREFIX												= "Plugin:";
 	String			EMBEDDED_PREFIX												= "Embed:";
 	String			JAVA_LINK_PREFIX											= "Java:";

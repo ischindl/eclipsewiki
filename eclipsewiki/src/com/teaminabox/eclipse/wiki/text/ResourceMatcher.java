@@ -33,7 +33,7 @@ public abstract class ResourceMatcher extends AbstractTextRegionMatcher {
 			if (section.length() > 0 && section.charAt(section.length() - 1) == WikiConstants.LINE_NUMBER_SEPARATOR) {
 				continue;
 			}
-			File resource = findResourceFromPath(section);
+			File resource = findResourceFromPath(context, section);
 			if (resource != null && resource.exists()) {
 				// is there a line number too?
 				if (i < text.length() && WikiConstants.LINE_NUMBER_SEPARATOR == text.charAt(i)) {
@@ -46,7 +46,7 @@ public abstract class ResourceMatcher extends AbstractTextRegionMatcher {
 		return fPrefix.length();
 	}
 
-	protected abstract File findResourceFromPath(String section);
+	protected abstract File findResourceFromPath(WikiDocumentContext context, String section);
 
 	private int getLineNumberLength(String text, int colon) {
 		String number = new String(text.substring(colon + 1));
