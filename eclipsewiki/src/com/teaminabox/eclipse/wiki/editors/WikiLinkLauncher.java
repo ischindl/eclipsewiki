@@ -32,7 +32,6 @@ import com.teaminabox.eclipse.wiki.text.GenericTextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
-import com.teaminabox.eclipse.wiki.text.ProjectResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
@@ -90,12 +89,6 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 		return true;
 	}
 	
-	@Override
-	public Boolean visit(ProjectResourceTextRegion projectResourceTextRegion) {
-		openEclipseLocation(projectResourceTextRegion.asEclipseLocation());
-		return true;
-	}
-
 	@Override
 	public Boolean visit(PluginResourceTextRegion pluginResourceTextRegion) {
 		String location = pluginResourceTextRegion.getText();
@@ -210,12 +203,12 @@ final class WikiLinkLauncher extends GenericTextRegionVisitor<Boolean> {
 	private void openEclipseResource(String path) {
 		try {
 			PathWithLineNumber pathWithLineNumber = new PathWithLineNumber(path);
-			if (pathWithLineNumber.segmentCount() < 2) {
-				wikiPlugin().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TEXT));
-				return;
-			}
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(pathWithLineNumber.getPath());
-			if (Resources.existsAsFile(resource)) {
+//			if (pathWithLineNumber.segmentCount() < 2) {
+//				wikiPlugin().reportError(WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TITLE), WikiPlugin.getResourceString(WikiConstants.RESOURCE_WIKI_ERROR_DIALOGUE_OPEN_ECLIPSE_RESOURCE_TEXT));
+//				return;
+//			}
+			IResource resource = Resources.findFileInProjectOrWorkspace(editor.getContext(), pathWithLineNumber.getPath().toString());
+			if (resource != null) {
 				IEditorPart part = openFile((IFile) resource);
 				if (pathWithLineNumber.getLine() > 0 && part instanceof AbstractTextEditor) {
 					gotoLine(pathWithLineNumber.getLine(), part);
