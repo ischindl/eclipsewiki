@@ -1,11 +1,11 @@
 package com.teaminabox.eclipse.wiki.text;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.text.rules.IToken;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.ColourManager;
+import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
 /**
  * A region of text referring to a resource in the Eclipse workspace.
@@ -39,9 +39,9 @@ public final class EclipseResourceTextRegion extends TextRegion {
 		return true;
 	}
 
-	public IResource getResource() {
+	public IResource getResource(WikiDocumentContext context) {
 		String file = new String(getText().substring(WikiConstants.ECLIPSE_PREFIX.length()));
-		return ResourcesPlugin.getWorkspace().getRoot().findMember(file);
+		return context.getResource(file);
 	}
 
 }

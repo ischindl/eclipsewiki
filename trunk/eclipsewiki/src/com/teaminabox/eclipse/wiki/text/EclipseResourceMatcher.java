@@ -2,10 +2,11 @@ package com.teaminabox.eclipse.wiki.text;
 
 import java.io.File;
 
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IFile;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 /**
  * I match links to eclipse resources.
@@ -28,7 +29,9 @@ public final class EclipseResourceMatcher extends ResourceMatcher {
 	@Override
 	protected File findResourceFromPath(WikiDocumentContext context, String section) {
 		try {
-			return ResourcesPlugin.getWorkspace().getRoot().findMember(section).getLocation().toFile();
+			IFile file = Resources.findFileInProjectOrWorkspace(context, section);
+			if (file == null) return null;
+			return file.getLocation().toFile();
 		} catch (Exception ex) {
 			return null;
 		}

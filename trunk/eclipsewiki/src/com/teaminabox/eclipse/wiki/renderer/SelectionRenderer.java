@@ -100,7 +100,7 @@ public class SelectionRenderer {
 		relativePath = stripLineNumber(relativePath);
 		try {
 			if (relativePath.length() > 0) {
-				IFile file = Resources.findFileInWorkspace(relativePath);
+				IFile file = Resources.findFileInProjectOrWorkspace(wikiEditor.getContext(),relativePath);
 				if (file != null) {
 					return getHoverText(file);
 				}

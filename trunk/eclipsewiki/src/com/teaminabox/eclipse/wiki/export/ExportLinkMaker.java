@@ -12,7 +12,6 @@ import com.teaminabox.eclipse.wiki.renderer.LinkMaker;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
-import com.teaminabox.eclipse.wiki.text.ProjectResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 import com.teaminabox.eclipse.wiki.util.Resources;
@@ -48,24 +47,13 @@ public final class ExportLinkMaker extends LinkMaker {
 
 	@Override
 	public String make(EclipseResourceTextRegion eclipseResourceTextRegion) {
-		if (Resources.existsAsFile(eclipseResourceTextRegion.getResource())) {
+		if (Resources.existsAsFile(eclipseResourceTextRegion.getResource(getContext()))) {
 			String href = getHref(eclipseResourceTextRegion);
 			String link = getLink(href, eclipseResourceTextRegion.getText());
-			linkedResources.put(eclipseResourceTextRegion.getResource(), href);
+			linkedResources.put(eclipseResourceTextRegion.getResource(getContext()), href);
 			return link;
 		}
 		return eclipseResourceTextRegion.getText();
-	}
-
-	@Override
-	public String make(ProjectResourceTextRegion projectResourceTextRegion) {
-		if (Resources.existsAsFile(projectResourceTextRegion.getResource())) {
-			String href = getHref(projectResourceTextRegion);
-			String link = getLink(href, projectResourceTextRegion.getText());
-			linkedResources.put(projectResourceTextRegion.getResource(), href);
-			return link;
-		}
-		return projectResourceTextRegion.getText();
 	}
 
 	@Override
@@ -99,17 +87,10 @@ public final class ExportLinkMaker extends LinkMaker {
 	}
 
 	public String getHref(EclipseResourceTextRegion eclipseResourceTextRegion) {
-		if (eclipseResourceTextRegion.getResource().getName().endsWith("java")) {
-			return WikiExporter.WORKSPACE + eclipseResourceTextRegion.getResource().getFullPath().toString() + ".html";
+		if (eclipseResourceTextRegion.getResource(getContext()).getName().endsWith("java")) {
+			return WikiExporter.WORKSPACE + eclipseResourceTextRegion.getResource(getContext()).getFullPath().toString() + ".html";
 		}
-		return WikiExporter.WORKSPACE + eclipseResourceTextRegion.getResource().getFullPath().toString();
-	}
-
-	public String getHref(ProjectResourceTextRegion projectResourceTextRegion) {
-		if (projectResourceTextRegion.getResource().getName().endsWith("java")) {
-			return WikiExporter.WORKSPACE + projectResourceTextRegion.getResource().getFullPath().toString() + ".html";
-		}
-		return WikiExporter.WORKSPACE + projectResourceTextRegion.getResource().getFullPath().toString();
+		return WikiExporter.WORKSPACE + eclipseResourceTextRegion.getResource(getContext()).getFullPath().toString();
 	}
 
 	public String getHref(PluginResourceTextRegion pluginResourceTextRegion) {

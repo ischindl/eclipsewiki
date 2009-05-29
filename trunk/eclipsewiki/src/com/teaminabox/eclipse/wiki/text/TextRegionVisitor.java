@@ -20,6 +20,4 @@ public interface TextRegionVisitor<T> {
 	T visit(ForcedLinkTextRegion region);
 
 	T visit(EmbeddedWikiWordTextRegion region);
-
-	T visit(ProjectResourceTextRegion projectResourceTextRegion);
 }

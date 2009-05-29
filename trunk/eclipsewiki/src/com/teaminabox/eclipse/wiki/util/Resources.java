@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -17,6 +18,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
+import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
 public final class Resources {
 
@@ -57,14 +59,10 @@ public final class Resources {
 		return Resources.exists(resource) && resource.getType() == IResource.FILE;
 	}
 
-	public static IFile findFileInWorkspace(String workspaceRelativePath) {
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath);
-		if (Resources.existsAsFile(resource)) {
-			return (IFile) resource;
-		}
-		return null;
+	private static IFile findFileInWorkspace(String workspaceRelativePath) {
+		return fileIfExists(ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath));
 	}
-
+	
 	public static boolean isWikiFile(IResource resource) {
 		return Resources.exists(resource) && resource.getFileExtension() != null && WikiConstants.WIKI_FILE_EXTENSION.endsWith(resource.getFileExtension());
 	}
@@ -72,4 +70,23 @@ public final class Resources {
 	public static boolean isWikiFile(IFile file) {
 		return file.getName().endsWith(WikiConstants.WIKI_FILE_EXTENSION);
 	}
+
+	private static IFile findFileInProject(IProject project, String path) {
+		return fileIfExists(fileIfExists(project.findMember(path)));
+	}
+
+	public static IFile findFileInProjectOrWorkspace(WikiDocumentContext context, String path) {
+		IFile file = findFileInWorkspace(path);
+		if (file == null) file = Resources.findFileInProject(context.getProject(), path);
+		if (file == null) return null;
+		return fileIfExists(file);
+	}
+
+	private static IFile fileIfExists(IResource resource) {
+		if (Resources.existsAsFile(resource)) {
+			return (IFile) resource;
+		}
+		return null;
+	}
+
 }

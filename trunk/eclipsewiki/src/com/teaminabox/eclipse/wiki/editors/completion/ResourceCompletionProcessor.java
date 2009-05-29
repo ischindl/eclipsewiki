@@ -33,6 +33,7 @@ import com.teaminabox.eclipse.wiki.text.PluginPathFinder;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.UndefinedTextRegion;
+import com.teaminabox.eclipse.wiki.util.Resources;
 
 public class ResourceCompletionProcessor {
 
@@ -272,7 +273,8 @@ public class ResourceCompletionProcessor {
 	}
 
 	private String[] getChildren(IPath parent, String resourcePrefix) throws CoreException {
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(parent);
+//		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(parent);
+		IResource resource = Resources.findFileInProjectOrWorkspace(wikiEditor.getContext(), parent.toString());
 		if (resource == null) {
 			File xfile = parent.toFile();
 			if (xfile.exists()) {

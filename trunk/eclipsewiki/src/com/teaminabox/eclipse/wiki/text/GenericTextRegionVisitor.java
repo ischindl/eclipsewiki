@@ -51,8 +51,4 @@ public class GenericTextRegionVisitor<T> implements TextRegionVisitor<T> {
 		return defaultReturnValue;
 	}
 
-	public T visit(ProjectResourceTextRegion arg0) {
-		return defaultReturnValue;
-	}
-
 }

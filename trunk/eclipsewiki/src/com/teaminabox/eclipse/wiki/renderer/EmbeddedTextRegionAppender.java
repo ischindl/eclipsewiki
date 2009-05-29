@@ -59,8 +59,8 @@ public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<S
 	@Override
 	public String visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		try {
-			if (Resources.existsAsFile(eclipseResourceTextRegion.getResource())) {
-				return Resources.getContents((IFile) eclipseResourceTextRegion.getResource());
+			if (Resources.existsAsFile(eclipseResourceTextRegion.getResource(context))) {
+				return Resources.getContents((IFile) eclipseResourceTextRegion.getResource(context));
 			}
 		} catch (Exception e) {
 			report(e);

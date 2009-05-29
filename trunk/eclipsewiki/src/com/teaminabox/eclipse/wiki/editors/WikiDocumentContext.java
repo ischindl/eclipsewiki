@@ -219,4 +219,8 @@ public final class WikiDocumentContext {
 			return null;
 		}
 	}
+
+	public IResource getResource(String path) {
+		return Resources.findFileInProjectOrWorkspace(this, path);
+	}
 }
