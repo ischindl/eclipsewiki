@@ -14,9 +14,6 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
  */
 public final class EclipseResourceMatcher extends ResourceMatcher {
 
-	/**
-	 * @param prefix
-	 */
 	public EclipseResourceMatcher() {
 		super(WikiConstants.ECLIPSE_PREFIX);
 	}
@@ -28,7 +25,8 @@ public final class EclipseResourceMatcher extends ResourceMatcher {
 		return null;
 	}
 
-	protected File findResourceFromPath(String section) {
+	@Override
+	protected File findResourceFromPath(WikiDocumentContext context, String section) {
 		try {
 			return ResourcesPlugin.getWorkspace().getRoot().findMember(section).getLocation().toFile();
 		} catch (Exception ex) {

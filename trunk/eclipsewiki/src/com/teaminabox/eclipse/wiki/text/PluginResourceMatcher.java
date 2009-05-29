@@ -25,7 +25,8 @@ public final class PluginResourceMatcher extends ResourceMatcher {
 		return null;
 	}
 
-	protected File findResourceFromPath(String section) {
+	@Override
+	protected File findResourceFromPath(WikiDocumentContext context, String section) {
 		IResource res = PluginResourceTextRegion.findResource(section);
 		if (res == null) {
 			IPath resPath = PluginPathFinder.getPluginPath(section);

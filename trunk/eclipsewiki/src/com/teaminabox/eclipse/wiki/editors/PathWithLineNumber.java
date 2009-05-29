@@ -8,7 +8,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 /**
  * Manages paths of the form a/b/c:123
  */
-class PathWithLineNumber {
+public class PathWithLineNumber {
 	private int		line;
 	private IPath	relPath;
 

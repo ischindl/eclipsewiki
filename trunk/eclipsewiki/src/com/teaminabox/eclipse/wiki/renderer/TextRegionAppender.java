@@ -7,6 +7,7 @@ import com.teaminabox.eclipse.wiki.text.EmbeddedWikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.text.ForcedLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
+import com.teaminabox.eclipse.wiki.text.ProjectResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionVisitor;
 import com.teaminabox.eclipse.wiki.text.UndefinedTextRegion;
@@ -47,6 +48,10 @@ public class TextRegionAppender implements TextRegionVisitor<String> {
 	public String visit(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		return linkMaker.make(eclipseResourceTextRegion);
 	}
+	
+	public String visit(ProjectResourceTextRegion projectResourceTextRegion) {
+		return linkMaker.make(projectResourceTextRegion);
+	}
 
 	public String visit(PluginResourceTextRegion pluginResourceTextRegion) {
 		return linkMaker.make(pluginResourceTextRegion);
@@ -64,4 +69,5 @@ public class TextRegionAppender implements TextRegionVisitor<String> {
 		TextRegion embeddedTextRegion = region.getEmbeddedTextRegion();
 		return embeddedTextRegion.accept(new EmbeddedTextRegionAppender(embeddedTextRegion, context, linkMaker));
 	}
+
 }

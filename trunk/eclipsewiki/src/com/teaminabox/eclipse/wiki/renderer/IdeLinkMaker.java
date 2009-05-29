@@ -5,6 +5,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.JavaTypeTextRegion;
 import com.teaminabox.eclipse.wiki.text.PluginResourceTextRegion;
+import com.teaminabox.eclipse.wiki.text.ProjectResourceTextRegion;
 import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
@@ -36,6 +37,10 @@ public final class IdeLinkMaker extends LinkMaker {
 
 	public String make(EclipseResourceTextRegion eclipseResourceTextRegion) {
 		return getLink(WikiConstants.WIKI_HREF + eclipseResourceTextRegion.getText(), eclipseResourceTextRegion.getText());
+	}
+
+	public String make(ProjectResourceTextRegion projectResourceTextRegion) {
+		return getLink(WikiConstants.WIKI_HREF + projectResourceTextRegion.asEclipseLocation(), projectResourceTextRegion.getText());
 	}
 
 	public String make(PluginResourceTextRegion pluginResourceTextRegion) {
