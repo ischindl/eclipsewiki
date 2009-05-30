@@ -49,3 +49,6 @@ Embed:EmbeddedContent here
 Embed:[[EmbeddedContent]] forced link
 
 Embed:com.teaminabox.foo.BigClass
+
+Eclipse:TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java should be a link
+Eclipse:/com/teaminabox/foo/BigClass.java should be a link

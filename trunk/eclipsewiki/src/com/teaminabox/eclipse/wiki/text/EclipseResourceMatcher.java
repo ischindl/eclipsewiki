@@ -2,7 +2,7 @@ package com.teaminabox.eclipse.wiki.text;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
@@ -29,7 +29,7 @@ public final class EclipseResourceMatcher extends ResourceMatcher {
 	@Override
 	protected File findResourceFromPath(WikiDocumentContext context, String section) {
 		try {
-			IFile file = Resources.findFileInProjectOrWorkspace(context, section);
+			IResource file = Resources.findResourceInProjectOrWorkspace(context, section);
 			if (file == null) return null;
 			return file.getLocation().toFile();
 		} catch (Exception ex) {

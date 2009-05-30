@@ -196,5 +196,11 @@ Embedded content with a link to WardsBrowserContentRendererTest<a href="http://-
 <!-- ======================================================== -->
 
 </p>
+<p>
+</p>
+<p>
+<a href="http://--wiki/Eclipse:TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">Eclipse:TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java</a> should be a link</p>
+<p>
+<a href="http://--wiki/Eclipse:/com/teaminabox/foo/BigClass.java">Eclipse:/com/teaminabox/foo/BigClass.java</a> should be a link</p>
   </body>
 </html>

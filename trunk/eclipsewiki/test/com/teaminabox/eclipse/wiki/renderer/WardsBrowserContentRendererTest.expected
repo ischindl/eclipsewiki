@@ -177,5 +177,11 @@ Embedded content with a link to <a href="http://--wiki/WardsBrowserContentRender
 <!-- ======================================================== -->
 
 </p>
+<p>
+</p>
+<p>
+<a href="http://--wiki/Eclipse:TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java">Eclipse:TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java</a> should be a link</p>
+<p>
+<a href="http://--wiki/Eclipse:/com/teaminabox/foo/BigClass.java">Eclipse:/com/teaminabox/foo/BigClass.java</a> should be a link</p>
   </body>
 </html>

@@ -5,6 +5,7 @@ import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
@@ -259,7 +260,7 @@ public class ResourceCompletionProcessor {
 
 	String[] getChildren(String path) throws CoreException {
 		if (path.length() == 0 || path.equals(WikiConstants.PATH_SEPARATOR) || path.indexOf(WikiConstants.PATH_SEPARATOR, 1) == -1) {
-			return getProjectList(path);
+			return getProjectListWithLocalChildren(path);
 		}
 		// path must be at least one segment at this point (project name)
 		IPath relPath = new Path(path);
@@ -272,9 +273,17 @@ public class ResourceCompletionProcessor {
 		return getChildren(relPath, lastBit);
 	}
 
+	private String[] getProjectListWithLocalChildren(String path) throws CoreException {
+		ArrayList<String> list = new ArrayList<String>(Arrays.asList(getProjectList(path)));
+		IResource[] members = wikiEditor.getContext().getProject().members();
+		for (IResource iResource : members) {
+			list.add(iResource.getName());
+		}
+		return list.toArray(new String[list.size()]);
+	}
+
 	private String[] getChildren(IPath parent, String resourcePrefix) throws CoreException {
-//		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(parent);
-		IResource resource = Resources.findFileInProjectOrWorkspace(wikiEditor.getContext(), parent.toString());
+		IResource resource = Resources.findResourceInProjectOrWorkspace(wikiEditor.getContext(), parent.toString());
 		if (resource == null) {
 			File xfile = parent.toFile();
 			if (xfile.exists()) {
