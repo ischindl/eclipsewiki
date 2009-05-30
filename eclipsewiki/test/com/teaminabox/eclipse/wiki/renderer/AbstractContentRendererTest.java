@@ -19,12 +19,13 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 
 	private static final String	CLASS_SOURCE	= "package com.teaminabox.foo;\npublic class BigClass { class InnerClass {} }";
 	private static final String	CLASS_NAME		= "com.teaminabox.foo.BigClass";
+	private static final String	CLASS_FILE_NAME	= AbstractContentRendererTest.CLASS_NAME.replaceAll("\\.", "/") + ".java";
 
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		create(AbstractContentRendererTest.CLASS_SOURCE, AbstractContentRendererTest.CLASS_NAME.replaceAll("\\.", "/") + ".java");
+		create(AbstractContentRendererTest.CLASS_SOURCE, CLASS_FILE_NAME);
 	}
 
 	protected abstract AbstractContentRenderer getRenderer();
@@ -49,6 +50,7 @@ public abstract class AbstractContentRendererTest extends WikiTest {
 		String functionalTest = getFunctionalTestFileName();
 		String wikiDocument = functionalTest + ".wiki";
 		String content = load(wikiDocument);
+		content = content.replaceAll("TEST_PROJECT_NAME", getJavaProject().getElementName());
 		WikiBrowserEditor editor = createWikiDocumentAndOpen(content, wikiDocument);
 
 		String expected = load(functionalTest + ".expected");

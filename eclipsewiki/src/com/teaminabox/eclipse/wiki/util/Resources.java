@@ -59,8 +59,8 @@ public final class Resources {
 		return Resources.exists(resource) && resource.getType() == IResource.FILE;
 	}
 
-	private static IFile findFileInWorkspace(String workspaceRelativePath) {
-		return fileIfExists(ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath));
+	private static IResource findResourceInWorkspace(String workspaceRelativePath) {
+		return ResourcesPlugin.getWorkspace().getRoot().findMember(workspaceRelativePath);
 	}
 	
 	public static boolean isWikiFile(IResource resource) {
@@ -71,13 +71,15 @@ public final class Resources {
 		return file.getName().endsWith(WikiConstants.WIKI_FILE_EXTENSION);
 	}
 
-	private static IFile findFileInProject(IProject project, String path) {
-		return fileIfExists(fileIfExists(project.findMember(path)));
+	public static IResource findResourceInProjectOrWorkspace(WikiDocumentContext context, String path) {
+		IResource resource = findResourceInWorkspace(path);
+		if (resource == null) resource = context.getProject().findMember(path);
+		if (resource == null) return null;
+		return resource;
 	}
 
 	public static IFile findFileInProjectOrWorkspace(WikiDocumentContext context, String path) {
-		IFile file = findFileInWorkspace(path);
-		if (file == null) file = Resources.findFileInProject(context.getProject(), path);
+		IResource file = findResourceInProjectOrWorkspace(context, path);
 		if (file == null) return null;
 		return fileIfExists(file);
 	}

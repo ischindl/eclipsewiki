@@ -37,3 +37,6 @@ Bug: [2014771] %-encoded URLs like this http://abc.def.se/WEBLINK/ViewDocs?Docum
 Embed:EmbeddedContent here
 
 Embed:com.teaminabox.foo.BigClass
+
+Eclipse:TEST_PROJECT_NAME/com/teaminabox/foo/BigClass.java should be a link
+Eclipse:/com/teaminabox/foo/BigClass.java should be a link
