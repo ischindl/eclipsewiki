@@ -9,7 +9,7 @@ import org.eclipse.core.resources.IProject;
 /**
  * @author Ronald Steinhau
  */
-public final class PluginProjectVisitor extends ProjectVisitor {
+public class PluginProjectVisitor extends ProjectVisitor {
 
 	private String	fPluginID;
 

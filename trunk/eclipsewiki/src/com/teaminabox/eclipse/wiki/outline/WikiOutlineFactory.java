@@ -11,7 +11,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.renderer.StructureClosure;
 
-public final class WikiOutlineFactory {
+public class WikiOutlineFactory {
 
 	private static final WikiOutlineFactory	INSTANCE	= new WikiOutlineFactory();
 

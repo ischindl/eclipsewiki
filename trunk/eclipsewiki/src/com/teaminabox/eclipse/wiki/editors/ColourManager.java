@@ -7,7 +7,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-public final class ColourManager {
+public class ColourManager {
 
 	private Map<RGB, Color>	fColorTable	= new HashMap<RGB, Color>();
 	private WikiEditor		editor;

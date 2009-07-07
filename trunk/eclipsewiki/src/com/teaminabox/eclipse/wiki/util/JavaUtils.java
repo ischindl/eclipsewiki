@@ -13,7 +13,7 @@ import de.java2html.javasource.JavaSource;
 import de.java2html.javasource.JavaSourceParser;
 import de.java2html.options.Java2HtmlConversionOptions;
 
-public final class JavaUtils {
+public class JavaUtils {
 
 	public static boolean isJavaClassNamePart(char c) {
 		return Character.isJavaIdentifierPart(c) || c == '.';

@@ -16,7 +16,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
-public final class WikiCompletionProcessor implements IContentAssistProcessor {
+public class WikiCompletionProcessor implements IContentAssistProcessor {
 
 	private static final char[]					AUTO_ACTIVATION_CHARACTERS	= new char[] { '.', '/' };
 	private static final ICompletionProposal[]	EMPTY_COMPLETIONS			= new ICompletionProposal[0];

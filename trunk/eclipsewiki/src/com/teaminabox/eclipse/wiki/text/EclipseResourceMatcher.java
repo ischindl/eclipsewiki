@@ -13,7 +13,7 @@ import com.teaminabox.eclipse.wiki.util.Resources;
  * <P>
  * The resource must exist for there to be a match
  */
-public final class EclipseResourceMatcher extends ResourceMatcher {
+public class EclipseResourceMatcher extends ResourceMatcher {
 
 	public EclipseResourceMatcher() {
 		super(WikiConstants.ECLIPSE_PREFIX);

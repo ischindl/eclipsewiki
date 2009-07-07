@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IPath;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
-public final class Resources {
+public class Resources {
 
 	public static String getContentsRelativeToPlugin(IPath path) throws IOException {
 		return Resources.getContents(FileLocator.openStream(wikiPlugin().getBundle(), path, false));

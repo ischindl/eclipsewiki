@@ -2,7 +2,7 @@ package com.teaminabox.eclipse.wiki.text;
 
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
-public final class ForcedLinkMatcher extends AbstractTextRegionMatcher {
+public class ForcedLinkMatcher extends AbstractTextRegionMatcher {
 
 	private final int		brackets;
 	private final String	openingBrackets;

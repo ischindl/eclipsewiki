@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.JavaModelException;
 
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
-public final class JavaContext implements IResourceChangeListener {
+public class JavaContext implements IResourceChangeListener {
 
 	private final WikiDocumentContext	context;
 	private IJavaProject				javaProject;

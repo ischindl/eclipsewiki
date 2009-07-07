@@ -17,7 +17,7 @@ import com.teaminabox.eclipse.wiki.text.WikiWordTextRegion;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
-public final class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<String> {
+public class EmbeddedTextRegionAppender extends GenericTextRegionVisitor<String> {
 
 	private final TextRegion			region;
 	private final LinkMaker				linkMaker;

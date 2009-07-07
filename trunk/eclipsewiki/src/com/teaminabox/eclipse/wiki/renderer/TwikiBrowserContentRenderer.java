@@ -18,7 +18,7 @@ import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 
-public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
+public class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
 	private static final String					TOC							= "%TOC%";
 	private static final String					TWIKI_WORD_PATTERN			= "[A-Z]+[a-z]+[A-Z]+\\w*";

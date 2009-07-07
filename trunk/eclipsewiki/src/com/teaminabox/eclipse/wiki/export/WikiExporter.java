@@ -25,7 +25,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
-public final class WikiExporter {
+public class WikiExporter {
 
 	public static final String	HTML_EXTENSION	= ".html";
 	public static final String	WORKSPACE		= "workspace";

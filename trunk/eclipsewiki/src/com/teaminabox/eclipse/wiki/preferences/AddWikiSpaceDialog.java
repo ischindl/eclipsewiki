@@ -32,7 +32,7 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
-public final class AddWikiSpaceDialog extends Dialog {
+public class AddWikiSpaceDialog extends Dialog {
 
 	private String		name;
 	private String		value;

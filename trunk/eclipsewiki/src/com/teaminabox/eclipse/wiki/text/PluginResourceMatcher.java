@@ -13,7 +13,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
  * <P>
  * The resource must exist for there to be a match
  */
-public final class PluginResourceMatcher extends ResourceMatcher {
+public class PluginResourceMatcher extends ResourceMatcher {
 	public PluginResourceMatcher() {
 		super(WikiConstants.PLUGIN_PREFIX);
 	}

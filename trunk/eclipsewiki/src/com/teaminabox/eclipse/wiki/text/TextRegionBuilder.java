@@ -14,7 +14,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 /**
  * Builds {@link TextRegion text regions}.
  */
-public final class TextRegionBuilder {
+public class TextRegionBuilder {
 
 	private TextRegionBuilder() {
 	}

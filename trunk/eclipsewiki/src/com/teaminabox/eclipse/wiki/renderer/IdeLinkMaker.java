@@ -9,7 +9,7 @@ import com.teaminabox.eclipse.wiki.text.UrlTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 
-public final class IdeLinkMaker extends LinkMaker {
+public class IdeLinkMaker extends LinkMaker {
 
 	public IdeLinkMaker(WikiDocumentContext context) {
 		setContext(context);

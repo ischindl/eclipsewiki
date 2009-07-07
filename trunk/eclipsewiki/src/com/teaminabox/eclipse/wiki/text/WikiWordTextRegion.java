@@ -3,7 +3,7 @@ package com.teaminabox.eclipse.wiki.text;
 /**
  * A region of text that is a standard Wiki name.
  */
-public final class WikiWordTextRegion extends WikiLinkTextRegion {
+public class WikiWordTextRegion extends WikiLinkTextRegion {
 
 	public WikiWordTextRegion(String text) {
 		super(text);

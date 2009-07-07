@@ -10,7 +10,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 /**
  * A region of text referring to a resource in the Eclipse workspace.
  */
-public final class EclipseResourceTextRegion extends TextRegion {
+public class EclipseResourceTextRegion extends TextRegion {
 
 	public EclipseResourceTextRegion(String text) {
 		super(text);

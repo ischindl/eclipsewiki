@@ -31,7 +31,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.outline.WikiContentOutlinePage;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
-public final class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, PropertyListener {
+public class WikiBrowserEditor extends MultiPageEditorPart implements IReusableEditor, IResourceChangeListener, PropertyListener {
 
 	private final class ResourceChangedEventHandler implements Runnable {
 		private final IResourceChangeEvent	event;

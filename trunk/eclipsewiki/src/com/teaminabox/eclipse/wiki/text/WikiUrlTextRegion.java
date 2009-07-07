@@ -8,7 +8,7 @@ import com.teaminabox.eclipse.wiki.editors.ColourManager;
 /**
  * A region of text that is an inter wiki url.
  */
-public final class WikiUrlTextRegion extends TextRegion {
+public class WikiUrlTextRegion extends TextRegion {
 
 	private String	link;
 

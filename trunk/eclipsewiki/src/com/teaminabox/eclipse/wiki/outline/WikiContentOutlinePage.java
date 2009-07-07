@@ -18,7 +18,7 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
-public final class WikiContentOutlinePage extends ContentOutlinePage implements IPropertyListener {
+public class WikiContentOutlinePage extends ContentOutlinePage implements IPropertyListener {
 
 	private WikiEditor	editor;
 

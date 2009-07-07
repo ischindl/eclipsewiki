@@ -31,7 +31,7 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
-public final class WikiExportWizardPage extends WizardPage implements IPropertyChangeListener, SelectionListener {
+public class WikiExportWizardPage extends WizardPage implements IPropertyChangeListener, SelectionListener {
 	private StringFieldEditor	folderText;
 	private StringFieldEditor	exportDirectoryText;
 	private ISelection			selection;

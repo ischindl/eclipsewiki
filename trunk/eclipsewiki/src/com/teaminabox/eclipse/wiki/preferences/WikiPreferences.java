@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
-public final class WikiPreferences extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class WikiPreferences extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private static Map<String, String>	wikispace;
 	private WikiSpacePreferencePage		wikiSpacePreferencePage;

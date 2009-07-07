@@ -3,7 +3,7 @@ package com.teaminabox.eclipse.wiki.text;
 /**
  * I match a region of text representing an escaped Wiki word based on a regex.
  */
-public final class EscapedWikiWordMatcher extends PatternMatcher {
+public class EscapedWikiWordMatcher extends PatternMatcher {
 
 	private final char		firstCharacter;
 	private final String[]	toRemoveForDisplay;

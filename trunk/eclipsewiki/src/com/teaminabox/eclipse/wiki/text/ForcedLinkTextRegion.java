@@ -1,6 +1,6 @@
 package com.teaminabox.eclipse.wiki.text;
 
-public final class ForcedLinkTextRegion extends WikiLinkTextRegion {
+public class ForcedLinkTextRegion extends WikiLinkTextRegion {
 
 	private String	link;
 

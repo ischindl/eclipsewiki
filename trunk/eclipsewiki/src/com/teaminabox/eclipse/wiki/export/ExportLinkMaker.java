@@ -16,7 +16,7 @@ import com.teaminabox.eclipse.wiki.text.WikiLinkTextRegion;
 import com.teaminabox.eclipse.wiki.text.WikiUrlTextRegion;
 import com.teaminabox.eclipse.wiki.util.Resources;
 
-public final class ExportLinkMaker extends LinkMaker {
+public class ExportLinkMaker extends LinkMaker {
 
 	/**
 	 * The set of documents linked to from wiki pages to the Eclipse workspace. Key = IResource, Value = link location

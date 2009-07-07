@@ -11,7 +11,7 @@ import com.teaminabox.eclipse.wiki.editors.ColourManager;
 /**
  * A region of text referring to a resource in the Eclipse workspace.
  */
-public final class PluginResourceTextRegion extends TextRegion {
+public class PluginResourceTextRegion extends TextRegion {
 
 	public PluginResourceTextRegion(String text) {
 		super(text);

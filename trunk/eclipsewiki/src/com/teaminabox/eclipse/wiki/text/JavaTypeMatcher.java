@@ -13,7 +13,7 @@ import com.teaminabox.eclipse.wiki.editors.JavaContext;
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.util.JavaUtils;
 
-public final class JavaTypeMatcher extends AbstractTextRegionMatcher {
+public class JavaTypeMatcher extends AbstractTextRegionMatcher {
 
 	public TextRegion createTextRegion(String text, WikiDocumentContext context) {
 		IJavaProject javaProject = context.getJavaContext().getJavaProject();

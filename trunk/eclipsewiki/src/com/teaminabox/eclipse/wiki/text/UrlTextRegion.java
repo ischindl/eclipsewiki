@@ -8,7 +8,7 @@ import com.teaminabox.eclipse.wiki.editors.ColourManager;
 /**
  * A region of text representing a hyperlink.
  */
-public final class UrlTextRegion extends TextRegion {
+public class UrlTextRegion extends TextRegion {
 
 	public UrlTextRegion(String text) {
 		super(text);

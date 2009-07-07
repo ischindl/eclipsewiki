@@ -4,7 +4,7 @@ import static org.apache.commons.lang.StringUtils.join;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 
-public final class UrlMatcher extends PatternMatcher {
+public class UrlMatcher extends PatternMatcher {
 
 	private static final String	URL_REGEX	= "(" + join(WikiConstants.URL_PREFIXES, '|') + "):(//)?([-_\\.!~*';/?:@#&=+$%,\\p{Alnum}])+";
 

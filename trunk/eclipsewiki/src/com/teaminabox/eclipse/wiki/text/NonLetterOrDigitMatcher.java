@@ -7,7 +7,7 @@ import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
  * 
  * @see Character#isLetterOrDigit(char)
  */
-public final class NonLetterOrDigitMatcher extends AbstractLetterOrDigitMatcher {
+public class NonLetterOrDigitMatcher extends AbstractLetterOrDigitMatcher {
 
 	protected int matchLength(String text, WikiDocumentContext context) {
 		if (text.length() > 0 && !Character.isLetterOrDigit(text.charAt(0))) {

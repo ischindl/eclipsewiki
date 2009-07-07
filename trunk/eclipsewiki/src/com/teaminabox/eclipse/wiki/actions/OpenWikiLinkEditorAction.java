@@ -11,7 +11,7 @@ import org.eclipse.ui.IWorkbenchPage;
 
 import com.teaminabox.eclipse.wiki.editors.WikiBrowserEditor;
 
-public final class OpenWikiLinkEditorAction implements IEditorActionDelegate {
+public class OpenWikiLinkEditorAction implements IEditorActionDelegate {
 
 	private WikiBrowserEditor	browserEditor;
 

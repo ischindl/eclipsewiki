@@ -31,7 +31,7 @@ import com.teaminabox.eclipse.wiki.WikiPlugin;
 import com.teaminabox.eclipse.wiki.renderer.ContentRenderer;
 import com.teaminabox.eclipse.wiki.renderer.IdeLinkMaker;
 
-public final class WikiBrowser extends ViewPart implements PropertyListener {
+public class WikiBrowser extends ViewPart implements PropertyListener {
 
 	private static final String	HTML_ESCAPED_SPACE	= "%20";
 

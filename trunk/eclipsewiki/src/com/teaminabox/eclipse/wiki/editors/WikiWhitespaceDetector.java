@@ -4,7 +4,7 @@ import org.eclipse.jface.text.rules.IWhitespaceDetector;
 
 import com.teaminabox.eclipse.wiki.util.Strings;
 
-public final class WikiWhitespaceDetector implements IWhitespaceDetector {
+public class WikiWhitespaceDetector implements IWhitespaceDetector {
 
 	public boolean isWhitespace(char c) {
 		return Strings.isWhiteSpaceCharacter(c);

@@ -2,7 +2,7 @@ package com.teaminabox.eclipse.wiki.editors;
 
 import java.util.ArrayList;
 
-public final class History<T> {
+public class History<T> {
 
 	private ArrayList<T>	items;
 

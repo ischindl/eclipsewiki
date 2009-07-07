@@ -24,7 +24,7 @@ import org.eclipse.ui.texteditor.spelling.SpellingService;
 
 import com.teaminabox.eclipse.wiki.editors.completion.WikiCompletionProcessor;
 
-public final class WikiConfiguration extends TextSourceViewerConfiguration {
+public class WikiConfiguration extends TextSourceViewerConfiguration {
 
 	private WikiScanner	scanner;
 	private WikiEditor	wikiEditor;

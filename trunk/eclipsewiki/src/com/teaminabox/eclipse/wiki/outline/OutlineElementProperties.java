@@ -4,7 +4,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
-public final class OutlineElementProperties implements IPropertySource {
+public class OutlineElementProperties implements IPropertySource {
 
 	public static final String	PROPERTY_LINECOUNT	= "lineno"; //$NON-NLS-1$
 	public static final String	PROPERTY_START		= "start";	//$NON-NLS-1$

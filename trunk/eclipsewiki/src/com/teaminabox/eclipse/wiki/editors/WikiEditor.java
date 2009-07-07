@@ -38,7 +38,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 
-public final class WikiEditor extends TextEditor implements PropertyListener {
+public class WikiEditor extends TextEditor implements PropertyListener {
 
 	public static final String	PART_ID				= WikiEditor.class.getName();
 	public static final String	CONTEXT_MENU_ID		= WikiEditor.PART_ID + ".ContextMenu";
