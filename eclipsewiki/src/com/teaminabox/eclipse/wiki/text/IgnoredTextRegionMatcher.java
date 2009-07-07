@@ -2,7 +2,7 @@ package com.teaminabox.eclipse.wiki.text;
 
 import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 
-public final class IgnoredTextRegionMatcher extends AbstractTextRegionMatcher {
+public class IgnoredTextRegionMatcher extends AbstractTextRegionMatcher {
 
 	private int matchLength(String text, WikiDocumentContext context) {
 		for (String excluded : context.getExcludeSet()) {

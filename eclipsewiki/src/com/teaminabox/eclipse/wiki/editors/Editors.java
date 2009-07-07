@@ -12,7 +12,7 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 
-public final class Editors {
+public class Editors {
 
 	private static Set<WikiEditor>	editors	= Collections.synchronizedSet(new HashSet<WikiEditor>());
 

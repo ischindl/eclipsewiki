@@ -9,7 +9,7 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 
 import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 
-public final class WikiScanner extends RuleBasedScanner {
+public class WikiScanner extends RuleBasedScanner {
 
 	@SuppressWarnings("unchecked")
 	public WikiScanner(WikiEditor wikiEditor) {

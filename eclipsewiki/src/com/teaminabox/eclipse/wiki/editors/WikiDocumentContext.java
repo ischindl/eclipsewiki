@@ -37,7 +37,7 @@ import com.teaminabox.eclipse.wiki.util.Resources;
  * I take care of the things relating to the file system, launching etc rather than leaving all that in the editor. It
  * also means that wiki files can be processed independently of an editor.
  */
-public final class WikiDocumentContext {
+public class WikiDocumentContext {
 
 	public static final String	FOOTER_FILE		= "footer.wiki";
 	public static final String	HEADER_FILE		= "header.wiki";

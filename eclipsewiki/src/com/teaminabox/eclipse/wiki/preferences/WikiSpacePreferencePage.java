@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.TableItem;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.WikiPlugin;
 
-public final class WikiSpacePreferencePage {
+public class WikiSpacePreferencePage {
 
 	private TableColumn				prefixColumn;
 	private TableColumn				urlColumn;

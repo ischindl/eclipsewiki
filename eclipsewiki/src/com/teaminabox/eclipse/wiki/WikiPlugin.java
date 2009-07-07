@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
 
 import com.teaminabox.eclipse.wiki.preferences.WikiPreferences;
 
-public final class WikiPlugin extends AbstractUIPlugin {
+public class WikiPlugin extends AbstractUIPlugin {
 
 	public static final String	RESOURCE_BUNDLE	= "com.teaminabox.eclipse.wiki.WikiPluginResources";
 

@@ -20,7 +20,7 @@ import org.eclipse.ui.IWorkbench;
 
 import com.teaminabox.eclipse.wiki.WikiConstants;
 
-public final class WikiExportWizard extends Wizard implements INewWizard {
+public class WikiExportWizard extends Wizard implements INewWizard {
 	static final QualifiedName		DIRECTORY_QUALIFIED_NAME	= new QualifiedName(WikiConstants.PLUGIN_ID, "exportDirectory");
 
 	private WikiExportWizardPage	page;

@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * A "button" of a certain color determined by the color picker.
  */
-public final class ColorEditor {
+public class ColorEditor {
 
 	private class ColourSelectionAdapter extends SelectionAdapter {
 		public void widgetSelected(SelectionEvent event) {

@@ -16,7 +16,7 @@ import com.teaminabox.eclipse.wiki.text.TextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 
-public final class SnipSnapContentRenderer extends AbstractContentRenderer {
+public class SnipSnapContentRenderer extends AbstractContentRenderer {
 
 	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
 

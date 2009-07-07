@@ -8,7 +8,7 @@ import com.teaminabox.eclipse.wiki.editors.ColourManager;
 /**
  * A region of text containing non text characters.
  */
-public final class UndefinedTextRegion extends TextRegion {
+public class UndefinedTextRegion extends TextRegion {
 
 	public UndefinedTextRegion(String text) {
 		super(text);

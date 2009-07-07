@@ -5,7 +5,7 @@ import org.eclipse.jface.text.rules.IToken;
 import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.ColourManager;
 
-public final class BasicTextRegion extends TextRegion {
+public class BasicTextRegion extends TextRegion {
 
 	public BasicTextRegion(String word) {
 		super(word);

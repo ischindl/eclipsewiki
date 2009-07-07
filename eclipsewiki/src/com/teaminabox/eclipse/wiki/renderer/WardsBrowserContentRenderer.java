@@ -12,7 +12,7 @@ import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 
-public final class WardsBrowserContentRenderer extends AbstractContentRenderer {
+public class WardsBrowserContentRenderer extends AbstractContentRenderer {
 
 	private static final String			WIKI_WORD_PATTERN			= "([A-Z][a-z]+){2,}[0-9]*";
 

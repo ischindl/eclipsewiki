@@ -16,7 +16,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
  * global actions to the active editor. Multi-page contributor replaces the contributors for the individual editors in
  * the multi-page editor.
  */
-public final class WikiBrowserEditorContributor extends MultiPageEditorActionBarContributor {
+public class WikiBrowserEditorContributor extends MultiPageEditorActionBarContributor {
 	private IEditorPart	activeEditorPart;
 
 	/**

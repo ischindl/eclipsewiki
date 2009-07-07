@@ -3,7 +3,7 @@ package com.teaminabox.eclipse.wiki.text;
 /**
  * I match a region of text representing a Wiki word based on a regex.
  */
-public final class WikiWordMatcher extends PatternMatcher {
+public class WikiWordMatcher extends PatternMatcher {
 
 	public WikiWordMatcher(String pattern) {
 		super(pattern);

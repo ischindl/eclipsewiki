@@ -9,7 +9,7 @@ import com.teaminabox.eclipse.wiki.renderer.SelectionRenderer;
 import com.teaminabox.eclipse.wiki.text.TextRegion;
 import com.teaminabox.eclipse.wiki.text.TextRegionBuilder;
 
-public final class WikiHover implements ITextHover {
+public class WikiHover implements ITextHover {
 
 	private WikiEditor	wikiEditor;
 

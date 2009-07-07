@@ -7,7 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-public final class OutlineElement implements IWorkbenchAdapter, IAdaptable {
+public class OutlineElement implements IWorkbenchAdapter, IAdaptable {
 
 	private String						headingName;
 	private int							offset;
