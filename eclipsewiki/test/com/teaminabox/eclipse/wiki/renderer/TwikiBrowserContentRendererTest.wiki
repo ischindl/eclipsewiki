@@ -8,6 +8,14 @@
 ---++++++ Header 6
 ---+++++++ Header 7
 
+---# Ordered Header 1
+---## Ordered Header 2
+---### Ordered Header 3
+---#### Ordered Header 4
+---##### Ordered Header 5
+---###### Ordered Header 6
+---####### Ordered Header 7
+
 *bold* _italic_  __bold italic__ =fixed font= ==bold fixed font==
 
 *bold*bold* _italic_italic_  __bold italic__bold italic__ =fixed font=fixed font= ==bold fixed font==bold fixed font==

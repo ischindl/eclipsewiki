@@ -11,7 +11,7 @@ import com.teaminabox.eclipse.wiki.WikiConstants;
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 import com.teaminabox.eclipse.wiki.renderer.StructureClosure;
 
-public class WikiOutlineFactory {
+public final class WikiOutlineFactory {
 
 	private static final WikiOutlineFactory	INSTANCE	= new WikiOutlineFactory();
 
@@ -35,6 +35,9 @@ public class WikiOutlineFactory {
 				public void acceptHeader(String header, int line) throws BadLocationException {
 					new OutlineElement(root, header, editor.getOffset(line), 0, wikiPlugin().getImageRegistry().getDescriptor(WikiConstants.WIKI_ICON));
 				}
+				public void applyListOrderedListTag(int level) {
+				}
+				
 			});
 			return new OutlineElement[] { root };
 		} catch (Exception e) {

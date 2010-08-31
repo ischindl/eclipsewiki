@@ -1,13 +1,12 @@
 package com.teaminabox.eclipse.wiki.text;
 
 import org.eclipse.jface.text.rules.ICharacterScanner;
-import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
 import com.teaminabox.eclipse.wiki.editors.WikiEditor;
 
-abstract class AbstractTextRegionMatcher implements TextRegionMatcher, IRule {
+abstract class AbstractTextRegionMatcher implements TextRegionMatcher {
 
 	private WikiEditor	editor;
 

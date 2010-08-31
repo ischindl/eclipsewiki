@@ -4,6 +4,7 @@ import static com.teaminabox.eclipse.wiki.WikiPlugin.wikiPlugin;
 
 import org.eclipse.jface.text.BadLocationException;
 
+import com.teaminabox.eclipse.wiki.editors.WikiDocumentContext;
 import com.teaminabox.eclipse.wiki.text.EclipseResourceMatcher;
 import com.teaminabox.eclipse.wiki.text.EmbeddedTextRegionMatcher;
 import com.teaminabox.eclipse.wiki.text.EscapedWikiWordMatcher;
@@ -18,7 +19,7 @@ import com.teaminabox.eclipse.wiki.text.UrlMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiSpaceMatcher;
 import com.teaminabox.eclipse.wiki.text.WikiWordMatcher;
 
-public class TwikiBrowserContentRenderer extends AbstractContentRenderer {
+public final class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 
 	private static final String					TOC							= "%TOC%";
 	private static final String					TWIKI_WORD_PATTERN			= "[A-Z]+[a-z]+[A-Z]+\\w*";
@@ -77,7 +78,7 @@ public class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 	private int getHeaderSize(String line) {
 		int size = 1;
 		int i = line.indexOf('+') + 1;
-		while (i < line.length() && line.charAt(i) == '+' && size < 6) {
+		while (i < line.length() && line.charAt(i) == '+' && size < 9) {
 			i++;
 			size++;
 		}
@@ -141,21 +142,44 @@ public class TwikiBrowserContentRenderer extends AbstractContentRenderer {
 		return false;
 	}
 
+	public void forEachHeader(WikiDocumentContext context, StructureClosure closure) throws BadLocationException {
+		String[] document = context.getDocument();
+		int level=0;
+		int diff=0;
+		
+		for (int i = 0; i < document.length; i++) {
+			String line = document[i];
+			if (isHeader(line)) {
+				diff=level-(getHeaderSize(line));    			// MARK THE CHANGE IN HEADING LEVEL 
+				level=getHeaderSize(line);
+				String header = getHeaderText(line);
+				closure.applyListOrderedListTag(diff);
+				closure.acceptHeader(header, i);
+			}				
+				if((i+1 == document.length)  )
+					closure.applyListOrderedListTag(level);
+		}
+	}
+
 	private void appendToc() {
 		appendln("<div class=\"twikiToc\">");
-		appendln("<ul>");
 		try {
 			forEachHeader(getContext(), new StructureClosure() {
 				public void acceptHeader(String header, int line) throws BadLocationException {
 					append("<li><a href=\"#").append(createHeaderAnchor(header)).append("\">").append(header).append("</a>");
-					appendln("</li>");
+					appendln("</li>");					
+					}
+				public void applyListOrderedListTag(int level) {
+					while(level>0) // LABEL FOR TOC
+					{ appendln("</ol>"); level--;}
+					while(level<0) // LABEL FOR TOC
+					{ appendln("<ol>"); level++;}
 				}
 			});
 		} catch (BadLocationException e) {
 			wikiPlugin().log("Unable to build Table contents", e);
 			append("<p>Sorry, there was an error building the table of contents. Please report the error in your logs. Thanks.</p>");
 		}
-		appendln("</ul>");
 		appendln("</div>");
 	}
 

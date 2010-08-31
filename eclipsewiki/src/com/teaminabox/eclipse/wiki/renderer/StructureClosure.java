@@ -11,4 +11,7 @@ public interface StructureClosure {
 	 * @throws BadLocationException
 	 */
 	void acceptHeader(String header, int line) throws BadLocationException;
+
+	void applyListOrderedListTag(int level);
+
 }
