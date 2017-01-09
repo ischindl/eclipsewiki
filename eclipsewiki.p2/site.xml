@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.stateofflow.EclipseWikiFeature_2.8.1.qualifier.jar" id="com.stateofflow.EclipseWikiFeature" version="2.8.1.qualifier">
+      <category name="eclipsewiki"/>
+   </feature>
+   <category-def name="eclipsewiki" label="Eclipse wiki plugin"/>
+</site>
